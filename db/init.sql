@@ -66,16 +66,10 @@ CREATE TABLE IF NOT EXISTS delivery_man_change_address(
   new_department VARCHAR(150) NOT NULL,
   new_municipality VARCHAR(150) NOT NULL,
   change_description VARCHAR(500) NOT NULL,
+  status VARCHAR(100) NOT NULL,
   FOREIGN KEY (delivery_man_id) REFERENCES delivery_man(delivery_man_id) ON DELETE CASCADE
 );
 
--- delivery_man_rating Table
-CREATE TABLE IF NOT EXISTS delivery_man_rating(
-  delivery_man_rating_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  delivery_man_id BIGINT NOT NULL,
-  rating INTEGER NOT NULL,
-  FOREIGN KEY (delivery_man_id) REFERENCES delivery_man(delivery_man_id) ON DELETE CASCADE
-);
 
 -- coupon Table
 CREATE TABLE IF NOT EXISTS coupon(
@@ -93,7 +87,8 @@ CREATE TABLE IF NOT EXISTS company(
   company_email VARCHAR(100) NOT NULL,
   company_department VARCHAR(150) NOT NULL,
   company_municipality VARCHAR(100) NOT NULL,
-  company_address VARCHAR(200) NOT NULL
+  company_address VARCHAR(200) NOT NULL,
+  status VARCHAR(100) NOT NULL
 );
 
 -- company_document Table
@@ -134,6 +129,16 @@ CREATE TABLE IF NOT EXISTS order(
   FOREIGN KEY (user_address_id) REFERENCES user_address(user_address_id) ON DELETE CASCADE
 );
 
+
+-- delivery_man_rating Table
+CREATE TABLE IF NOT EXISTS delivery_man_rating(
+  delivery_man_rating_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  delivery_man_id BIGINT NOT NULL,
+  rating INTEGER NOT NULL,
+  order_id BIGINT NOT NULL,
+  FOREIGN KEY (delivery_man_id) REFERENCES delivery_man(delivery_man_id) ON DELETE CASCADE,
+  FOREIGN KEY (order_id) REFERENCES order(order_id) ON DELETE CASCADE
+);
 -- order_detail Table
 CREATE TABLE IF NOT EXISTS order_detail(
   order_detail_id BIGINT PRIMARY KEY AUTO_INCREMENT,
