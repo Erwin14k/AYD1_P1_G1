@@ -18,6 +18,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- user Table
 CREATE TABLE IF NOT EXISTS user(
   user_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  user_token VARCHAR(1000) NOT NULL DEFAULT '',
   user_email VARCHAR(150) NOT NULL,
   user_password VARCHAR(150) NOT NULL,
   user_name VARCHAR(150) NOT NULL,
@@ -49,6 +50,7 @@ CREATE TABLE IF NOT EXISTS delivery_man(
   delivery_man_name VARCHAR(150) NOT NULL,
   delivery_man_surname VARCHAR(150) NOT NULL,
   delivery_man_email VARCHAR(150) NOT NULL,
+  delivery_man_password VARCHAR(150) NOT NULL,
   delivery_man_phone BIGINT NOT NULL,
   delivery_man_department VARCHAR(150) NOT NULL,
   delivery_man_municipality VARCHAR(150) NOT NULL,
@@ -85,6 +87,7 @@ CREATE TABLE IF NOT EXISTS company(
   company_description VARCHAR(500) NOT NULL,
   company_category VARCHAR(100) NOT NULL,
   company_email VARCHAR(100) NOT NULL,
+  company_password VARCHAR(150) NOT NULL,
   company_department VARCHAR(150) NOT NULL,
   company_municipality VARCHAR(100) NOT NULL,
   company_address VARCHAR(200) NOT NULL,
@@ -114,7 +117,7 @@ CREATE TABLE IF NOT EXISTS product(
 );
 
 -- order Table
-CREATE TABLE IF NOT EXISTS order(
+CREATE TABLE IF NOT EXISTS _order(
   order_id BIGINT PRIMARY KEY AUTO_INCREMENT,
   coupon_id BIGINT NOT NULL,
   delivery_man_id BIGINT NOT NULL,
@@ -137,14 +140,15 @@ CREATE TABLE IF NOT EXISTS delivery_man_rating(
   rating INTEGER NOT NULL,
   order_id BIGINT NOT NULL,
   FOREIGN KEY (delivery_man_id) REFERENCES delivery_man(delivery_man_id) ON DELETE CASCADE,
-  FOREIGN KEY (order_id) REFERENCES order(order_id) ON DELETE CASCADE
+  FOREIGN KEY (order_id) REFERENCES _order(order_id) ON DELETE CASCADE
 );
+
 -- order_detail Table
 CREATE TABLE IF NOT EXISTS order_detail(
   order_detail_id BIGINT PRIMARY KEY AUTO_INCREMENT,
   order_id BIGINT NOT NULL,
   product_id BIGINT NOT NULL,
   product_ammount INTEGER NOT NULL,
-  FOREIGN KEY (order_id) REFERENCES order(order_id) ON DELETE CASCADE,
+  FOREIGN KEY (order_id) REFERENCES _order(order_id) ON DELETE CASCADE,
   FOREIGN KEY (product_id) REFERENCES product(product_id) ON DELETE CASCADE
 );
