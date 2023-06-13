@@ -2,7 +2,7 @@ import React from "react";
 import NavBar from "../components/NavBar";
 import NavBarLanding from "../static/NavBarLanding";
 
-function Login({url,noUrl}) {
+function SingIn({url,noUrl}) {
 
    const handelSubmit = (e) => {
       e.preventDefault();
@@ -93,4 +93,4 @@ function Login({url,noUrl}) {
    );
 }
 
-export default Login;
+export default SingIn;
