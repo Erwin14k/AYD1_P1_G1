@@ -18,7 +18,6 @@ module.exports.register = async (deliveryManName, deliveryManSurname,deliveryMan
   const binds = [deliveryManName,deliveryManSurname,deliveryManEmail,deliveryManPassword,deliveryManPhone,
     deliveryManDepartment,deliveryManMunicipality,deliveryManLicenseType,deliveryManTransport,
     'Waiting',0.00,deliveryManResume,-1];
-    //console.log(binds);
   return(await db.pool(statement, binds));
 };
 

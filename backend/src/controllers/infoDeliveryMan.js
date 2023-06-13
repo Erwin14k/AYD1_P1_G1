@@ -13,6 +13,6 @@ module.exports.deliveryManInfo = async (req, res, next) => {
     .status(200)
     .json({
       messsage: "Data Successfully",
-      userData:result,
+      deliveryManData:result,
   });
 };

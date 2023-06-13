@@ -5,7 +5,6 @@ module.exports.deliveryManRegistration = async (req, res) => {
   const { deliveryManName, deliveryManSurname,deliveryManEmail, deliveryManPassword,
     deliveryManPhone,deliveryManDepartment,deliveryManMunicipality,deliveryManLicenseType,
     deliveryManTransport,deliveryManResume } = req.body;
-    //console.log(req.body);
 
   try {
     const verifyEmail=await DeliveryMan.existEmail(deliveryManEmail);
@@ -35,7 +34,7 @@ module.exports.deliveryManLogin = async (req, res, next) => {
   try {
     const verifyStatus=await DeliveryMan.verifyStatus(args.deliveryManEmail);
     //Verify if the delivery_man has an active status
-    if(verifyStatus.length>0 &&verifyStatus[0].userStatus!=="Active"){
+    if(verifyStatus.length>0 &&verifyStatus[0].deliveryManStatus!=="Active"){
       // If the user is not active
       return res.status(403).json({
         message: "Unauthorized",

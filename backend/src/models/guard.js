@@ -1,5 +1,18 @@
 const { pool } = require("../utils/db");
 
+
+module.exports.verifyAdminToken = ({ TOKEN }) => {
+  const SQL_SELECT_USER = `SELECT 
+                            admin_id AS "adminId", 
+                            admin_email AS "adminEmail",
+                            admin_name AS "adminName",
+                            admin_status AS "adminStatus"
+                          FROM admin
+                          WHERE admin_token = ?`;
+  let binds=[TOKEN];
+  return pool(SQL_SELECT_USER, binds);
+};
+
 module.exports.verifyUserToken = ({ TOKEN }) => {
   const SQL_SELECT_USER = `SELECT 
                             user_id AS "userId", 

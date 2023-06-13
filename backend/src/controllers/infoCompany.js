@@ -13,6 +13,6 @@ module.exports.companyInfo = async (req, res, next) => {
     .status(200)
     .json({
       messsage: "Data Successfully",
-      userData:result,
+      companyData:result,
   });
 };
