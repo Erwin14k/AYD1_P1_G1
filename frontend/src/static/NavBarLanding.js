@@ -12,9 +12,9 @@ const NavBarLanding = () => {
           Regístrate
         </button>
         <ul className="dropdown-menu" style={{ backgroundColor: "black" }}>
-          <li><Link to="/" className="dropdown-item">Cliente</Link></li>
-          <li><Link to="/" className="dropdown-item">Repartidor</Link></li>
-          <li><Link to="/" className="dropdown-item">Empresa</Link></li>
+          <li><Link to="/SingUp" className="dropdown-item">Cliente</Link></li>
+          <li><Link to="/SingUp" className="dropdown-item">Repartidor</Link></li>
+          <li><Link to="/SingUp" className="dropdown-item">Empresa</Link></li>
         </ul>
       </li>
 
