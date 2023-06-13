@@ -8,12 +8,12 @@ import r3 from '../assets/r3.jpg'
 import v1 from '../assets/v1.jpg'
 
 import Footer from "../components/Footer";
-
+import NavBarLanding from '../static/NavBarLanding';
 
 function LandingPage() {
     return (
         <div>
-            <NavBar className="nav" />
+            <NavBar className="nav" custonContend={<NavBarLanding/>}/>
             <div className="presentacion">
                 <div className="frase">
                     <img src={MiLogo} className="logoFrase" alt="Logo" />
@@ -125,13 +125,13 @@ function LandingPage() {
                                 <li ><a href="#somos" className="link-dark link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style={{ color: "black" }}>Quienes somos</a></li>
                                 <li ><a href="#equipo" className="link-dark link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style={{ color: "black" }}>Equipo</a></li>
                             </ul>
-                        </div>
+                        </div> 
                         <div className="col">
                             <h7>&nbsp;</h7>
                             <ul className="link-list">
-                                <li ><a className="link-dark link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style={{ color: "black" }}>Agrega tu restaurante</a></li>
-                                <li ><a className="link-dark link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style={{ color: "black" }}>Regístrate para realizar entregas</a></li>
-                                <li ><a className="link-dark link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style={{ color: "black" }}>Crea tu cuenta</a></li>
+                                <li ><p className="link-dark link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style={{ color: "black" }}>Agrega tu restaurante</p></li>
+                                <li ><p className="link-dark link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style={{ color: "black" }}>Regístrate para realizar entregas</p></li>
+                                <li ><p className="link-dark link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style={{ color: "black" }}>Crea tu cuenta</p></li>
                             </ul>
                         </div>
                     </div>
