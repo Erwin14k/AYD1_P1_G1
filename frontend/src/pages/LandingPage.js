@@ -1,4 +1,5 @@
 import NavBar from "../components/NavBar";
+import NavBarLanding from '../static/NavBarLanding';
 import '../styles/LandingCSS.css'
 import MiLogo from '../assets/AlChilazoLogo.png'
 import f1 from '../assets/f1.jpg'
@@ -13,7 +14,7 @@ import Footer from "../components/Footer";
 function LandingPage() {
     return (
         <div>
-            <NavBar className="nav" />
+             <NavBar className="nav" customContend={<NavBarLanding/>} />
             <div className="presentacion">
                 <div className="frase">
                     <img src={MiLogo} className="logoFrase" alt="Logo" />
@@ -53,24 +54,24 @@ function LandingPage() {
             <div className="equipo" id="equipo">
                 <h1> Equipo </h1>
                 <div className="nombres">
-                    <div class="row">
-                        <div class="col">
+                    <div className="row">
+                        <div className="col">
                             <h3>Erwin Fernando Vásquez Peñate</h3>
                             <p>Desarrollador de Backend</p>
                             <h4>&nbsp;</h4>
                         </div>
-                        <div class="col">
+                        <div className="col">
                             <h3>Sergie Daniel Arizandieta Yol</h3>
                             <p>Desarrollador de Frontend</p>
                             <h4>&nbsp;</h4>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
+                    <div className="row">
+                        <div className="col">
                             <h3>Kevin Steve Martinez Lemus</h3>
                             <p>Desarrollador de Frontend</p>
                         </div>
-                        <div class="col">
+                        <div className="col">
                             <h3>Kevin Golwer Enrique Ruiz Barbales</h3>
                             <p>Desarrollador de Backend</p>
                         </div>
@@ -129,9 +130,21 @@ function LandingPage() {
                         <div className="col">
                             <h7>&nbsp;</h7>
                             <ul className="link-list">
-                                <li ><a className="link-dark link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style={{ color: "black" }}>Agrega tu restaurante</a></li>
-                                <li ><a className="link-dark link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style={{ color: "black" }}>Regístrate para realizar entregas</a></li>
-                                <li ><a className="link-dark link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style={{ color: "black" }}>Crea tu cuenta</a></li>
+                                <li >
+                                    <button type="button" className="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Agrega tu restaurante
+                                    </button>
+                                </li>
+                                <li >
+                                    <button type="button" className="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Regístrate para realizar entregas
+                                    </button>
+                                </li>
+                                <li >
+                                    <button type="button" className="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Crea tu cuenta
+                                    </button>
+                                </li>
                             </ul>
                         </div>
                     </div>
