@@ -2,11 +2,8 @@ import React from "react";
 import NavBar from "../components/NavBar";
 import NavBarLanding from "../static/NavBarLanding";
 
-function SingUp({ url, noUrl }) {
-   const handelSubmit = (e) => {
-      e.preventDefault();
-      console.log("Formulario enviado", url);
-   };
+function SingUp({  noUrl, customContent }) {
+
 
    return (
       <div>
@@ -17,7 +14,7 @@ function SingUp({ url, noUrl }) {
                className="p-5 bg-image"
                style={{
                   backgroundImage:
-                     "url('https://mdbootstrap.com/img/new/textures/full/171.jpg')",
+                     "url('https://static.vecteezy.com/system/resources/previews/003/823/542/original/spices-for-use-as-cooking-ingredients-on-a-wooden-background-with-fresh-vegetables-healthy-food-herbs-organic-vegetables-on-the-table-raw-materials-of-cooking-preparation-tom-yum-free-photo.jpg')",
                   height: "300px",
                }}
             ></div>
@@ -33,117 +30,8 @@ function SingUp({ url, noUrl }) {
                <div class="card-body py-5 px-md-5">
                   <div class="row d-flex justify-content-center">
                      <div class="col-lg-8">
-                        <h2 class="fw-bold mb-5">Sign up now</h2>
-                        <form>
-                           <div class="row">
-                              <div class="col-md-6 mb-4">
-                                 <div class="form-outline">
-                                    <input
-                                       type="text"
-                                       id="form3Example1"
-                                       class="form-control"
-                                    />
-                                    <label
-                                       class="form-label"
-                                       for="form3Example1"
-                                    >
-                                       First name
-                                    </label>
-                                 </div>
-                              </div>
-                              <div class="col-md-6 mb-4">
-                                 <div class="form-outline">
-                                    <input
-                                       type="text"
-                                       id="form3Example2"
-                                       class="form-control"
-                                    />
-                                    <label
-                                       class="form-label"
-                                       for="form3Example2"
-                                    >
-                                       Last name
-                                    </label>
-                                 </div>
-                              </div>
-                           </div>
-
-                           <div class="form-outline mb-4">
-                              <input
-                                 type="email"
-                                 id="form3Example3"
-                                 class="form-control"
-                              />
-                              <label class="form-label" for="form3Example3">
-                                 Email address
-                              </label>
-                           </div>
-
-                           <div class="form-outline mb-4">
-                              <input
-                                 type="password"
-                                 id="form3Example4"
-                                 class="form-control"
-                              />
-                              <label class="form-label" for="form3Example4">
-                                 Password
-                              </label>
-                           </div>
-
-                           <div class="form-check d-flex justify-content-center mb-4">
-                              <input
-                                 class="form-check-input me-2"
-                                 type="checkbox"
-                                 value=""
-                                 id="form2Example33"
-                                 checked
-                              />
-                              <label
-                                 class="form-check-label"
-                                 for="form2Example33"
-                              >
-                                 Subscribe to our newsletter
-                              </label>
-                           </div>
-
-                           <button
-                              type="submit"
-                              class="btn btn-primary btn-block mb-4"
-                           >
-                              Sign up
-                           </button>
-
-                           <div class="text-center">
-                              <p>or sign up with:</p>
-                              <button
-                                 type="button"
-                                 class="btn btn-link btn-floating mx-1"
-                              >
-                                 <i class="fab fa-facebook-f"></i>
-                              </button>
-
-                              <button
-                                 type="button"
-                                 class="btn btn-link btn-floating mx-1"
-                              >
-                                 <i class="fab fa-google"></i>
-                              </button>
-
-                              <button
-                                 type="button"
-                                 class="btn btn-link btn-floating mx-1"
-                              >
-                                 <i class="fab fa-twitter"></i>
-                              </button>
-
-                              <button
-                                 type="button"
-                                 class="btn btn-link btn-floating mx-1"
-                              >
-                                 <i class="fab fa-github"></i>
-                              </button>
-                           </div>
-                        </form>
+                        <h2 class="fw-bold mb-5">Registrate Ahora</h2>
+                         {customContent}
                      </div>
                   </div>
                </div>
