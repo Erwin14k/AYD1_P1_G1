@@ -27,3 +27,17 @@ module.exports.verifyDeliveryManToken = ({ TOKEN }) => {
   let binds=[TOKEN];
   return pool(SQL_SELECT_USER, binds);
 };
+
+module.exports.verifyCompanyToken = ({ TOKEN }) => {
+  const SQL_SELECT_USER = `SELECT 
+                            company_id AS "companyId", 
+                            company_email AS "companyEmail",
+                            company_password AS "companyPassword",
+                            company_description AS "company_description",
+                            company_category AS "companyCategory",
+                            company_status AS "companyStatus"
+                          FROM company
+                          WHERE company_token = ?`;
+  let binds=[TOKEN];
+  return pool(SQL_SELECT_USER, binds);
+};

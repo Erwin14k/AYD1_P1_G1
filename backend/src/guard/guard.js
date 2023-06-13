@@ -51,6 +51,26 @@ const guard = async (req, res, next) => {
     console.log(error);
   }
 
+  // If the token belongs to a company
+  try {
+    const args = { TOKEN };
+    const rows = await Guard.verifyCompanyToken(args);
+    if (rows.length > 0) {
+      // Verify if the company is active or waiting
+      if(rows[0].companyStatus==="Active" || rows[0].companyStatus==="Waiting"){
+        req.body.companyId = rows[0].companyId;
+        return next();
+      }else{
+        return res.status(403).json({
+          message: "Unauthorized",
+        });
+      }
+      
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
   return res.status(403).json({
     message: "Unauthorized",
   });
