@@ -16,7 +16,9 @@ function App() {
           <Route path="/terminos" element={<Terminos/>} />
           <Route path="/preguntas" element={<Preguntas/>} />
           <Route path="/politicas" element={<Politicas/>} />
-          <Route path="/Login" element={<Login/>}/>
+          <Route path="/Login-Cliente" element={<Login url={"Cliente"} noUrl={1}/>}/>
+          <Route path="/Login-Repartidor" element={<Login url={"Repartidor"} noUrl={2}/>}/>
+          <Route path="/Login-Empresa" element={<Login url={"Empresa"} noUrl={3}/>} />
         </Routes>
     </BrowserRouter>
 
