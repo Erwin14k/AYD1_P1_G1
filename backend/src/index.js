@@ -8,14 +8,18 @@ const guard = require("./guard/guard");
 
 const userRoutes =require("./routes/user");
 const infoUserRoutes = require("./routes/infoUser");
+const deliveryManRoutes=require('./routes/deliveryMan');
+const infoDeliveryManRoutes = require("./routes/infoDeliveryMan");
 const invalidRoutes =require ("./routes/404");
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(cookies());
 app.use(express.json());
 app.use(userRoutes);
+app.use(deliveryManRoutes);
 app.use(guard);
 app.use(infoUserRoutes);
+app.use(infoDeliveryManRoutes);
 app.use(invalidRoutes);
 
 mysql

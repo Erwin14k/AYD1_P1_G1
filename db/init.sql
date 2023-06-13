@@ -10,10 +10,13 @@ USE al_chilazo;
 -- Show the database tables
 SHOW TABLES;
 
--- Instrctions to avoid truncate or drop conflicts
-SET FOREIGN_KEY_CHECKS = 0;
-SET FOREIGN_KEY_CHECKS = 1;
-
+-- admin Table
+CREATE TABLE IF NOT EXISTS admin(
+  admin_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  admin_email VARCHAR(150) NOT NULL,
+  admin_password VARCHAR(150) NOT NULL,
+  admin_name VARCHAR(150) NOT NULL
+);
 
 -- user Table
 CREATE TABLE IF NOT EXISTS user(
@@ -22,7 +25,10 @@ CREATE TABLE IF NOT EXISTS user(
   user_email VARCHAR(150) NOT NULL,
   user_password VARCHAR(150) NOT NULL,
   user_name VARCHAR(150) NOT NULL,
-  user_surname VARCHAR(150) NOT NULL
+  user_surname VARCHAR(150) NOT NULL,
+  user_status VARCHAR(50) NOT NULL,
+  admin_id BIGINT NOT NULL,
+  FOREIGN KEY (admin_id) REFERENCES admin(admin_id) ON DELETE CASCADE
 );
 
 -- user_payment_method Table
@@ -47,6 +53,7 @@ CREATE TABLE IF NOT EXISTS user_address(
 -- delivery_man Table
 CREATE TABLE IF NOT EXISTS delivery_man(
   delivery_man_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  delivery_man_token VARCHAR(1000) NOT NULL DEFAULT '',
   delivery_man_name VARCHAR(150) NOT NULL,
   delivery_man_surname VARCHAR(150) NOT NULL,
   delivery_man_email VARCHAR(150) NOT NULL,
@@ -58,7 +65,9 @@ CREATE TABLE IF NOT EXISTS delivery_man(
   delivery_man_transport VARCHAR(15) NOT NULL,
   delivery_man_status VARCHAR(50) NOT NULL,
   delivery_man_rating DECIMAL(10,2) NOT NULL,
-  delivery_man_resume VARCHAR(500) NOT NULL
+  delivery_man_resume VARCHAR(500) NOT NULL,
+  admin_id BIGINT NOT NULL,
+  FOREIGN KEY (admin_id) REFERENCES admin(admin_id) ON DELETE CASCADE
 );
 
 -- delivery_man_change_address Table
@@ -69,6 +78,8 @@ CREATE TABLE IF NOT EXISTS delivery_man_change_address(
   new_municipality VARCHAR(150) NOT NULL,
   change_description VARCHAR(500) NOT NULL,
   status VARCHAR(100) NOT NULL,
+  admin_id BIGINT NOT NULL,
+  FOREIGN KEY (admin_id) REFERENCES admin(admin_id) ON DELETE CASCADE,
   FOREIGN KEY (delivery_man_id) REFERENCES delivery_man(delivery_man_id) ON DELETE CASCADE
 );
 
@@ -83,6 +94,7 @@ CREATE TABLE IF NOT EXISTS coupon(
 -- company Table
 CREATE TABLE IF NOT EXISTS company(
   company_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  company_token VARCHAR(1000) NOT NULL DEFAULT '',
   company_name VARCHAR(100) NOT NULL,
   company_description VARCHAR(500) NOT NULL,
   company_category VARCHAR(100) NOT NULL,
@@ -91,7 +103,9 @@ CREATE TABLE IF NOT EXISTS company(
   company_department VARCHAR(150) NOT NULL,
   company_municipality VARCHAR(100) NOT NULL,
   company_address VARCHAR(200) NOT NULL,
-  status VARCHAR(100) NOT NULL
+  company_status VARCHAR(100) NOT NULL,
+  admin_id BIGINT NOT NULL,
+  FOREIGN KEY (admin_id) REFERENCES admin(admin_id) ON DELETE CASCADE
 );
 
 -- company_document Table
@@ -119,7 +133,7 @@ CREATE TABLE IF NOT EXISTS product(
 -- order Table
 CREATE TABLE IF NOT EXISTS _order(
   order_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  coupon_id BIGINT NOT NULL,
+  coupon_id BIGINT,
   delivery_man_id BIGINT NOT NULL,
   user_id BIGINT NOT NULL,
   user_address_id BIGINT NOT NULL,
@@ -152,3 +166,17 @@ CREATE TABLE IF NOT EXISTS order_detail(
   FOREIGN KEY (order_id) REFERENCES _order(order_id) ON DELETE CASCADE,
   FOREIGN KEY (product_id) REFERENCES product(product_id) ON DELETE CASCADE
 );
+
+-- Token generator function
+DELIMITER //
+CREATE FUNCTION api_token(PSECRET VARCHAR(255)) RETURNS VARCHAR(4000) READS SQL DATA
+BEGIN
+  DECLARE VRESULT VARCHAR(4000);
+  SET VRESULT = HEX(MD5(PSECRET));
+  RETURN VRESULT;
+END //
+DELIMITER ;
+
+-- Admin user
+INSERT INTO admin (admin_id,admin_email, admin_password, admin_name)
+VALUES (-1,'admin@root.com', 'root', 'root');

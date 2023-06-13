@@ -28,6 +28,14 @@ module.exports.userLogin = async (req, res, next) => {
     userPassword: req.body.userPassword,
   };
   try {
+    const verifyStatus=await User.verifyStatus(args.userEmail);
+    //Verify if the user has an active status
+    if(verifyStatus.length>0 &&verifyStatus[0].userStatus!=="Active"){
+      // If the user is not active
+      return res.status(403).json({
+        message: "Unauthorized",
+      });
+    }
     // Find the password
     const collectedPassword = await User.hashPassword(args);
     // Verify if exists the password
