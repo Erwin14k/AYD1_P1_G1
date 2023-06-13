@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import LoginIMG from '../assets/login.png'
 import regimg from '../assets/registro.png'
 
-const NavBarLanding = () => {
+const NavBarLanding = () => { 
   return (
     <ul className="navbar-nav">
       <li className="nav-item dropdown" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center" }}>
@@ -24,9 +24,9 @@ const NavBarLanding = () => {
           Login
         </button>
         <ul className="dropdown-menu" style={{ backgroundColor: "black" }}>
-          <li><Link to="/" className="dropdown-item">Cliente</Link></li>
-          <li><Link to="/" className="dropdown-item">Repartidor</Link></li>
-          <li><Link to="/" className="dropdown-item">Empresa</Link></li>
+          <li><Link to="/Login" className="dropdown-item">Cliente</Link></li>
+          <li><Link to="/Login" className="dropdown-item">Repartidor</Link></li>
+          <li><Link to="/Login" className="dropdown-item">Empresa</Link></li>
         </ul>
       </li>
     </ul>

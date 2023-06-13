@@ -4,7 +4,7 @@ import 'bootstrap/dist/js/bootstrap.js';
 
 import MiLogo from '../assets/AlChilazoLogo.png'
 
-function NavBar({custonContend}) {
+function NavBar({customContend}) {
     return (
         <div className='App'>
             <nav className="navbar navbar-expand-lg" data-bs-theme="dark" style={{ backgroundColor: "black", position:"fixed", top:"0", left:"0", width:"100%" }}>
@@ -15,7 +15,7 @@ function NavBar({custonContend}) {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav" style={{ display: "flex", justifyContent: "flex-end" }}>
-                       {custonContend}
+                       {customContend}
                     </div>
                 </div>
             </nav></div>
