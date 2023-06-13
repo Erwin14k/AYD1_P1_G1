@@ -11,6 +11,28 @@ const guard = async (req, res, next) => {
     });
   }
   const TOKEN = req.headers.authorization.split("Bearer ")[1];
+
+
+  // If the token belongs to the admin
+  try {
+    const args = { TOKEN };
+    const rows = await Guard.verifyAdminToken(args);
+    if (rows.length > 0) {
+      // Verify if the admin is active
+      if(rows[0].adminStatus==="Active"){
+        req.body.adminId = rows[0].adminId;
+        return next();
+      }else{
+        return res.status(403).json({
+          message: "Unauthorized",
+        });
+      }
+      
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
   // If the token belongs to a user
   try {
     const args = { TOKEN };

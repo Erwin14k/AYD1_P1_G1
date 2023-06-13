@@ -13,9 +13,11 @@ SHOW TABLES;
 -- admin Table
 CREATE TABLE IF NOT EXISTS admin(
   admin_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  admin_token VARCHAR(1000) NOT NULL DEFAULT '',
   admin_email VARCHAR(150) NOT NULL,
   admin_password VARCHAR(150) NOT NULL,
-  admin_name VARCHAR(150) NOT NULL
+  admin_name VARCHAR(150) NOT NULL,
+  admin_status VARCHAR(50) NOT NULL
 );
 
 -- user Table
@@ -178,5 +180,5 @@ END //
 DELIMITER ;
 
 -- Admin user
-INSERT INTO admin (admin_id,admin_email, admin_password, admin_name)
-VALUES (-1,'admin@root.com', 'root', 'root');
+INSERT INTO admin (admin_id,admin_email, admin_password, admin_name,admin_status)
+VALUES (-1,'admin@root.com', 'root', 'root','Active');

@@ -3,12 +3,12 @@ const mysqlConfig = require('../config/config');
 
 let pool;
 
-// Inicializar la base de datos
+// Initialize the database
 module.exports.start = async () => {
     pool = mysql.createPool(mysqlConfig.mysqlConfig);
 };
 
-// Cerrar la base de datos
+// Clos the database
 module.exports.close = async () => {
     if (pool) {
         await pool.end();
@@ -17,10 +17,9 @@ module.exports.close = async () => {
 
 module.exports.pool = async (statement, binds = []) => {
     try {
-        const promisePool = pool.promise(); // Crear una versión promisificada del pool
-
+        // Create a promisified version of the pool
+        const promisePool = pool.promise();
         const [rows] = await promisePool.execute(statement, binds);
-
         return rows;
     } catch (error) {
         console.log(error);
