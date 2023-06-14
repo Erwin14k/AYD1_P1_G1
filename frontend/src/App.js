@@ -9,6 +9,7 @@ import SingUp from './pages/SingUp';
 
 import SingUpClient from './static/SingUpClient';
 import SingUpDeliveryMan from './static/SingUpDeliveryMan';
+import SingUpCompany from './static/SingUpCompany';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -24,9 +25,9 @@ function App() {
           <Route path="/Login-Repartidor" element={<SingIn url={"Repartidor"} noUrl={2}/>}/>
           <Route path="/Login-Empresa" element={<SingIn url={"Empresa"} noUrl={3}/>} />
 
-          <Route path="/SingUp-Cliente" element={<SingUp  noUrl={1} customContent={<SingUpClient url={"Cliente"}/>} />}/>
-          <Route path="/SingUp-Repartidor" element={<SingUp  noUrl={1} customContent={<SingUpDeliveryMan url={"Cliente"}/>} />}/>
-          <Route path="/SingUp-Empresa" element={<SingUp  noUrl={1} customContent={<SingUpClient url={"Cliente"}/>} />}/>
+          <Route path="/SingUp-Cliente" element={<SingUp  noUrl={1} customContent={<SingUpClient url={"Usuario"}/>} />}/>
+          <Route path="/SingUp-Repartidor" element={<SingUp  noUrl={1} customContent={<SingUpDeliveryMan url={"Repartidor"}/>} />}/>
+          <Route path="/SingUp-Empresa" element={<SingUp  noUrl={1} customContent={<SingUpCompany url={"Empresa"}/>} />}/>
         </Routes>
     </BrowserRouter>
 
