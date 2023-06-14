@@ -26,8 +26,8 @@ function App() {
           <Route path="/Login-Empresa" element={<SingIn url={"Empresa"} noUrl={3}/>} />
 
           <Route path="/SingUp-Cliente" element={<SingUp  noUrl={1} customContent={<SingUpClient url={"Usuario"}/>} />}/>
-          <Route path="/SingUp-Repartidor" element={<SingUp  noUrl={1} customContent={<SingUpDeliveryMan url={"Repartidor"}/>} />}/>
-          <Route path="/SingUp-Empresa" element={<SingUp  noUrl={1} customContent={<SingUpCompany url={"Empresa"}/>} />}/>
+          <Route path="/SingUp-Repartidor" element={<SingUp  noUrl={2} customContent={<SingUpDeliveryMan url={"Repartidor"}/>} />}/>
+          <Route path="/SingUp-Empresa" element={<SingUp  noUrl={3} customContent={<SingUpCompany url={"Empresa"}/>} />}/>
         </Routes>
     </BrowserRouter>
 
