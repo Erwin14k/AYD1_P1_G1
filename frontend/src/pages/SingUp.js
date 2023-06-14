@@ -9,7 +9,7 @@ function SingUp({  noUrl, customContent }) {
       <div>
          <NavBar classNameName="nav" customContend={<NavBarLanding />} />
 
-         <section class="text-center">
+         <section className="text-center">
             <div
                className="p-5 bg-image"
                style={{
@@ -27,10 +27,10 @@ function SingUp({  noUrl, customContent }) {
                   backdropFilter: "blur(30px)",
                }}
             >
-               <div class="card-body py-5 px-md-5">
-                  <div class="row d-flex justify-content-center">
-                     <div class="col-lg-8">
-                        <h2 class="fw-bold mb-5">Registrate Ahora</h2>
+               <div className="card-body py-5 px-md-5">
+                  <div className="row d-flex justify-content-center">
+                     <div className="col-lg-8">
+                        <h2 className="fw-bold mb-5">Registrate Ahora</h2>
                          {customContent}
                      </div>
                   </div>
