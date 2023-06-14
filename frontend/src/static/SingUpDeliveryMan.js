@@ -20,7 +20,7 @@ const SingUpDeliveryMan = ({ url }) => {
          </div>
 
          <div className="form-outline mb-4">
-            <textarea  id="form3Example3" className="form-control" />
+            <textarea id="form3Example3" className="form-control" />
             <label className="form-label" htmlFor="form3Example3">
                Descripcion de la empresa
             </label>
@@ -45,20 +45,18 @@ const SingUpDeliveryMan = ({ url }) => {
          </div>
 
          <div className="form-outline mb-4">
-         <select
-                        className="form-control"
-                        id="form3Example4"
-                        value={selectedOption}
-                        onChange={(event) =>
-                           setSelectedOption(event.target.value)
-                        }
-                     >
-                        {["Pizzas", "Hamburguesas", "Postres"].map((option, index) => (
-                           <option key={index} value={option}>
-                              {option}
-                           </option>
-                        ))}
-                     </select>
+            <select
+               className="form-control"
+               id="form3Example4"
+               value={selectedOption}
+               onChange={(event) => setSelectedOption(event.target.value)}
+            >
+               {["Pizzas", "Hamburguesas", "Postres"].map((option, index) => (
+                  <option key={index} value={option}>
+                     {option}
+                  </option>
+               ))}
+            </select>
             <label className="form-label" htmlFor="form3Example4">
                Categoria
             </label>
@@ -113,11 +111,15 @@ const SingUpDeliveryMan = ({ url }) => {
             </div>
 
             <div className="form-outline mb-4">
-            <input type="email" id="form3Example3" className="form-control" />
-            <label className="form-label" htmlFor="form3Example3">
-               Direccion de la empresa
-            </label>
-         </div>
+               <input
+                  type="email"
+                  id="form3Example3"
+                  className="form-control"
+               />
+               <label className="form-label" htmlFor="form3Example3">
+                  Direccion de la empresa
+               </label>
+            </div>
          </div>
 
          <button type="submit" className="btn btn-primary btn-block mb-4">

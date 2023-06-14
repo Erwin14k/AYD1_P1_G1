@@ -2,9 +2,7 @@ import React from "react";
 import NavBar from "../components/NavBar";
 import NavBarLanding from "../static/NavBarLanding";
 
-function SingUp({  noUrl, customContent }) {
-
-
+function SingUp({ noUrl, customContent }) {
    return (
       <div>
          <NavBar classNameName="nav" customContend={<NavBarLanding />} />
@@ -31,7 +29,7 @@ function SingUp({  noUrl, customContent }) {
                   <div className="row d-flex justify-content-center">
                      <div className="col-lg-8">
                         <h2 className="fw-bold mb-5">Registrate Ahora</h2>
-                         {customContent}
+                        {customContent}
                      </div>
                   </div>
                </div>
