@@ -4,7 +4,12 @@ import LandingPage from './pages/LandingPage';
 import Politicas from './pages/Politicas';
 import Preguntas from './pages/Preguntas';
 import Terminos from './pages/Terminos';
-import Login from './pages/Login';
+import SingIn from './pages/SingIn';
+import SingUp from './pages/SingUp';
+
+import SingUpClient from './static/SingUpClient';
+import SingUpDeliveryMan from './static/SingUpDeliveryMan';
+import SingUpCompany from './static/SingUpCompany';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -16,9 +21,13 @@ function App() {
           <Route path="/terminos" element={<Terminos/>} />
           <Route path="/preguntas" element={<Preguntas/>} />
           <Route path="/politicas" element={<Politicas/>} />
-          <Route path="/Login-Cliente" element={<Login url={"Cliente"} noUrl={1}/>}/>
-          <Route path="/Login-Repartidor" element={<Login url={"Repartidor"} noUrl={2}/>}/>
-          <Route path="/Login-Empresa" element={<Login url={"Empresa"} noUrl={3}/>} />
+          <Route path="/Login-Cliente" element={<SingIn url={"Cliente"} noUrl={1}/>}/>
+          <Route path="/Login-Repartidor" element={<SingIn url={"Repartidor"} noUrl={2}/>}/>
+          <Route path="/Login-Empresa" element={<SingIn url={"Empresa"} noUrl={3}/>} />
+
+          <Route path="/SingUp-Cliente" element={<SingUp  noUrl={1} customContent={<SingUpClient url={"Usuario"}/>} />}/>
+          <Route path="/SingUp-Repartidor" element={<SingUp  noUrl={2} customContent={<SingUpDeliveryMan url={"Repartidor"}/>} />}/>
+          <Route path="/SingUp-Empresa" element={<SingUp  noUrl={3} customContent={<SingUpCompany url={"Empresa"}/>} />}/>
         </Routes>
     </BrowserRouter>
 
