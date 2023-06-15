@@ -27,13 +27,14 @@ module.exports.companyRegistration = async (req, res) => {
 
 module.exports.companyLogin = async (req, res, next) => {
   let args = {
-    companyEmail: req.body.companyEmail,
-    companyPassword: req.body.companyPassword,
+    companyEmail: req.body.userEmail,
+    companyPassword: req.body.userPassword,
   };
+  console.log("here:",args)
   try {
     const verifyStatus=await Company.verifyStatus(args.companyEmail);
     //Verify if the company has an active or waiting status 
-    if(verifyStatus.length>0 &&verifyStatus[0].companyStatus!=="Active" && verifyStatus[0].companyStatus!=="Waiting"){
+    if(verifyStatus.length>0 && verifyStatus[0].companyStatus!=="Active"){
       // If the company is not active and not waiting a response
       return res.status(403).json({
         message: "Unauthorized",

@@ -5,8 +5,8 @@ const bcrypt = require("bcryptjs");
 module.exports.adminLogin = async (req, res, next) => {
   // Body request parameters
   let args = {
-    adminEmail: req.body.adminEmail,
-    adminPassword: req.body.adminPassword,
+    adminEmail: req.body.userEmail,
+    adminPassword: req.body.userPassword,
   };
   try {
     const verifyStatus=await Admin.verifyStatus(args.adminEmail);

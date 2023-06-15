@@ -56,7 +56,7 @@ function SingIn({url,noUrl}) {
                      <img
                         src = {noUrl === 1 ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" :  noUrl === 2 ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" : "https://img.freepik.com/premium-vector/sign-page-abstract-concept-vector-illustration_107173-25670.jpg" }   
                         className="img-fluid"
-                        alt="Sample image"
+                        alt="Welcome" 
                      />
                   </div>
                   <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">

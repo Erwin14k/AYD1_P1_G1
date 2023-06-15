@@ -30,7 +30,8 @@ module.exports.userLogin = async (req, res, next) => {
   try {
     const verifyStatus=await User.verifyStatus(args.userEmail);
     //Verify if the user has an active status
-    if(verifyStatus.length>0 &&verifyStatus[0].userStatus!=="Active"){
+   
+    if(verifyStatus.length>0 && verifyStatus[0].userStatus!=="Active"){
       // If the user is not active
       return res.status(403).json({
         message: "Unauthorized",

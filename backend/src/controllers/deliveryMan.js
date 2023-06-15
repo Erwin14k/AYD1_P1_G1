@@ -28,8 +28,8 @@ module.exports.deliveryManRegistration = async (req, res) => {
 
 module.exports.deliveryManLogin = async (req, res, next) => {
   let args = {
-    deliveryManEmail: req.body.deliveryManEmail,
-    deliveryManPassword: req.body.deliveryManPassword,
+    deliveryManEmail: req.body.userEmail,
+    deliveryManPassword: req.body.userPassword,
   };
   try {
     const verifyStatus=await DeliveryMan.verifyStatus(args.deliveryManEmail);
