@@ -51,7 +51,7 @@ const SingUpCompany = ({ url }) => {
                value={selectedOption}
                onChange={(event) => setSelectedOption(event.target.value)}
             >
-               {["Pizzas", "Hamburguesas", "Postres"].map((option, index) => (
+               {["Restaurante", "Tienda de conveniencia", "Supermercado"].map((option, index) => (
                   <option key={index} value={option}>
                      {option}
                   </option>
