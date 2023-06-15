@@ -6,6 +6,9 @@ import Preguntas from './pages/Preguntas';
 import Terminos from './pages/Terminos';
 import SingIn from './pages/SingIn';
 import SingUp from './pages/SingUp';
+import Module from './pages/Module';
+import Perfil from './pages/Perfil';
+import Reportes from './pages/Reportes';
 
 import SingUpClient from './static/SingUpClient';
 import SingUpDeliveryMan from './static/SingUpDeliveryMan';
@@ -28,6 +31,15 @@ function App() {
           <Route path="/SingUp-Cliente" element={<SingUp  noUrl={1} customContent={<SingUpClient url={"Usuario"}/>} />}/>
           <Route path="/SingUp-Repartidor" element={<SingUp  noUrl={2} customContent={<SingUpDeliveryMan url={"Repartidor"}/>} />}/>
           <Route path="/SingUp-Empresa" element={<SingUp  noUrl={3} customContent={<SingUpCompany url={"Empresa"}/>} />}/>
+
+          <Route path="/Module-Admin" element={<Module  noUrl={0} />}/>
+          <Route path="/Module-Cliente" element={<Module  noUrl={1} />}/>
+          <Route path="/Module-Repartidor" element={<Module  noUrl={2} />}/>
+          <Route path="/Module-Empresa" element={<Module  noUrl={3} />}/>
+
+          <Route path="/MiPerfil" element={<Perfil  noUrl={2} />}/>
+          <Route path="/Reportes-Admin" element={<Reportes noUrl={0}/>}/>
+          <Route path="/Reportes-Empresa" element={<Reportes noUrl={3}/>}/>
         </Routes>
     </BrowserRouter>
 
