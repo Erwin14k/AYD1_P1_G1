@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import NavBar from "../components/NavBar";
 import NavBarLanding from '../static/NavBarLanding';
 import '../styles/LandingCSS.css'
@@ -14,7 +15,7 @@ import Footer from "../components/Footer";
 function LandingPage() {
     return (
         <div>
-             <NavBar className="nav" customContend={<NavBarLanding/>} />
+            <NavBar className="nav" customContend={<NavBarLanding />} />
             <div className="presentacion">
                 <div className="frase">
                     <img src={MiLogo} className="logoFrase" alt="Logo" />
@@ -26,17 +27,17 @@ function LandingPage() {
                 <div className="box">
                     <center><img src={r1} className="rimg" alt="R1"></img></center>
                     <h2>Pide tu comida a tus familiares</h2>
-                    <p>Crear una cuenta de cliente.</p>
+                    <Link to="/SingUp-Cliente" className="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style={{ color: "black" }}>Crear una cuenta de cliente</Link>
                 </div>
                 <div className="box">
                     <center><img src={r2} className="rimg" alt="R2"></img></center>
                     <h2>Tu restaurante, a domicilio</h2>
-                    <p>Agrega tu restaurante.</p>
+                    <Link to="/SingUp-Empresa" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style={{ color: "black" }}>Agrega tu restaurante.</Link>
                 </div>
                 <div className="box">
                     <center><img src={r3} className="rimg" alt="R3"></img></center>
                     <h2>Haz entregas con la app AlChilazo</h2>
-                    <p>Regístrate para realizar entregas.</p>
+                    <Link to="/SingUp-Repartidor" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style={{ color: "black" }}>Regístrate para realizar entregas.</Link>
                 </div>
             </div>
             <div className="somos" id="somos">
@@ -80,7 +81,7 @@ function LandingPage() {
             </div>
             <div className="ventajas">
                 <h1>Descubre las ventajas de AlChilazo</h1>
-                <div className="LVentajas"><img src={v1} alt="V1" style={{ width: "30%" }} />
+                <div className="LVentajas"><img src={v1} alt="V1" style={{ width: "35%" }} />
                     <ol className="ventajas-list">
                         <li className="ventajas-item">
                             <strong>Amplia variedad de opciones:</strong> Explora una amplia selección de restaurantes y opciones de comida para satisfacer todos los gustos y preferencias.
@@ -97,9 +98,9 @@ function LandingPage() {
                         <li className="ventajas-item">
                             <strong>Entrega rápida y confiable:</strong> Garantiza una entrega rápida y confiable de los pedidos, asegurando que los usuarios reciban sus comidas frescas y en el menor tiempo posible.
                         </li>
-                        {/* <li className="ventajas-item">
+                        <li className="ventajas-item">
                             <strong>Servicios adicionales:</strong> Ofrece servicios de entrega de productos de farmacia, supermercado y otros productos, brindando conveniencia adicional a los usuarios.
-                        </li> */}
+                        </li>
                         <li className="ventajas-item">
                             <strong>Experiencia de usuario intuitiva:</strong> Diseño de interfaz amigable y fácil de usar, que permite una experiencia de usuario fluida y agradable.
                         </li>
@@ -130,21 +131,9 @@ function LandingPage() {
                         <div className="col">
                             <h7>&nbsp;</h7>
                             <ul className="link-list">
-                                <li >
-                                    <button type="button" className="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Agrega tu restaurante
-                                    </button>
-                                </li>
-                                <li >
-                                    <button type="button" className="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Regístrate para realizar entregas
-                                    </button>
-                                </li>
-                                <li >
-                                    <button type="button" className="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Crea tu cuenta
-                                    </button>
-                                </li>
+                                <li><Link to="/SingUp-Cliente" className="link-dark link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style={{ color: "black" }}>Crear tu cuenta</Link></li>
+                                <li><Link to="/SingUp-Repartidor" className="link-dark link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style={{ color: "black" }}>Regístrate para realizar entregas</Link></li>
+                                <li><Link to="/SingUp-Empresa" className="link-dark link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style={{ color: "black" }}>Agrega tu restaurante</Link></li>
                             </ul>
                         </div>
                     </div>
