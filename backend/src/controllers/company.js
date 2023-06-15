@@ -30,7 +30,7 @@ module.exports.companyLogin = async (req, res, next) => {
     companyEmail: req.body.userEmail,
     companyPassword: req.body.userPassword,
   };
-  console.log("here:",args)
+  
   try {
     const verifyStatus=await Company.verifyStatus(args.companyEmail);
     //Verify if the company has an active or waiting status 

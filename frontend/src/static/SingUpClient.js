@@ -5,21 +5,47 @@ import { isEmail } from 'validator';
 const SingUpClient = ({ url }) => {
    const handelSubmit = (e) => {
       e.preventDefault();
-      console.log("Formulario", url);
-
-       
-      
+      console.log("//////Formulario///////");
       if(!validateName(e.target[0].value)) return alert("Nombre invalido");
       if(!validateName(e.target[1].value)) return alert("Apellido invalido");
       if(!isEmail(e.target[2].value)) return alert("Correo invalido");
       if(!validatePassword(e.target[3].value)) return alert("Contraseña debe incluir: 8 caracteres, 1 mayuscula, 1 numero y 1 caracter especial");
- 
       
-      console.log(e.target[0].value);
-      console.log(e.target[1].value);
-      console.log(e.target[2].value);
-      console.log(e.target[3].value);
-      e.target.reset();
+      // console.log(e.target[0].value);
+      // console.log(e.target[1].value);
+      // console.log(e.target[2].value);
+      // console.log(e.target[3].value);
+
+      const SendData = {
+         userEmail: e.target[2].value, 
+         userPassword: e.target[3].value,
+         userName: e.target[0].value,
+         userSurname: e.target[1].value
+      };
+
+      fetch(url, {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+         },
+         body: JSON.stringify(SendData),
+       })
+         .then((response) => {
+            return response.json(); 
+         })
+         .then((data) => {
+            if(data.status===200){
+               console.log("DAtos:",data);
+            }else{
+               alert(data.message);
+            }     
+         })
+         .catch((error) => {
+           console.log("Error en la solicitud:", error);
+         });
+
+     
+      //e.target.reset();
    };
 
    return (
