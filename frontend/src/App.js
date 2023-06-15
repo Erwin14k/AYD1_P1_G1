@@ -21,7 +21,7 @@ function App() {
           <Route path="/terminos" element={<Terminos/>} />
           <Route path="/preguntas" element={<Preguntas/>} />
           <Route path="/politicas" element={<Politicas/>} />
-          <Route path="/Login-Cliente" element={<SingIn url={"Cliente"} noUrl={1}/>}/>
+          <Route path="/Login-Cliente" element={<SingIn url={"http://localhost:4200/user/login"} noUrl={1}/>}/>
           <Route path="/Login-Repartidor" element={<SingIn url={"Repartidor"} noUrl={2}/>}/>
           <Route path="/Login-Empresa" element={<SingIn url={"Empresa"} noUrl={3}/>} />
 

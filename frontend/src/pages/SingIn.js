@@ -1,7 +1,6 @@
 import React from "react";
 import NavBar from "../components/NavBar";
 import NavBarLanding from "../static/NavBarLanding";
-import {validateName,validatePassword} from "../func/validations";
 import { isEmail } from 'validator';
 
 function SingIn({url,noUrl}) {
@@ -14,7 +13,35 @@ function SingIn({url,noUrl}) {
       console.log(e.target[0].value);
       console.log(e.target[1].value);
 
-      e.target.reset();
+      const userData = {
+         userPassword: e.target[1].value,
+         userEmail: e.target[0].value,
+       };
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("Solicitud exitosa");
+            // Resto del código para manejar la respuesta exitosa
+            e.target.reset();
+          } else {
+            console.log("Error en la solicitud");
+            // Resto del código para manejar el error de la solicitud
+          }
+        })
+        .catch((error) => {
+          console.log("Error en la solicitud:", error);
+          // Resto del código para manejar el error de la solicitud
+        });
+    
+
+     
    };
 
    return (
