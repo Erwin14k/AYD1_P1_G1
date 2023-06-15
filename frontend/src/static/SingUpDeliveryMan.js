@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import departmentsGuatemala from "./departmentsGuatemala";
+import {validateName,validatePassword} from "../func/validations";
+import { isEmail } from 'validator';
 
 const SingUpDeliveryMan = ({ url }) => {
    
@@ -10,7 +12,23 @@ const SingUpDeliveryMan = ({ url }) => {
 
    const handelSubmit = (e) => {
       e.preventDefault();
-      console.log("Formulario enviado", url);
+      console.log("Formulario", url);
+
+      if(!validateName(e.target[0].value)) return alert("Nombre invalido");
+      if(!validateName(e.target[1].value)) return alert("Apellido invalido");
+      if(!isEmail(e.target[2].value)) return alert("Correo invalido");
+      if(!validatePassword(e.target[3].value)) return alert("Contraseña debe incluir: 8 caracteres, 1 mayuscula, 1 numero y 1 caracter especial");
+ 
+      
+      console.log(e.target[0].value);
+      console.log(e.target[1].value);
+      console.log(e.target[2].value);
+      console.log(e.target[3].value);
+      console.log(e.target[4].value);
+      console.log(e.target[5].value);
+      console.log(e.target[6].value);
+      console.log(e.target[7].value);
+      console.log(e.target[8].value);
    };
 
    return (
@@ -149,7 +167,7 @@ const SingUpDeliveryMan = ({ url }) => {
                         ))}
                      </select>
                      <label className="form-label" htmlFor="form3Example4">
-                        Tipo de licencia
+                        Posee tranporte propio
                      </label>
                   </div>
                </div>
