@@ -29,6 +29,7 @@ const SingUpDeliveryMan = ({ url }) => {
       console.log(e.target[6].value);
       console.log(e.target[7].value);
       console.log(e.target[8].value);
+      e.target.reset();
    };
 
    return (

@@ -25,6 +25,8 @@ const SingUpCompany = ({ url }) => {
       console.log(e.target[5].value);
       console.log(e.target[6].value);
       console.log(e.target[7].value);
+
+      e.target.reset();
    };
 
    return (

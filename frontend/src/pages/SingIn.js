@@ -1,12 +1,20 @@
 import React from "react";
 import NavBar from "../components/NavBar";
 import NavBarLanding from "../static/NavBarLanding";
+import {validateName,validatePassword} from "../func/validations";
+import { isEmail } from 'validator';
 
 function SingIn({url,noUrl}) {
 
    const handelSubmit = (e) => {
       e.preventDefault();
       console.log("Formulario enviado",url);
+
+      if(!isEmail(e.target[0].value)) return alert("Correo invalido");
+      console.log(e.target[0].value);
+      console.log(e.target[1].value);
+
+      e.target.reset();
    };
 
    return (

@@ -19,6 +19,7 @@ const SingUpClient = ({ url }) => {
       console.log(e.target[1].value);
       console.log(e.target[2].value);
       console.log(e.target[3].value);
+      e.target.reset();
    };
 
    return (
