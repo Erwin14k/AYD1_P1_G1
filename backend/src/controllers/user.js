@@ -27,6 +27,8 @@ module.exports.userLogin = async (req, res, next) => {
     userEmail: req.body.userEmail,
     userPassword: req.body.userPassword,
   };
+
+
   try {
     const verifyStatus=await User.verifyStatus(args.userEmail);
     //Verify if the user has an active status

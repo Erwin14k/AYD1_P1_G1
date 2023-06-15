@@ -1,47 +1,49 @@
 import React from "react";
 import NavBar from "../components/NavBar";
 import NavBarLanding from "../static/NavBarLanding";
-import { isEmail } from 'validator';
+import { isEmail } from "validator";
 
-function SingIn({url,noUrl}) {
-
+function SingIn({ url, noUrl }) {
    const handelSubmit = (e) => {
       e.preventDefault();
-      console.log("Formulario enviado",url);
+      console.log("Formulario enviado", url);
 
-      if(!isEmail(e.target[0].value)) return alert("Correo invalido");
+      if (!isEmail(e.target[0].value)) return alert("Correo inválido");
       console.log(e.target[0].value);
       console.log(e.target[1].value);
 
       const userData = {
-         userPassword: e.target[1].value,
          userEmail: e.target[0].value,
-       };
+         userPassword: e.target[1].value,
+      };
 
       fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify(userData),
       })
-        .then((response) => {
-          if (response.ok) {
-            console.log("Solicitud exitosa");
-            // Resto del código para manejar la respuesta exitosa
-            e.target.reset();
-          } else {
-            console.log("Error en la solicitud");
-            // Resto del código para manejar el error de la solicitud
-          }
-        })
-        .catch((error) => {
-          console.log("Error en la solicitud:", error);
-          // Resto del código para manejar el error de la solicitud
-        });
-    
+         .then((response) => {
+            if (response.ok) {
+               console.log("Solicitud exitosa");
+            }
+            //throw new Error();
+            return response.json(); // Parsea el cuerpo de la respuesta a JSON
+         })
+         .then((data) => {
+            // Maneja los datos del backend
+            alert(data.messsage)
+            console.log("Datos del backend:", data);
 
-     
+           
+            //e.target.reset();
+         })
+         .catch((error) => {
+            alert("Error en las credenciales");
+            console.log("ERR//:", error);
+            // Resto del código para manejar el error de la solicitud
+         });
    };
 
    return (
@@ -54,9 +56,15 @@ function SingIn({url,noUrl}) {
                <div className="row d-flex justify-content-center align-items-center h-100">
                   <div className="col-md-9 col-lg-6 col-xl-5">
                      <img
-                        src = {noUrl === 1 ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" :  noUrl === 2 ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" : "https://img.freepik.com/premium-vector/sign-page-abstract-concept-vector-illustration_107173-25670.jpg" }   
+                        src={
+                           noUrl === 1
+                              ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                              : noUrl === 2
+                              ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+                              : "https://img.freepik.com/premium-vector/sign-page-abstract-concept-vector-illustration_107173-25670.jpg"
+                        }
                         className="img-fluid"
-                        alt="Welcome" 
+                        alt="Welcome"
                      />
                   </div>
                   <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
@@ -68,8 +76,11 @@ function SingIn({url,noUrl}) {
                               className="form-control form-control-lg"
                               placeholder="Ingresa un Email valido"
                            />
-                           <label className="form-label" htmlFor="form3Example3">
-                              Dirección Email 
+                           <label
+                              className="form-label"
+                              htmlFor="form3Example3"
+                           >
+                              Dirección Email
                            </label>
                         </div>
 
@@ -80,7 +91,10 @@ function SingIn({url,noUrl}) {
                               className="form-control form-control-lg"
                               placeholder="Ingresa tu contraseña"
                            />
-                           <label className="form-label" htmlFor="form3Example4">
+                           <label
+                              className="form-label"
+                              htmlFor="form3Example4"
+                           >
                               Contraseña
                            </label>
                         </div>
@@ -116,13 +130,11 @@ function SingIn({url,noUrl}) {
                            >
                               Login
                            </button>
-                        
                         </div>
                      </form>
                   </div>
                </div>
             </div>
-            
          </section>
       </div>
    );
