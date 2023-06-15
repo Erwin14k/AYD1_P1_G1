@@ -24,6 +24,8 @@ function App() {
           <Route path="/terminos" element={<Terminos/>} />
           <Route path="/preguntas" element={<Preguntas/>} />
           <Route path="/politicas" element={<Politicas/>} />
+
+          <Route path="/Login-Admin" element={<SingIn url={"http://localhost:4200/admin/login"} noUrl={0}/>}/>
           <Route path="/Login-Cliente" element={<SingIn url={"http://localhost:4200/user/login"} noUrl={1}/>}/>
           <Route path="/Login-Repartidor" element={<SingIn url={"http://localhost:4200/delivery-man/login"} noUrl={2}/>}/>
           <Route path="/Login-Empresa" element={<SingIn url={"http://localhost:4200/company/login"} noUrl={3}/>} />

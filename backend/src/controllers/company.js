@@ -37,7 +37,8 @@ module.exports.companyLogin = async (req, res, next) => {
     if(verifyStatus.length>0 && verifyStatus[0].companyStatus!=="Active"){
       // If the company is not active and not waiting a response
       return res.status(403).json({
-        message: "Unauthorized",
+        status: 403,
+        message: "Compañia es inactiva o no ha sido aprobada",
       });
     }
     // Find the password
@@ -55,7 +56,9 @@ module.exports.companyLogin = async (req, res, next) => {
         return res
           .status(200)
           .json({
-            messsage: "Login Successfully",
+            status: 200,
+            type: 2,
+            message: "Login Successfully Company",
             data: [
               {
                 companyId:result[4],
@@ -73,13 +76,13 @@ module.exports.companyLogin = async (req, res, next) => {
     res
       .status(409)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ messsage: "Email or password not valid" });
+      .json({ message: "Email or password not valid" });
   } catch (error) {
     console.log(error);
     // if an error occurs
     res
       .status(400)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ messsage: error});
+      .json({ message: error});
   }
 };

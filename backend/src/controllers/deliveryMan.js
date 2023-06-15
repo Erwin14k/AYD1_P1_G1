@@ -37,7 +37,8 @@ module.exports.deliveryManLogin = async (req, res, next) => {
     if(verifyStatus.length>0 &&verifyStatus[0].deliveryManStatus!=="Active"){
       // If the user is not active
       return res.status(403).json({
-        message: "Unauthorized",
+        status: 403,
+        message: "Usuario aun no ha sido autorizado",
       });
     }
     // Find the password
@@ -55,7 +56,9 @@ module.exports.deliveryManLogin = async (req, res, next) => {
         return res
           .status(200)
           .json({
-            messsage: "Login Successfully",
+            status: 200,
+            type: 3,
+            message: "Login Successfully Delivery Man",
             data: [
               {
                 deliveryManId:result[4],
@@ -72,13 +75,13 @@ module.exports.deliveryManLogin = async (req, res, next) => {
     res
       .status(409)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ messsage: "Email or password not valid" });
+      .json({ message: "Email or password not valid" });
   } catch (error) {
     console.log(error);
     // if an error occurs
     res
       .status(400)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ messsage: error});
+      .json({ message: error});
   }
 };

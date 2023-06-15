@@ -20,29 +20,22 @@ function SingIn({ url, noUrl }) {
       fetch(url, {
          method: "POST",
          headers: {
-            "Content-Type": "application/json",
+           "Content-Type": "application/json",
          },
          body: JSON.stringify(userData),
-      })
+       })
          .then((response) => {
-            if (response.ok) {
-               console.log("Solicitud exitosa");
-            }
-            //throw new Error();
-            return response.json(); // Parsea el cuerpo de la respuesta a JSON
+            return response.json(); 
          })
          .then((data) => {
-            // Maneja los datos del backend
-            alert(data.messsage)
-            console.log("Datos del backend:", data);
-
-           
-            //e.target.reset();
+            if(data.status===200){
+               console.log("DAtos:",data);
+            }else{
+               alert(data.message);
+            }     
          })
          .catch((error) => {
-            alert("Error en las credenciales");
-            console.log("ERR//:", error);
-            // Resto del código para manejar el error de la solicitud
+           console.log("Error en la solicitud:", error);
          });
    };
 
@@ -61,7 +54,9 @@ function SingIn({ url, noUrl }) {
                               ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
                               : noUrl === 2
                               ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-                              : "https://img.freepik.com/premium-vector/sign-page-abstract-concept-vector-illustration_107173-25670.jpg"
+                              : noUrl === 0
+                              ? "https://img.freepik.com/premium-vector/sign-page-abstract-concept-vector-illustration_107173-25670.jpg"
+                              : "https://static.vecteezy.com/system/resources/previews/005/879/539/original/cloud-computing-modern-flat-concept-for-web-banner-design-man-enters-password-and-login-to-access-cloud-storage-for-uploading-and-processing-files-illustration-with-isolated-people-scene-free-vector.jpg"
                         }
                         className="img-fluid"
                         alt="Welcome"
