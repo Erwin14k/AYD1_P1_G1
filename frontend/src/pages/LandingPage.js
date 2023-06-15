@@ -1,6 +1,5 @@
 import NavBar from "../components/NavBar";
 import NavBarLanding from '../static/NavBarLanding';
-import '../styles/LandingCSS.css'
 import MiLogo from '../assets/AlChilazoLogo.png'
 import f1 from '../assets/f1.jpg'
 import r1 from '../assets/r1.png'
@@ -97,9 +96,6 @@ function LandingPage() {
                         <li className="ventajas-item">
                             <strong>Entrega rápida y confiable:</strong> Garantiza una entrega rápida y confiable de los pedidos, asegurando que los usuarios reciban sus comidas frescas y en el menor tiempo posible.
                         </li>
-                        {/* <li className="ventajas-item">
-                            <strong>Servicios adicionales:</strong> Ofrece servicios de entrega de productos de farmacia, supermercado y otros productos, brindando conveniencia adicional a los usuarios.
-                        </li> */}
                         <li className="ventajas-item">
                             <strong>Experiencia de usuario intuitiva:</strong> Diseño de interfaz amigable y fácil de usar, que permite una experiencia de usuario fluida y agradable.
                         </li>
