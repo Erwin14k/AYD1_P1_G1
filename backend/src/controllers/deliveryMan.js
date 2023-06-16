@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ storage: storage });
+/*const upload = multer({ storage: storage });
 
 module.exports.deliveryManRegistration = upload.single('pdf'),async (req, res) => {
   console.log("HERE");
@@ -29,7 +29,27 @@ module.exports.deliveryManRegistration = upload.single('pdf'),async (req, res) =
     }
   });
   
+};*/
+
+const upload = multer({ storage: storage });
+
+module.exports.deliveryManRegistration = async (req, res) => {
+  console.log("HERE");
+
+  upload.single('pdf')(req, res, async (err) => {
+    if (err instanceof multer.MulterError) {
+      // Handle multer errors, if any
+      return res.status(400).json({ message: 'Error uploading the PDF document' });
+    } else if (err) {
+      // Handle other errors, if any
+      return res.status(500).json({ message: 'Unexpected error occurred' });
+    }else{
+      return res.status(500).json({ message: 'PDF upload successfully' });
+    }
+
+  });
 };
+
 
 
 
