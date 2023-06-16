@@ -54,7 +54,7 @@ module.exports.info = ({ adminId }) => {
   FROM delivery_man WHERE admin_id = ? AND delivery_man_status= ?`;
   // Collecting all companies with a 'Waiting' status
 	const selectAdminCompaniesStatement = `SELECT company_id,company_name,company_description,company_category,
-  company_email,company_department,company_municipality,company_address,company_status
+  company_email,company_department,company_municipality,company_address,company_status,company_file
   FROM company WHERE admin_id = ? AND company_status= ?`;
   // bindings
   const binds = [adminId];
