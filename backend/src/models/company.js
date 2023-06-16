@@ -9,12 +9,12 @@ module.exports.hashPassword = ({ companyEmail }) => {
 
 // Registering a new company on the db
 module.exports.register = async (companyName, companyDescription,companyCategory, companyEmail,
-                                companyPassword,companyDepartment,companyMunicipality,companyAddress) => {
+                                companyPassword,companyDepartment,companyMunicipality,companyAddress,companyFile) => {
   const statement = `INSERT INTO company (company_name, company_description, company_category, company_email,
-                      company_password,company_department,company_municipality,company_address,company_status,admin_id) 
-                      VALUES (?,?,?,?,?,?,?,?,?,?)`;
+                      company_password,company_department,company_municipality,company_address,company_status,admin_id,company_file) 
+                      VALUES (?,?,?,?,?,?,?,?,?,?,?)`;
   const binds = [companyName,companyDescription,companyCategory,companyEmail,companyPassword,
-                companyDepartment,companyMunicipality,companyAddress,'Waiting',-1];
+                companyDepartment,companyMunicipality,companyAddress,'Waiting',-1,companyFile];
   return(await db.pool(statement, binds));
 };
 
@@ -65,7 +65,7 @@ module.exports.info = ({ companyId }) => {
 	// db querys
   const selectCompanyDataStatement = `SELECT company_token,company_name,company_description,
   company_category,company_email,company_department,company_municipality,company_address,company_status,
-  company_id FROM company WHERE company_id = ?`;
+  company_id,company_file FROM company WHERE company_id = ?`;
 	const selectCompanyProductsStatement = `SELECT product_id,company_id,product_type,product_name,
   product_price,product_description,product_img
   FROM product WHERE company_id = ?`;
@@ -86,6 +86,7 @@ module.exports.info = ({ companyId }) => {
       const companyMunicipality=results[0].company_municipality;
       const companyAddress=results[0].company_address;
       const companyStatus=results[0].company_status;
+      const companyFile=results[0].company_file;
       dataCollected= [{
 				companyId:companyId,
 				companyToken: companyToken,
@@ -96,6 +97,7 @@ module.exports.info = ({ companyId }) => {
         companyMunicipality:companyMunicipality,
         companyAddress:companyAddress,
         companyStatus:companyStatus,
+        companyFile:companyFile,
 			}];
 		})
     .then(() => db.pool(selectCompanyProductsStatement, binds))
@@ -109,5 +111,33 @@ module.exports.info = ({ companyId }) => {
 			dataCollected.push({"companyFiles":results});
       return dataCollected;
     });
+};
+
+
+// Registering a new product associated to the company on the db
+module.exports.newProduct = async ({companyId, productType,productName, productPrice,
+  productDescription,productImg,productNumberOfSales,productStock}) => {
+  const statement = `INSERT INTO product (company_id, product_type, product_name, product_price,
+    product_description,product_img,product_number_of_sales,product_stock) 
+    VALUES (?,?,?,?,?,?,?,?)`;
+//bindings
+  const binds = [companyId,productType,productName,productPrice,productDescription,
+  productImg,productNumberOfSales,productStock];
+  return(await db.pool(statement, binds));
+};
+
+
+
+
+
+// Registering a new combo associated to the company on the db
+module.exports.newCombo = async ({companyId,comboName,comboPrice, comboDescription,
+  comboImg,comboNumberOfSales,comboStock}) => {
+  const comboStatement = `INSERT INTO combo (company_id, combo_name, combo_price, combo_description,
+  combo_img,combo_number_of_sales,combo_stock) 
+  VALUES (?,?,?,?,?,?,?)`;
+//bindings
+  const comboBinds = [companyId,comboName,comboPrice,comboDescription,comboImg,comboNumberOfSales,comboStock];
+  return(await db.pool(comboStatement, comboBinds));
 };
 
