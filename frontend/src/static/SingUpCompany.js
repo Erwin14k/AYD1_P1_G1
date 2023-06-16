@@ -16,17 +16,50 @@ const SingUpCompany = ({ url }) => {
       if(!isEmail(e.target[2].value)) return alert("Correo invalido");
       if(!validatePassword(e.target[3].value)) return alert("Contraseña debe incluir: 8 caracteres, 1 mayuscula, 1 numero y 1 caracter especial");
  
-      
-      console.log(e.target[0].value);
-      console.log(e.target[1].value);
-      console.log(e.target[2].value);
-      console.log(e.target[3].value);
-      console.log(e.target[4].value);
-      console.log(e.target[5].value);
-      console.log(e.target[6].value);
-      console.log(e.target[7].value);
+      // console.log(e.target[0].value);
+      // console.log(e.target[1].value);
+      // console.log(e.target[2].value);
+      // console.log(e.target[3].value);
+      // console.log(e.target[4].value);
+      // console.log(e.target[5].value);
+      // console.log(e.target[6].value);
+      // console.log(e.target[7].value);
 
-      e.target.reset();
+
+      const SendData = {
+         companyName: e.target[0].value, 
+         companyDescription: e.target[1].value,
+         companyEmail: e.target[2].value,
+         companyPassword: e.target[3].value,
+         companyCategory: e.target[4].value, 
+         companyDepartment: e.target[5].value,
+         companyMunicipality: e.target[6].value,
+         companyAddress: e.target[7].value
+      };
+
+
+      fetch(url, {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+         },
+         body: JSON.stringify(SendData),
+       })
+         .then((response) => {
+            return response.json(); 
+         })
+         .then((data) => {
+            if(data.status===200){
+               console.log("DAtos:",data);
+            }else{
+               alert(data.message);
+            }     
+         })
+         .catch((error) => {
+           console.log("Error en la solicitud:", error);
+         });
+
+      //e.target.reset();
    };
 
    return (

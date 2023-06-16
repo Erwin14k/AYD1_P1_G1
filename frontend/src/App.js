@@ -31,8 +31,8 @@ function App() {
           <Route path="/Login-Empresa" element={<SingIn url={"http://localhost:4200/company/login"} noUrl={3}/>} />
 
           <Route path="/SingUp-Cliente" element={<SingUp  noUrl={1} customContent={<SingUpClient url={"http://localhost:4200/user/register"}/>} />}/>
-          <Route path="/SingUp-Repartidor" element={<SingUp  noUrl={2} customContent={<SingUpDeliveryMan url={"Repartidor"}/>} />}/>
-          <Route path="/SingUp-Empresa" element={<SingUp  noUrl={3} customContent={<SingUpCompany url={"Empresa"}/>} />}/>
+          <Route path="/SingUp-Repartidor" element={<SingUp  noUrl={2} customContent={<SingUpDeliveryMan url={"http://localhost:4200/delivery-man/register"}/>} />}/>
+          <Route path="/SingUp-Empresa" element={<SingUp  noUrl={3} customContent={<SingUpCompany url={"http://localhost:4200/company/register"}/>} />}/>
 
           <Route path="/Module-Admin" element={<Module  noUrl={0} />}/>
           <Route path="/Module-Cliente" element={<Module  noUrl={1} />}/>

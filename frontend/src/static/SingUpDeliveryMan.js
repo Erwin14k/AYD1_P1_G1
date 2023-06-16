@@ -12,25 +12,53 @@ const SingUpDeliveryMan = ({ url }) => {
 
    const handelSubmit = (e) => {
       e.preventDefault();
-      console.log("Formulario", url);
+      
+      const file = e.target[8].files[0];
+      const formData = new FormData();
 
-      if(!validateName(e.target[0].value)) return alert("Nombre invalido");
-      if(!validateName(e.target[1].value)) return alert("Apellido invalido");
-      if(!isEmail(e.target[2].value)) return alert("Correo invalido");
-      if(!validatePassword(e.target[3].value)) return alert("Contraseña debe incluir: 8 caracteres, 1 mayuscula, 1 numero y 1 caracter especial");
+      formData.append('pdf', file);
+      console.log("PDF///",file)
+      console.log(formData);
+      fetch(url, {
+         method: 'POST',
+         body: formData,
+       })
+         .then((response) => response.json())
+         .then((data) => {
+           // Handle the response from the backend
+           console.log(data);
+         })
+         .catch((error) => {
+           // Handle any errors that occur during the request
+           console.log(error);
+         });
+   };
+
+   // const handelSubmit = (e) => {
+   //    e.preventDefault();
+   //    console.log("Formulario", url);
+
+   //    //if(!validateName(e.target[0].value)) return alert("Nombre invalido");
+   //    //if(!validateName(e.target[1].value)) return alert("Apellido invalido");
+   //    //if(!isEmail(e.target[2].value)) return alert("Correo invalido");
+   //    //if(!validatePassword(e.target[3].value)) return alert("Contraseña debe incluir: 8 caracteres, 1 mayuscula, 1 numero y 1 caracter especial");
  
       
-      console.log(e.target[0].value);
-      console.log(e.target[1].value);
-      console.log(e.target[2].value);
-      console.log(e.target[3].value);
-      console.log(e.target[4].value);
-      console.log(e.target[5].value);
-      console.log(e.target[6].value);
-      console.log(e.target[7].value);
-      console.log(e.target[8].value);
-      e.target.reset();
-   };
+   //    //console.log(e.target[0].value);
+   //    //console.log(e.target[1].value);
+   //    //console.log(e.target[2].value);
+   //    //console.log(e.target[3].value);
+   //    //console.log(e.target[4].value);
+   //    //console.log(e.target[5].value);
+   //    //console.log(e.target[6].value);
+   //    console.log(e.target[7].value);
+   //    console.log(e.target[8].value);
+
+   //    const file = e.target[8].files[0];
+      
+
+   //    //e.target.reset();
+   // };
 
    return (
       <form onSubmit={handelSubmit}>
@@ -156,10 +184,7 @@ const SingUpDeliveryMan = ({ url }) => {
                      <select
                         className="form-control"
                         id="form3Example4"
-                        value={selectedOption}
-                        onChange={(event) =>
-                           setSelectedOption(event.target.value)
-                        }
+                       
                      >
                         {["NO", "SI"].map((option, index) => (
                            <option key={index} value={index}>
