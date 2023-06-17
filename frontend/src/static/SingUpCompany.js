@@ -9,13 +9,11 @@ const SingUpCompany = ({ url }) => {
 
    const handelSubmit = (e) => {
       e.preventDefault();
-      console.log("Formulario", url);
+      console.log("Formulario Enviado Company");
 
-            
-      if(!validateName(e.target[0].value)) return alert("Nombre");
+      if(!validateName(e.target[0].value)) return alert("Nombre Invalido");
       if(!isEmail(e.target[2].value)) return alert("Correo invalido");
       if(!validatePassword(e.target[3].value)) return alert("Contraseña debe incluir: 8 caracteres, 1 mayuscula, 1 numero y 1 caracter especial");
-
 
       const formData = new FormData();
       formData.append("companyName", e.target[0].value);
@@ -28,7 +26,6 @@ const SingUpCompany = ({ url }) => {
       formData.append("companyAddress", e.target[7].value);
       formData.append("pdf", e.target[8].files[0]);
 
-
       fetch(url, {
          method: "POST",
          body: formData,
@@ -39,7 +36,7 @@ const SingUpCompany = ({ url }) => {
             console.log(data);
             alert(data.message);
             if (data.status === 200) {
-               // e.target.reset();
+               e.target.reset();
             }
          })
          .catch((error) => {
@@ -47,7 +44,6 @@ const SingUpCompany = ({ url }) => {
             console.log(error);
          });
 
-      //e.target.reset();
    };
 
    return (

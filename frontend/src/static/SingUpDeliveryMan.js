@@ -9,7 +9,7 @@ const SingUpDeliveryMan = ({ url }) => {
 
    const handelSubmit = (e) => {
       e.preventDefault();
-      console.log("Formulario");
+      console.log("Formulario Enviado DeliveryMan");
 
       if(!validateName( e.target[0].value)){alert("Nombre inválido"); return}
       if(!validateName( e.target[1].value)){alert("Apellido inválido"); return}
@@ -41,7 +41,7 @@ const SingUpDeliveryMan = ({ url }) => {
             console.log(data);
             alert(data.message);
             if (data.status === 200) {
-               // e.target.reset();
+               e.target.reset();
             }
          })
          .catch((error) => {

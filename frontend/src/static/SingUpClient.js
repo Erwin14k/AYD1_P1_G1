@@ -5,16 +5,12 @@ import { isEmail } from 'validator';
 const SingUpClient = ({ url }) => {
    const handelSubmit = (e) => {
       e.preventDefault();
-      console.log("//////Formulario///////");
+      console.log("Formulario Enviado Client");
+
       if(!validateName(e.target[0].value)) return alert("Nombre invalido");
       if(!validateName(e.target[1].value)) return alert("Apellido invalido");
       if(!isEmail(e.target[2].value)) return alert("Correo invalido");
       if(!validatePassword(e.target[3].value)) return alert("Contraseña debe incluir: 8 caracteres, 1 mayuscula, 1 numero y 1 caracter especial");
-      
-      // console.log(e.target[0].value);
-      // console.log(e.target[1].value);
-      // console.log(e.target[2].value);
-      // console.log(e.target[3].value);
 
       const SendData = {
          userEmail: e.target[2].value, 
@@ -44,8 +40,6 @@ const SingUpClient = ({ url }) => {
            console.log("Error en la solicitud:", error);
          });
 
-     
-      //e.target.reset();
    };
 
    return (
