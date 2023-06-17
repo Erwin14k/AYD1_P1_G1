@@ -67,11 +67,11 @@ module.exports.info = ({ companyId }) => {
   company_category,company_email,company_department,company_municipality,company_address,company_status,
   company_id,company_file FROM company WHERE company_id = ?`;
 	const selectCompanyProductsStatement = `SELECT product_id,company_id,product_type,product_name,
-  product_price,product_description,product_img
+  product_price,product_description,product_img,product_number_of_sales,product_stock
   FROM product WHERE company_id = ?`;
-	const selectCompanyFilesStatement = `SELECT company_document_id,company_id,company_document_name,
-  company_document_description,company_document_file 
-  FROM company_document WHERE company_id = ?`;
+	const selectCompanyCombosStatement = `SELECT combo_id,company_id,combo_name,combo_price,
+  combo_description,combo_img,combo_number_of_sales,combo_stock 
+  FROM combo WHERE company_id = ?`;
   const binds = [companyId];
 	let dataCollected=[];
   return db.pool(selectCompanyDataStatement, binds)
@@ -105,10 +105,10 @@ module.exports.info = ({ companyId }) => {
 		.then(results=>{
 			dataCollected.push({"companyProducts":results});
 		})
-		.then(() => db.pool(selectCompanyFilesStatement, binds))
+		.then(() => db.pool(selectCompanyCombosStatement, binds))
 		// Company files
     .then(results => {
-			dataCollected.push({"companyFiles":results});
+			dataCollected.push({"companyCombos":results});
       return dataCollected;
     });
 };
@@ -124,6 +124,34 @@ module.exports.newProduct = async ({companyId, productType,productName, productP
   const binds = [companyId,productType,productName,productPrice,productDescription,
   productImg,productNumberOfSales,productStock];
   return(await db.pool(statement, binds));
+};
+
+
+// Editing a product associated to the company on the db
+module.exports.editProduct = async ({productId,productName, productPrice,
+  productDescription,productImg,productStock}) => {
+  if(productImg!="No"){
+    const updateStatementIncludingImg = `UPDATE product SET   product_name = ?, product_price = ?, product_description = ?,
+    product_img = ?, product_stock = ? WHERE product_id = ?`;
+    //bindings
+    const binds = [productName,productPrice,productDescription,productImg,productStock,productId];
+    return(await db.pool(updateStatementIncludingImg, binds));
+  }else{
+    const updateStatement = `UPDATE product SET   product_name = ?, product_price = ?, product_description = ?,
+    product_stock = ? WHERE product_id = ?`;
+    //bindings
+    const binds = [productName,productPrice,productDescription,productStock,productId];
+    return(await db.pool(updateStatement, binds));
+  }
+  
+};
+
+// Deleting a product
+module.exports.deleteProduct = async ({productId}) => {
+  const statement = `DELETE FROM product WHERE product_id = ?`;
+  // bindings
+  const binds = [productId];
+  return await db.pool(statement, binds);
 };
 
 
