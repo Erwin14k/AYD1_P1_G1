@@ -107,18 +107,11 @@ CREATE TABLE IF NOT EXISTS company(
   company_address VARCHAR(200) NOT NULL,
   company_status VARCHAR(100) NOT NULL,
   admin_id BIGINT NOT NULL,
+  company_file VARCHAR(500) NOT NULL,
   FOREIGN KEY (admin_id) REFERENCES admin(admin_id) ON DELETE CASCADE
 );
 
--- company_document Table
-CREATE TABLE IF NOT EXISTS company_document(
-  company_document_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  company_id BIGINT NOT NULL,
-  company_document_name VARCHAR(150) NOT NULL,
-  company_document_description VARCHAR(150) NOT NULL,
-  company_document_file VARCHAR(500) NOT NULL,
-  FOREIGN KEY (company_id) REFERENCES company(company_id) ON DELETE CASCADE
-);
+
 
 -- product Table
 CREATE TABLE IF NOT EXISTS product(
@@ -129,8 +122,25 @@ CREATE TABLE IF NOT EXISTS product(
   product_price DECIMAL(10,2) NOT NULL,
   product_description VARCHAR(500) NOT NULL,
   product_img VARCHAR(500) NOT NULL,
+  product_number_of_sales INTEGER NOT NULL,
+  product_stock INTEGER NOT NULL,
   FOREIGN KEY (company_id) REFERENCES company(company_id) ON DELETE CASCADE
 );
+
+
+-- combo Table
+CREATE TABLE IF NOT EXISTS combo(
+  combo_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  company_id BIGINT NOT NULL,
+  combo_name VARCHAR(150) NOT NULL,
+  combo_price DECIMAL(10,2) NOT NULL,
+  combo_description VARCHAR(500) NOT NULL,
+  combo_img VARCHAR(500) NOT NULL,
+  combo_number_of_sales INTEGER NOT NULL,
+  combo_stock INTEGER NOT NULL,
+  FOREIGN KEY (company_id) REFERENCES company(company_id) ON DELETE CASCADE
+);
+
 
 -- order Table
 CREATE TABLE IF NOT EXISTS _order(

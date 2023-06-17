@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 
 module.exports.companyRegistration = async (req, res) => {
   const { companyName, companyDescription,companyCategory, companyEmail,companyPassword,
-    companyDepartment,companyMunicipality,companyAddress } = req.body;
+    companyDepartment,companyMunicipality,companyAddress,companyFile} = req.body;
 
   try {
     const verifyEmail=await Company.existEmail(companyEmail);
@@ -15,7 +15,7 @@ module.exports.companyRegistration = async (req, res) => {
     // If the email not exists, the company can register
     await Company.register(companyName,companyDescription,companyCategory,companyEmail,
           bcrypt.hashSync(companyPassword, 8),companyDepartment,companyMunicipality,
-          companyAddress);
+          companyAddress,companyFile);
     res.status(200).json(
       { message: 'Company registered successfully, Waiting for admission approval!!'}
     );
