@@ -1,28 +1,43 @@
 const Company = require("../models/company");
 const bcrypt = require("bcryptjs");
+const upload = require('../utils/multerS3').upload;
 
 module.exports.companyRegistration = async (req, res) => {
-  const { companyName, companyDescription,companyCategory, companyEmail,companyPassword,
-    companyDepartment,companyMunicipality,companyAddress,companyFile} = req.body;
 
-  try {
-    const verifyEmail=await Company.existEmail(companyEmail);
-    //Verify if the email already exists
-    if(verifyEmail.length>0 &&verifyEmail[0].companyId){
-      // If exists the company cannot register
-      return res.status(500).json({ message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
+  upload.single('pdf')(req, res, async (err) => {
+
+    if(req.file !== undefined){
+      console.log(req.body);
+      console.log(req.file);
+
+      const { companyName, companyDescription,companyEmail,companyPassword,companyCategory,
+        companyDepartment,companyMunicipality,companyAddress} = req.body;
+      const companyFile = req.file.location;
+      const keyFile = req.file.key 
+      // console.log(keyFile);
+
+      try {
+        const verifyEmail=await Company.existEmail(companyEmail);
+        //Verify if the email already exists
+        if(verifyEmail.length>0 &&verifyEmail[0].companyId){
+          // If exists the company cannot register
+          return res.status(500).json({ message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
+        }
+        // If the email not exists, the company can register
+        await Company.register(companyName,companyDescription,companyCategory,companyEmail,
+              bcrypt.hashSync(companyPassword, 8),companyDepartment,companyMunicipality,
+              companyAddress,companyFile);
+        res.status(200).json(
+          { message: 'Company registered successfully, Waiting for admission approval!!'}
+        );
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Error registering the company with the email: '+companyEmail});
+      }
+    }else{
+      return res.status(500).json({ message: 'PDF upload failed' });
     }
-    // If the email not exists, the company can register
-    await Company.register(companyName,companyDescription,companyCategory,companyEmail,
-          bcrypt.hashSync(companyPassword, 8),companyDepartment,companyMunicipality,
-          companyAddress,companyFile);
-    res.status(200).json(
-      { message: 'Company registered successfully, Waiting for admission approval!!'}
-    );
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'Error registering the company with the email: '+companyEmail});
-  }
+  });
 };
 
 module.exports.companyLogin = async (req, res, next) => {

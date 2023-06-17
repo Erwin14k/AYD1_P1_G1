@@ -1,25 +1,6 @@
 const DeliveryMan = require("../models/deliveryMan");
 const bcrypt = require("bcryptjs");
-const multer = require('multer');
-const multerS3 = require('multer-s3');
-const AmazonS3 = require('../config/amazonS3');
-const { v4: uuidv4 } = require('uuid');
-
-
-// Configure multer middleware to handle the file upload
-const upload = multer({
-  storage: multerS3({
-    s3: AmazonS3.s3,
-    bucket: AmazonS3.bucketName,
-    contentType: multerS3.AUTO_CONTENT_TYPE,
-    metadata: function (req, file, cb) {
-      cb(null, { fieldName: file.fieldname });
-    },
-    key: function (req, file, cb) {
-      cb(null, uuidv4() + '.' + file.fieldname);
-      },
-  }),
-});
+const upload = require('../utils/multerS3').upload;
 
 
 module.exports.deliveryManRegistration = async (req, res) => {
@@ -30,12 +11,12 @@ module.exports.deliveryManRegistration = async (req, res) => {
       // console.log(req.body);
       // console.log(req.file);
   
-
       const { deliveryManName, deliveryManSurname,deliveryManEmail, deliveryManPassword,
         deliveryManPhone,deliveryManDepartment,deliveryManMunicipality,deliveryManLicenseType,
         deliveryManTransport } = req.body;
       const deliveryManResume = req.file.location;
       const keyFile = req.file.key 
+      // console.log(keyFile);
       
       try {
         const verifyEmail=await DeliveryMan.existEmail(deliveryManEmail);
