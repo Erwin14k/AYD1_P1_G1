@@ -49,12 +49,25 @@ module.exports.deliveryManRegistration = async (req, res) => {
         deliveryManPhone,deliveryManDepartment,deliveryManMunicipality,deliveryManLicenseType,
         deliveryManTransport } = req.body;
       const deliveryManResume = req.file.location;
-      
       const keyFile = req.file.key 
-      console.log(keyFile);
       
-      res.status(500).json({ message: 'PDF upload successfully', url: req.file.location });
-
+      try {
+        const verifyEmail=await DeliveryMan.existEmail(deliveryManEmail);
+        //Verify if the email already exists
+        if(verifyEmail.length>0 &&verifyEmail[0].deliveryManId){
+          // If exists the delivery_man cannot register
+          return res.status(500).json({ message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
+        }
+        // If the email not exists, the delivery_man can register
+        await DeliveryMan.register(deliveryManName,deliveryManSurname,deliveryManEmail,
+              bcrypt.hashSync(deliveryManPassword, 8),deliveryManPhone,deliveryManDepartment,
+              deliveryManMunicipality,deliveryManLicenseType,deliveryManTransport,deliveryManResume);
+        res.status(200).json({status:200 ,message: 'Delivery Man registered successfully, Waiting for admission approval!!'}
+        );
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({status:500, message: 'Error registering the delivery_man with the email: '+deliveryManEmail});
+      }
     }else{
       return res.status(500).json({ message: 'PDF upload failed' });
     }
@@ -71,35 +84,6 @@ module.exports.deliveryManRegistration = async (req, res) => {
 };
 
 
-
-
-// module.exports.deliveryManRegistration =  upload.single('pdf'),async (req, res) => {
-//   console.log("HERE");
-//   const { deliveryManName, deliveryManSurname,deliveryManEmail, deliveryManPassword,
-//     deliveryManPhone,deliveryManDepartment,deliveryManMunicipality,deliveryManLicenseType,
-//     deliveryManTransport,deliveryManResume, deliveryCV } = req.body;
-
-//     console.log("CV:",deliveryCV)
-
-//   try {
-//     const verifyEmail=await DeliveryMan.existEmail(deliveryManEmail);
-//     //Verify if the email already exists
-//     if(verifyEmail.length>0 &&verifyEmail[0].deliveryManId){
-//       // If exists the delivery_man cannot register
-//       return res.status(500).json({ message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
-//     }
-//     // If the email not exists, the delivery_man can register
-//     await DeliveryMan.register(deliveryManName,deliveryManSurname,deliveryManEmail,
-//           bcrypt.hashSync(deliveryManPassword, 8),deliveryManPhone,deliveryManDepartment,
-//           deliveryManMunicipality,deliveryManLicenseType,deliveryManTransport,deliveryManResume);
-//     res.status(200).json(
-//       { message: 'Delivery Man registered successfully, Waiting for admission approval!!'}
-//     );
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: 'Error registering the delivery_man with the email: '+deliveryManEmail});
-//   }
-// };
 
 
 // module.exports.deliveryManRegistration = async (req, res) => {
