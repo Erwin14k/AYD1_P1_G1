@@ -10,14 +10,14 @@ const ModuleAdmin = () => {
         const body = {
             adminId: -1
         }
-        fetch(`http://localhost:5000/admin/info`, {
+        fetch(`http://localhost:4200/admin/info`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
         })
             .then(res => res.json())
             .catch(err => {
-                /* console.error('Error:', err) */
+                console.error('Error:', err)
             })
             .then(response => {
                 const delivery = response.adminData[1].deliveryMenWating /* JSON.stringify(response.adminData[1].deliveryMenWating) */
@@ -32,7 +32,7 @@ const ModuleAdmin = () => {
             companyId: value,
             companyStatus: message
         }
-        fetch(`http://localhost:5000/${url}`, {
+        fetch(`http://localhost:4200/${url}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
@@ -292,7 +292,7 @@ const ModuleAdmin = () => {
                         <div className="modal-footer">
                             <button type="button" class="btn btn-success" data-bs-dismiss="modal" onClick={() => peticionRequest('admin/company-request', companyInfo.company_id, 'Approved')}>Aceptar</button>
                             <button type="button" class="btn btn-danger" style={{ marginLeft: "1%" }} data-bs-dismiss="modal" onClick={() => peticionRequest('admin/company-request', companyInfo.company_id, 'Declined')}>Rechazar</button>
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" style={{ marginLeft: "1%" }} >Close</button>
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" style={{ marginLeft: "1%" }} >Cerrar</button>
                         </div>
                     </div>
                 </div>
