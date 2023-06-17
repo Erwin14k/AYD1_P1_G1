@@ -1,51 +1,76 @@
 const DeliveryMan = require("../models/deliveryMan");
 const bcrypt = require("bcryptjs");
 const multer = require('multer');
+const { S3Client, PutObjectCommand,GetObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { v4: uuidv4 } = require('uuid');
 
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION;
+const accesKey = process.env.ACCES_KEY;
+const secretAcceskey = process.env.SECRET_ACCES_KEY;
 
-const storage = multer.diskStorage({
-  
-  destination: function (req, file, cb) {
-    cb(null, 'src/uploads/'); // Set the desired destination folder
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
+
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: accesKey,
+    secretAccessKey: secretAcceskey,
   },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  }
+  region: bucketRegion,
 });
 
-/*const upload = multer({ storage: storage });
-
-module.exports.deliveryManRegistration = upload.single('pdf'),async (req, res) => {
-  console.log("HERE");
-
-  upload.single('pdf')(req, res, async (err) => {
-    if (err instanceof multer.MulterError) {
-      // Handle multer errors, if any
-      return res.status(400).json({ message: 'Error uploading the PDF document' });
-    } else if (err) {
-      // Handle other errors, if any
-      return res.status(500).json({ message: 'Unexpected error occurred' });
-    }
-  });
-  
-};*/
-
-const upload = multer({ storage: storage });
 
 module.exports.deliveryManRegistration = async (req, res) => {
-  console.log("HERE");
-
+  
   upload.single('pdf')(req, res, async (err) => {
-    if (err instanceof multer.MulterError) {
-      // Handle multer errors, if any
-      return res.status(400).json({ message: 'Error uploading the PDF document' });
-    } else if (err) {
-      // Handle other errors, if any
-      return res.status(500).json({ message: 'Unexpected error occurred' });
-    }else{
-      return res.status(500).json({ message: 'PDF upload successfully' });
+
+    console.log(req.body);
+    console.log(req.file);
+    req.file.buffer 
+
+    const fileName = uuidv4()
+    const params = {
+      Bucket: bucketName,
+      Key: fileName,
+      //Key: req.file.originalname,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
     }
+
+    const commandPut = new PutObjectCommand(params)
+
+    await s3.send(commandPut)
+
+    const getObjectParams = {
+      Bucket: bucketName,
+      Key: fileName,
+    };
+
+    const commandGet = new GetObjectCommand(getObjectParams);
+    const url = await getSignedUrl(s3, commandGet, { expiresIn: 3600 });
+
+    const deleteParams = {
+      Bucket: bucketName,
+      Key: fileName,
+    };
+
+    const commandDelete = new DeleteObjectCommand(deleteParams);
+
+    await s3.send(commandDelete);
+
+    res.status(500).json({ message: 'PDF upload successfully', url: url });
+
+    // if (err instanceof multer.MulterError) {
+    //   // Handle multer errors, if any
+    //   return res.status(400).json({ message: 'Error uploading the PDF document' });
+    // } else if (err) {
+    //   // Handle other errors, if any
+    //   return res.status(500).json({ message: 'Unexpected error occurred' });
+    // }else{
+    //   return res.status(500).json({ message: 'PDF upload successfully' });
+    // }
 
   });
 };
