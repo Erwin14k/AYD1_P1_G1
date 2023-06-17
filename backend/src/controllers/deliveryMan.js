@@ -2,29 +2,15 @@ const DeliveryMan = require("../models/deliveryMan");
 const bcrypt = require("bcryptjs");
 const multer = require('multer');
 const multerS3 = require('multer-s3');
-const { S3Client, PutObjectCommand,GetObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+const AmazonS3 = require('../config/amazonS3');
 const { v4: uuidv4 } = require('uuid');
 
-const bucketName = process.env.BUCKET_NAME;
-const bucketRegion = process.env.BUCKET_REGION;
-const accesKey = process.env.ACCES_KEY;
-const secretAcceskey = process.env.SECRET_ACCES_KEY;
-
-
-const s3 = new S3Client({
-  credentials: {
-    accessKeyId: accesKey,
-    secretAccessKey: secretAcceskey,
-  },
-  region: bucketRegion,
-});
 
 // Configure multer middleware to handle the file upload
 const upload = multer({
   storage: multerS3({
-    s3: s3,
-    bucket: bucketName,
+    s3: AmazonS3.s3,
+    bucket: AmazonS3.bucketName,
     contentType: multerS3.AUTO_CONTENT_TYPE,
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname });

@@ -41,7 +41,7 @@ const SingUpDeliveryMan = ({ url }) => {
             console.log(data);
             alert(data.message);
             if (data.status === 200) {
-               e.target.reset();
+               // e.target.reset();
             }
          })
          .catch((error) => {
