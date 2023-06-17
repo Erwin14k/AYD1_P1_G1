@@ -12,13 +12,25 @@ const SingUpDeliveryMan = ({ url }) => {
 
    const handelSubmit = (e) => {
       e.preventDefault();
-      
-      const file = e.target[8].files[0];
-      const formData = new FormData();
+      console.log("Formulario");
 
-      formData.append('pdf', file);
-      console.log("PDF///",file)
-      console.log(formData);
+      
+      
+      
+      const formData = new FormData();
+      formData.append('deliveryManName', e.target[0].value);
+      formData.append('deliveryManSurname', e.target[1].value);
+      formData.append('deliveryManEmail', e.target[2].value);
+      formData.append('deliveryManPassword', e.target[3].value);
+      formData.append('deliveryManPhone', e.target[4].value);
+      formData.append('deliveryManDepartment', e.target[5].value);
+      formData.append('deliveryManMunicipality', e.target[6].value);
+      formData.append('deliveryManLicenseType', e.target[7].value);
+      formData.append('deliveryManTransport', e.target[8].value);
+      formData.append('pdf', e.target[9].files[0]);
+
+
+      //console.log(formData);
       fetch(url, {
          method: 'POST',
          body: formData,
@@ -108,6 +120,17 @@ const SingUpDeliveryMan = ({ url }) => {
             </label>
          </div>
 
+         <div className="form-outline mb-4">
+            <input
+               type="phone"
+               id="form3Example4"
+               className="form-control"
+            />
+            <label className="form-label" htmlFor="form3Example4">
+               Télefono
+            </label>
+         </div>
+
          <div className="row">
             <div className="col-md-6 mb-4">
                <div className="form-outline">
@@ -162,10 +185,7 @@ const SingUpDeliveryMan = ({ url }) => {
                      <select
                         className="form-control"
                         id="form3Example4"
-                        value={selectedOption}
-                        onChange={(event) =>
-                           setSelectedOption(event.target.value)
-                        }
+
                      >
                         {["A", "B", "C"].map((option, index) => (
                            <option key={index} value={option}>

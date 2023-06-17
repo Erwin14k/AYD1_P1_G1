@@ -1,6 +1,7 @@
 const DeliveryMan = require("../models/deliveryMan");
 const bcrypt = require("bcryptjs");
 const multer = require('multer');
+const multerS3 = require('multer-s3');
 const { S3Client, PutObjectCommand,GetObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { v4: uuidv4 } = require('uuid');
@@ -10,8 +11,6 @@ const bucketRegion = process.env.BUCKET_REGION;
 const accesKey = process.env.ACCES_KEY;
 const secretAcceskey = process.env.SECRET_ACCES_KEY;
 
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
 
 const s3 = new S3Client({
   credentials: {
@@ -21,57 +20,53 @@ const s3 = new S3Client({
   region: bucketRegion,
 });
 
+// Configure multer middleware to handle the file upload
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: bucketName,
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      cb(null, uuidv4() + '.' + file.fieldname);
+      },
+  }),
+});
+
 
 module.exports.deliveryManRegistration = async (req, res) => {
   
   upload.single('pdf')(req, res, async (err) => {
 
-    console.log(req.body);
-    console.log(req.file);
-    req.file.buffer 
+    if(req.file !== undefined){
+      // console.log(req.body);
+      // console.log(req.file);
+  
 
-    const fileName = uuidv4()
-    const params = {
-      Bucket: bucketName,
-      Key: fileName,
-      //Key: req.file.originalname,
-      Body: req.file.buffer,
-      ContentType: req.file.mimetype,
+      const { deliveryManName, deliveryManSurname,deliveryManEmail, deliveryManPassword,
+        deliveryManPhone,deliveryManDepartment,deliveryManMunicipality,deliveryManLicenseType,
+        deliveryManTransport } = req.body;
+      const deliveryManResume = req.file.location;
+      
+      const keyFile = req.file.key 
+      console.log(keyFile);
+      
+      res.status(500).json({ message: 'PDF upload successfully', url: req.file.location });
+
+    }else{
+      return res.status(500).json({ message: 'PDF upload failed' });
     }
 
-    const commandPut = new PutObjectCommand(params)
-
-    await s3.send(commandPut)
-
-    const getObjectParams = {
-      Bucket: bucketName,
-      Key: fileName,
-    };
-
-    const commandGet = new GetObjectCommand(getObjectParams);
-    const url = await getSignedUrl(s3, commandGet, { expiresIn: 3600 });
-
-    const deleteParams = {
-      Bucket: bucketName,
-      Key: fileName,
-    };
-
-    const commandDelete = new DeleteObjectCommand(deleteParams);
-
-    await s3.send(commandDelete);
-
-    res.status(500).json({ message: 'PDF upload successfully', url: url });
-
-    // if (err instanceof multer.MulterError) {
-    //   // Handle multer errors, if any
-    //   return res.status(400).json({ message: 'Error uploading the PDF document' });
-    // } else if (err) {
-    //   // Handle other errors, if any
-    //   return res.status(500).json({ message: 'Unexpected error occurred' });
-    // }else{
-    //   return res.status(500).json({ message: 'PDF upload successfully' });
-    // }
-
+    // Delete element from S3
+    // const deleteParams = {
+    //   Bucket: bucketName,
+    //   Key: keyFile,
+    // };
+    // const commandDelete = new DeleteObjectCommand(deleteParams);
+    // await s3.send(commandDelete);
+    // console.log(req.file.location);
   });
 };
 
