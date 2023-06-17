@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import departmentsGuatemala from "./departmentsGuatemala";
+import {validateName,validatePassword} from "../func/validations";
+import { isEmail } from 'validator';
 
 const SingUpCompany = ({ url }) => {
    const [selectedOption, setSelectedOption] = useState("Guatemala");
@@ -7,13 +9,47 @@ const SingUpCompany = ({ url }) => {
 
    const handelSubmit = (e) => {
       e.preventDefault();
-      console.log("Formulario enviado", url);
+      console.log("Formulario Enviado Company");
+
+      if(!validateName(e.target[0].value)) return alert("Nombre Invalido");
+      if(!isEmail(e.target[2].value)) return alert("Correo invalido");
+      if(!validatePassword(e.target[3].value)) return alert("Contraseña debe incluir: 8 caracteres, 1 mayuscula, 1 numero y 1 caracter especial");
+
+      const formData = new FormData();
+      formData.append("companyName", e.target[0].value);
+      formData.append("companyDescription", e.target[1].value);
+      formData.append("companyEmail", e.target[2].value);
+      formData.append("companyPassword", e.target[3].value);
+      formData.append("companyCategory", e.target[4].value);
+      formData.append("companyDepartment", e.target[5].value);
+      formData.append("companyMunicipality", e.target[6].value);
+      formData.append("companyAddress", e.target[7].value);
+      formData.append("pdf", e.target[8].files[0]);
+
+      fetch(url, {
+         method: "POST",
+         body: formData,
+      })
+         .then((response) => response.json())
+         .then((data) => {
+            // Handle the response from the backend
+            console.log(data);
+            alert(data.message);
+            if (data.status === 200) {
+               e.target.reset();
+            }
+         })
+         .catch((error) => {
+            // Handle any errors that occur during the request
+            console.log(error);
+         });
+
    };
 
    return (
       <form onSubmit={handelSubmit}>
          <div className="form-outline mb-4">
-            <input type="email" id="form3Example3" className="form-control" />
+            <input type="text" id="form3Example3" className="form-control" />
             <label className="form-label" htmlFor="form3Example3">
                Nombre de la empresa
             </label>
@@ -48,8 +84,6 @@ const SingUpCompany = ({ url }) => {
             <select
                className="form-control"
                id="form3Example4"
-               value={selectedOption}
-               onChange={(event) => setSelectedOption(event.target.value)}
             >
                {["Restaurante", "Tienda de conveniencia", "Supermercado"].map((option, index) => (
                   <option key={index} value={option}>
@@ -112,7 +146,7 @@ const SingUpCompany = ({ url }) => {
 
             <div className="form-outline mb-4">
                <input
-                  type="email"
+                  type="text"
                   id="form3Example3"
                   className="form-control"
                />
@@ -121,6 +155,18 @@ const SingUpCompany = ({ url }) => {
                </label>
             </div>
          </div>
+
+         <div className="form-outline mb-4">
+               <input
+                  type="file"
+                  id="form3Example3"
+                  className="form-control"
+                  accept=".pdf"
+               />
+               <label className="form-label" htmlFor="form3Example3">
+                  Seleccionar PDF de sanidad
+               </label>
+            </div>
 
          <button type="submit" className="btn btn-primary btn-block mb-4">
             Registrase

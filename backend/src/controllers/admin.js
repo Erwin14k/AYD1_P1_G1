@@ -5,8 +5,8 @@ const bcrypt = require("bcryptjs");
 module.exports.adminLogin = async (req, res, next) => {
   // Body request parameters
   let args = {
-    adminEmail: req.body.adminEmail,
-    adminPassword: req.body.adminPassword,
+    adminEmail: req.body.userEmail,
+    adminPassword: req.body.userPassword,
   };
   try {
     const verifyStatus=await Admin.verifyStatus(args.adminEmail);
@@ -14,7 +14,8 @@ module.exports.adminLogin = async (req, res, next) => {
     if(verifyStatus.length>0 &&verifyStatus[0].adminStatus!=="Active"){
       // If the admin is not active
       return res.status(403).json({
-        message: "Unauthorized",
+        status: 403,
+        message: "Admin esta inactivo",
       });
     }
     // Find the password
@@ -32,7 +33,9 @@ module.exports.adminLogin = async (req, res, next) => {
         return res
           .status(200)
           .json({
-            messsage: "Login Successfully",
+            status: 200,
+            type: 0,
+            messsage: "Login Successfully Admin",
             data: [
               {
                 adminId:result[3],

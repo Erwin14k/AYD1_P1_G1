@@ -24,6 +24,7 @@ const NavBarLanding = () => {
           Login
         </button>
         <ul className="dropdown-menu" style={{ backgroundColor: "black" }}>
+          <li><Link to="/Login-Admin" className="dropdown-item">Administrador</Link></li>
           <li><Link to="/Login-Cliente" className="dropdown-item">Cliente</Link></li>
           <li><Link to="/Login-Repartidor" className="dropdown-item">Repartidor</Link></li>
           <li><Link to="/Login-Empresa" className="dropdown-item">Empresa</Link></li>
