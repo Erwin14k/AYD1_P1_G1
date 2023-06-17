@@ -46,3 +46,25 @@ module.exports.companyRequest = async (req, res, next) => {
       message: `Company with the id: ${args.companyId}, updated to: ${args.companyStatus}`,
   });
 };
+
+
+module.exports.getUserCounters = async (req, res, next) => {
+  // Operations on db
+  const result=await Admin.getUserCounters();
+  // response
+  return res
+    .status(200)
+    .json({
+      message: `Users counters obtained successfully!!`,
+      data:{
+        activeUserCount:result[0].activeUserCount,
+        blockedUserCount:result[0].blockedUserCount,
+        activeDeliveryManCount:result[0].activeDeliveryManCount,
+        waitingDeliveryManCount:result[0].waitingDeliveryManCount,
+        declinedDeliveryManCount:result[0].declinedDeliveryManCount,
+        activeCompaniesCount:result[0].activeCompaniesCount,
+        waitingCompaniesCount:result[0].waitingCompaniesCount,
+        declinedCompaniesCount:result[0].declinedCompaniesCount
+      }
+  });
+};
