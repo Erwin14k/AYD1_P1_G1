@@ -1,12 +1,42 @@
 import React from "react";
 import NavBar from "../components/NavBar";
 import NavBarLanding from "../static/NavBarLanding";
+import { isEmail } from "validator";
 
-function SingIn({url,noUrl}) {
-
+function SingIn({ url, noUrl }) {
    const handelSubmit = (e) => {
       e.preventDefault();
-      console.log("Formulario enviado",url);
+      console.log("Formulario enviado", url);
+
+      if (!isEmail(e.target[0].value)) return alert("Correo inválido");
+      console.log(e.target[0].value);
+      console.log(e.target[1].value);
+
+      const userData = {
+         userEmail: e.target[0].value,
+         userPassword: e.target[1].value,
+      };
+
+      fetch(url, {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+         },
+         body: JSON.stringify(userData),
+       })
+         .then((response) => {
+            return response.json(); 
+         })
+         .then((data) => {
+            if(data.status===200){
+               console.log("DAtos:",data);
+            }else{
+               alert(data.message);
+            }     
+         })
+         .catch((error) => {
+           console.log("Error en la solicitud:", error);
+         });
    };
 
    return (
@@ -19,9 +49,17 @@ function SingIn({url,noUrl}) {
                <div className="row d-flex justify-content-center align-items-center h-100">
                   <div className="col-md-9 col-lg-6 col-xl-5">
                      <img
-                        src = {noUrl === 1 ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" :  noUrl === 2 ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" : "https://img.freepik.com/premium-vector/sign-page-abstract-concept-vector-illustration_107173-25670.jpg" }   
+                        src={
+                           noUrl === 1
+                              ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                              : noUrl === 2
+                              ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+                              : noUrl === 0
+                              ? "https://img.freepik.com/premium-vector/sign-page-abstract-concept-vector-illustration_107173-25670.jpg"
+                              : "https://static.vecteezy.com/system/resources/previews/005/879/539/original/cloud-computing-modern-flat-concept-for-web-banner-design-man-enters-password-and-login-to-access-cloud-storage-for-uploading-and-processing-files-illustration-with-isolated-people-scene-free-vector.jpg"
+                        }
                         className="img-fluid"
-                        alt="Sample image"
+                        alt="Welcome"
                      />
                   </div>
                   <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
@@ -33,8 +71,11 @@ function SingIn({url,noUrl}) {
                               className="form-control form-control-lg"
                               placeholder="Ingresa un Email valido"
                            />
-                           <label className="form-label" htmlFor="form3Example3">
-                              Dirección Email 
+                           <label
+                              className="form-label"
+                              htmlFor="form3Example3"
+                           >
+                              Dirección Email
                            </label>
                         </div>
 
@@ -45,7 +86,10 @@ function SingIn({url,noUrl}) {
                               className="form-control form-control-lg"
                               placeholder="Ingresa tu contraseña"
                            />
-                           <label className="form-label" htmlFor="form3Example4">
+                           <label
+                              className="form-label"
+                              htmlFor="form3Example4"
+                           >
                               Contraseña
                            </label>
                         </div>
@@ -81,13 +125,11 @@ function SingIn({url,noUrl}) {
                            >
                               Login
                            </button>
-                        
                         </div>
                      </form>
                   </div>
                </div>
             </div>
-            
          </section>
       </div>
    );

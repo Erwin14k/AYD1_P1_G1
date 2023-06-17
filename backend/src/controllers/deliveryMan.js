@@ -1,35 +1,61 @@
 const DeliveryMan = require("../models/deliveryMan");
 const bcrypt = require("bcryptjs");
+const upload = require('../utils/multerS3').upload;
+
 
 module.exports.deliveryManRegistration = async (req, res) => {
-  const { deliveryManName, deliveryManSurname,deliveryManEmail, deliveryManPassword,
-    deliveryManPhone,deliveryManDepartment,deliveryManMunicipality,deliveryManLicenseType,
-    deliveryManTransport,deliveryManResume } = req.body;
+  
+  upload.single('pdf')(req, res, async (err) => {
 
-  try {
-    const verifyEmail=await DeliveryMan.existEmail(deliveryManEmail);
-    //Verify if the email already exists
-    if(verifyEmail.length>0 &&verifyEmail[0].deliveryManId){
-      // If exists the delivery_man cannot register
-      return res.status(500).json({ message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
+    if(req.file !== undefined){
+      // console.log(req.body);
+      // console.log(req.file);
+  
+      const { deliveryManName, deliveryManSurname,deliveryManEmail, deliveryManPassword,
+        deliveryManPhone,deliveryManDepartment,deliveryManMunicipality,deliveryManLicenseType,
+        deliveryManTransport } = req.body;
+      const deliveryManResume = req.file.location;
+      const keyFile = req.file.key 
+      // console.log(keyFile);
+      
+      try {
+        const verifyEmail=await DeliveryMan.existEmail(deliveryManEmail);
+        //Verify if the email already exists
+        if(verifyEmail.length>0 &&verifyEmail[0].deliveryManId){
+          // If exists the delivery_man cannot register
+          return res.status(500).json({ message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
+        }
+        // If the email not exists, the delivery_man can register
+        await DeliveryMan.register(deliveryManName,deliveryManSurname,deliveryManEmail,
+              bcrypt.hashSync(deliveryManPassword, 8),deliveryManPhone,deliveryManDepartment,
+              deliveryManMunicipality,deliveryManLicenseType,deliveryManTransport,deliveryManResume);
+        res.status(200).json({status:200 ,message: 'Delivery Man registered successfully, Waiting for admission approval!!'}
+        );
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({status:500, message: 'Error registering the delivery_man with the email: '+deliveryManEmail});
+      }
+    }else{
+      return res.status(500).json({ message: 'PDF upload failed' });
     }
-    // If the email not exists, the delivery_man can register
-    await DeliveryMan.register(deliveryManName,deliveryManSurname,deliveryManEmail,
-          bcrypt.hashSync(deliveryManPassword, 8),deliveryManPhone,deliveryManDepartment,
-          deliveryManMunicipality,deliveryManLicenseType,deliveryManTransport,deliveryManResume);
-    res.status(200).json(
-      { message: 'Delivery Man registered successfully, Waiting for admission approval!!'}
-    );
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'Error registering the delivery_man with the email: '+deliveryManEmail});
-  }
+
+    // Delete element from S3
+    // const deleteParams = {
+    //   Bucket: bucketName,
+    //   Key: keyFile,
+    // };
+    // const commandDelete = new DeleteObjectCommand(deleteParams);
+    // await s3.send(commandDelete);
+    // console.log(req.file.location);
+  });
 };
+
+
 
 module.exports.deliveryManLogin = async (req, res, next) => {
   let args = {
-    deliveryManEmail: req.body.deliveryManEmail,
-    deliveryManPassword: req.body.deliveryManPassword,
+    deliveryManEmail: req.body.userEmail,
+    deliveryManPassword: req.body.userPassword,
   };
   try {
     const verifyStatus=await DeliveryMan.verifyStatus(args.deliveryManEmail);
@@ -37,7 +63,8 @@ module.exports.deliveryManLogin = async (req, res, next) => {
     if(verifyStatus.length>0 &&verifyStatus[0].deliveryManStatus!=="Active"){
       // If the user is not active
       return res.status(403).json({
-        message: "Unauthorized",
+        status: 403,
+        message: "Usuario aun no ha sido autorizado",
       });
     }
     // Find the password
@@ -55,7 +82,9 @@ module.exports.deliveryManLogin = async (req, res, next) => {
         return res
           .status(200)
           .json({
-            messsage: "Login Successfully",
+            status: 200,
+            type: 3,
+            message: "Login Successfully Delivery Man",
             data: [
               {
                 deliveryManId:result[4],
@@ -72,13 +101,13 @@ module.exports.deliveryManLogin = async (req, res, next) => {
     res
       .status(409)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ messsage: "Email or password not valid" });
+      .json({ message: "Email or password not valid" });
   } catch (error) {
     console.log(error);
     // if an error occurs
     res
       .status(400)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ messsage: error});
+      .json({ message: error});
   }
 };

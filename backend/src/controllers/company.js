@@ -1,42 +1,59 @@
 const Company = require("../models/company");
 const bcrypt = require("bcryptjs");
+const upload = require('../utils/multerS3').upload;
 
 module.exports.companyRegistration = async (req, res) => {
-  const { companyName, companyDescription,companyCategory, companyEmail,companyPassword,
-    companyDepartment,companyMunicipality,companyAddress,companyFile} = req.body;
 
-  try {
-    const verifyEmail=await Company.existEmail(companyEmail);
-    //Verify if the email already exists
-    if(verifyEmail.length>0 &&verifyEmail[0].companyId){
-      // If exists the company cannot register
-      return res.status(500).json({ message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
+  upload.single('pdf')(req, res, async (err) => {
+
+    if(req.file !== undefined){
+      console.log(req.body);
+      console.log(req.file);
+
+      const { companyName, companyDescription,companyEmail,companyPassword,companyCategory,
+        companyDepartment,companyMunicipality,companyAddress} = req.body;
+      const companyFile = req.file.location;
+      const keyFile = req.file.key 
+      // console.log(keyFile);
+
+      try {
+        const verifyEmail=await Company.existEmail(companyEmail);
+        //Verify if the email already exists
+        if(verifyEmail.length>0 &&verifyEmail[0].companyId){
+          // If exists the company cannot register
+          return res.status(500).json({ message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
+        }
+        // If the email not exists, the company can register
+        await Company.register(companyName,companyDescription,companyCategory,companyEmail,
+              bcrypt.hashSync(companyPassword, 8),companyDepartment,companyMunicipality,
+              companyAddress,companyFile);
+        res.status(200).json(
+          { message: 'Company registered successfully, Waiting for admission approval!!'}
+        );
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Error registering the company with the email: '+companyEmail});
+      }
+    }else{
+      return res.status(500).json({ message: 'PDF upload failed' });
     }
-    // If the email not exists, the company can register
-    await Company.register(companyName,companyDescription,companyCategory,companyEmail,
-          bcrypt.hashSync(companyPassword, 8),companyDepartment,companyMunicipality,
-          companyAddress,companyFile);
-    res.status(200).json(
-      { message: 'Company registered successfully, Waiting for admission approval!!'}
-    );
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'Error registering the company with the email: '+companyEmail});
-  }
+  });
 };
 
 module.exports.companyLogin = async (req, res, next) => {
   let args = {
-    companyEmail: req.body.companyEmail,
-    companyPassword: req.body.companyPassword,
+    companyEmail: req.body.userEmail,
+    companyPassword: req.body.userPassword,
   };
+  
   try {
     const verifyStatus=await Company.verifyStatus(args.companyEmail);
     //Verify if the company has an active or waiting status 
-    if(verifyStatus.length>0 &&verifyStatus[0].companyStatus!=="Active" && verifyStatus[0].companyStatus!=="Waiting"){
+    if(verifyStatus.length>0 && verifyStatus[0].companyStatus!=="Active"){
       // If the company is not active and not waiting a response
       return res.status(403).json({
-        message: "Unauthorized",
+        status: 403,
+        message: "Compañia es inactiva o no ha sido aprobada",
       });
     }
     // Find the password
@@ -54,7 +71,9 @@ module.exports.companyLogin = async (req, res, next) => {
         return res
           .status(200)
           .json({
-            messsage: "Login Successfully",
+            status: 200,
+            type: 2,
+            message: "Login Successfully Company",
             data: [
               {
                 companyId:result[4],
@@ -72,13 +91,13 @@ module.exports.companyLogin = async (req, res, next) => {
     res
       .status(409)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ messsage: "Email or password not valid" });
+      .json({ message: "Email or password not valid" });
   } catch (error) {
     console.log(error);
     // if an error occurs
     res
       .status(400)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ messsage: error});
+      .json({ message: error});
   }
 };
