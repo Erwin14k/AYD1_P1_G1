@@ -9,7 +9,7 @@ const NavBarModule = ({ noUrl }) => {
     return (
         <ul className="navbar-nav">
             {noUrl === 2 ||  noUrl === 0 || noUrl === 3  ? <li className="nav-item" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center" }}>
-            <img src={Home} alt="Bootstrap" width="32" height="27" />
+                <img src={Home} alt="Bootstrap" width="32" height="27" />
                 <Link to={noUrl === 2 ? "/Module-Repartidor" : noUrl === 0 ? "/Module-Admin" : "/Module-Empresa"} className="nav-link">Inicio</Link>
             </li> : <li></li>}
             {noUrl === 2 ? <li className="nav-item" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center" }}>

@@ -2,12 +2,24 @@ import {  Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import MiLogo from '../assets/AlChilazoLogo.png'
+import NavBarLanding from '../static/NavBarLanding';
+import NavBarModule from '../static/NavBarModule';
 import Cookie from 'cookie-universal'
 const cookies = Cookie()
-const crr_user = cookies.get("crr_user")
+
+
+
 
 function NavBar({customContend}) {
 
+    const custonRender = () => {
+        const crr_user = cookies.get("crr_user")
+        if(crr_user === undefined){
+            return <NavBarLanding/>
+        }else{
+            return <NavBarModule noUrl={crr_user.type}/>
+        }    
+    }
 
 
     return (
@@ -20,7 +32,7 @@ function NavBar({customContend}) {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav" style={{ display: "flex", justifyContent: "flex-end" }}>
-                       {customContend}
+                       {custonRender()}
                     </div>
                 </div>
             </nav></div>
