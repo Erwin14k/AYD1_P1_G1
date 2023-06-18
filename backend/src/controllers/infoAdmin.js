@@ -22,6 +22,7 @@ module.exports.deliveryManRequest = async (req, res, next) => {
     deliveryManId: req.body.deliveryManId,
     deliveryManStatus:req.body.deliveryManStatus,
   };
+  console.log(args);
   // Operations on db
   const result=await Admin.deliveryManRequest(args);
   // response

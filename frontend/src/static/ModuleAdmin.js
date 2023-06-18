@@ -5,7 +5,6 @@ const crr_user = cookies.get("crr_user");
 
 const ModuleAdmin = () => {
     const deliveryMan_Req = 'admin/delivery-man-request'
-    const company_Req = 'admin/company-request'
     const [deliveryRequest, setDeliveryRequest] = useState([]);
     const [companyRequest, setcompanyRequest] = useState([]);
     const [deliveryInfo, setDeliveryInfo] = useState({})
@@ -34,16 +33,19 @@ const ModuleAdmin = () => {
                 const delivery = response.adminData[1].deliveryMenWating /* JSON.stringify(response.adminData[1].deliveryMenWating) */
                 const company = response.adminData[2].CompaniesWaiting
                 setDeliveryRequest(delivery)
+                console.log("delivery",delivery)
                 setcompanyRequest(company)
             })
     }
 
-    const peticionRequest = (url, value, message) => {
+    const handleReqDeliveryMan = (e,id) => {
+        e.preventDefault();
         const body = {
-            companyId: value,
-            companyStatus: message
+            deliveryManId: id,
+            deliveryManStatus: e.target.value
         }
-        fetch(`http://localhost:4200/${url}`, {
+        console.log("botton",body)
+        fetch(`http://localhost:4200/admin/delivery-man-request`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -56,8 +58,36 @@ const ModuleAdmin = () => {
                 /* console.error('Error:', err) */
             })
             .then(response => {
-                alert(response)
+                alert(response.message)
+                peticion();
             })
+
+      
+    }
+
+
+    const handleReqCompany = (e) => {
+        e.preventDefault();
+        // const body = {
+        //     companyId: value,
+        //     companyStatus: message
+        // }
+        console.log("botton")
+        // fetch(`http://localhost:4200/admin/company-request`, {
+        //     method: 'POST',
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+        //      },
+        //     body: JSON.stringify(body)
+        // })
+        //     .then(res => res.json())
+        //     .catch(err => {
+        //         /* console.error('Error:', err) */
+        //     })
+        //     .then(response => {
+        //         alert(response)
+        //     })
 
         peticion();
     }
@@ -115,6 +145,7 @@ const ModuleAdmin = () => {
             </ul>
 
             {/* CONTENEDORES */}
+
             {/* DELIVERY REQUEST */}
             <div className="tab-content" id="myTabContent">
                 <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" style={{ padding: "2%" }}>
@@ -130,16 +161,16 @@ const ModuleAdmin = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {deliveryRequest.map((fila,index) => (
+                            {deliveryRequest.map((repartidor,index) => (
                                 <tr className='table-light' key={`P${index}`}>
-                                    <td>{fila.delivery_man_id}</td>
-                                    <td>{fila.delivery_man_name}</td>
-                                    <td>{fila.delivery_man_surname}</td>
-                                    <td>{fila.delivery_man_department}</td>
+                                    <td>{repartidor.delivery_man_id}</td>
+                                    <td>{repartidor.delivery_man_name}</td>
+                                    <td>{repartidor.delivery_man_surname}</td>
+                                    <td>{repartidor.delivery_man_department}</td>
                                     <td>
-                                        <button type="button" className="btn btn-info" data-bs-toggle="modal" data-bs-target="#deliveryModal" onClick={() => verInfoDelivery(fila.delivery_man_id)}>Ver Más</button>
-                                        <button type="button" className="btn btn-success" style={{ marginLeft: "2%" }} onClick={() => peticionRequest(deliveryMan_Req, fila.delivery_man_id, 'Approved')}>Aceptar</button>
-                                        <button type="button" className="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => peticionRequest(deliveryMan_Req, fila.delivery_man_id, 'Declined')}>Rechazar</button>
+                                        <button type="button" className="btn btn-info" data-bs-toggle="modal" data-bs-target="#deliveryModal" onClick={() => verInfoDelivery(repartidor.delivery_man_id)}>Ver Más</button>
+                                        <button type="button" className="btn btn-success" style={{ marginLeft: "2%" }} value='Approved' onClick={(e) => handleReqDeliveryMan(e, repartidor.delivery_man_id)}>Aceptar</button>
+                                        <button type="button" className="btn btn-danger" style={{ marginLeft: "2%" }} value='Declined' onClick={(e) => handleReqDeliveryMan(e, repartidor.delivery_man_id)}>Rechazar</button>
                                     </td>
                                 </tr>
                             ))}
@@ -170,8 +201,8 @@ const ModuleAdmin = () => {
                                     <td>{fila.company_department}</td>
                                     <td>
                                         <button className="btn btn-info" data-bs-toggle="modal" data-bs-target="#companyModal" onClick={() => verInfoCompany(fila.company_id)}>Ver Más</button>
-                                        <button type="button" className="btn btn-success" style={{ marginLeft: "2%" }} onClick={() => peticionRequest(company_Req, fila.company_id, 'Approved')}>Aceptar</button>
-                                        <button type="button" className="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => peticionRequest(company_Req, fila.company_id, 'Declined')}>Rechazar</button>
+                                        {/* <button type="button" className="btn btn-success" style={{ marginLeft: "2%" }} onClick={() => peticionRequest(company_Req, fila.company_id, 'Approved')}>Aceptar</button>
+                                        <button type="button" className="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => peticionRequest(company_Req, fila.company_id, 'Declined')}>Rechazar</button> */}
                                     </td>
                                 </tr>
                             ))}
@@ -186,283 +217,7 @@ const ModuleAdmin = () => {
                 </div>
             </div>
 
-            {/* MODAL EMPRESA */}
-            <div className="modal fade" id="companyModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
-                <div className="modal-dialog modal-dialog-centered modal-xl">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-10" id="staticBackdropLabel">Más Información - Empresa</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            <fieldset disabled>
-                                <div className="row">
-                                    <div className="col-md-4 mb-4">
-                                        <div className="form-outline">
-                                            <label className="form-label" htmlFor="form3Example1">
-                                                Nombre
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="form3Example1"
-                                                className="form-control"
-                                                value={companyInfo.company_name}
-                                            ></input>
 
-                                        </div>
-                                    </div>
-
-                                    <div className="col-md-4 mb-4">
-                                        <div className="form-outline">
-                                            <label className="form-label" htmlFor="form3Example2">
-                                                Categoria
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="form3Example2"
-                                                className="form-control"
-                                                value={companyInfo.company_category}
-                                            />
-
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4 mb-4">
-                                        <div className="form-outline">
-                                            <label className="form-label" htmlFor="form3Example1">
-                                                Correo electrónico
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="form3Example1"
-                                                className="form-control"
-                                                value={companyInfo.company_email}
-                                            />
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-
-                                    <div className="col-md-4 mb-4">
-                                        <div className="form-outline">
-                                            <label className="form-label" htmlFor="form3Example2">
-                                                Dirección
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="form3Example2"
-                                                className="form-control"
-                                                value={companyInfo.company_address}
-                                            />
-
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4 mb-4">
-                                        <div className="form-outline">
-                                            <label className="form-label" htmlFor="form3Example1">
-                                                Departamento
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="form3Example1"
-                                                className="form-control"
-                                                value={companyInfo.company_department}
-                                            />
-
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4 mb-4">
-                                        <div className="form-outline">
-                                            <label className="form-label" htmlFor="form3Example2">
-                                                Municipio
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="form3Example2"
-                                                className="form-control"
-                                                value={companyInfo.company_municipality}
-                                            />
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-outline mb-4">
-                                    <label className="form-label" htmlFor="form3Example3">
-                                        Descripcion de la empresa
-                                    </label>
-                                    <textarea id="form3Example3" className="form-control" value={companyInfo.company_description} />
-
-                                </div>
-                                <div className="col-md-4 mb-4">
-                                    <div className="form-outline">
-                                        <label className="form-label" htmlFor="form3Example2">
-                                            FILE
-                                        </label>
-                                        <iframe src="ruta-al-archivo.pdf" width="100%" height="auto"></iframe>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={() => peticionRequest(company_Req, companyInfo.company_id, 'Approved')}>Aceptar</button>
-                            <button type="button" className="btn btn-danger" style={{ marginLeft: "1%" }} data-bs-dismiss="modal" onClick={() => peticionRequest(company_Req, companyInfo.company_id, 'Declined')}>Rechazar</button>
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" style={{ marginLeft: "1%" }} >Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* MODAL DELIVERY */}
-            <div className="modal fade" id="deliveryModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-10" id="staticBackdropLabel">Más Información - Repartidor</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            <fieldset disabled>
-                                <div className="row">
-                                    <div className="col-md-6 mb-4">
-                                        <div className="form-outline">
-                                            <label className="form-label" htmlFor="form3Example1">
-                                                Nombre
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="form3Example1"
-                                                className="form-control"
-                                                value={deliveryInfo.delivery_man_name}
-                                            ></input>
-
-                                        </div>
-                                    </div>
-
-                                    <div className="col-md-6 mb-4">
-                                        <div className="form-outline">
-                                            <label className="form-label" htmlFor="form3Example2">
-                                                Apellido
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="form3Example2"
-                                                className="form-control"
-                                                value={deliveryInfo.delivery_man_surname}
-                                            />
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-4 mb-4">
-                                        <div className="form-outline">
-                                            <label className="form-label" htmlFor="form3Example1">
-                                                Correo electrónico
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="form3Example1"
-                                                className="form-control"
-                                                value={deliveryInfo.delivery_man_email}
-                                            />
-
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4 mb-4">
-                                        <div className="form-outline">
-                                            <label className="form-label" htmlFor="form3Example2">
-                                                Teléfono
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="form3Example2"
-                                                className="form-control"
-                                                value={deliveryInfo.delivery_man_phone}
-                                            />
-
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4 mb-4">
-                                        <div className="form-outline">
-                                            <label className="form-label" htmlFor="form3Example1">
-                                                Departamento
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="form3Example1"
-                                                className="form-control"
-                                                value={deliveryInfo.delivery_man_department}
-                                            />
-
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-4 mb-4">
-                                        <div className="form-outline">
-                                            <label className="form-label" htmlFor="form3Example1">
-                                                Tipo de Licencia
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="form3Example1"
-                                                className="form-control"
-                                                value={deliveryInfo.delivery_man_license_type}
-                                            />
-
-                                        </div>
-                                    </div>
-
-                                    <div className="col-md-4 mb-4">
-                                        <div className="form-outline">
-                                            <label className="form-label" htmlFor="form3Example2">
-                                                Transporte
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="form3Example2"
-                                                className="form-control"
-                                                value={deliveryInfo.delivery_man_transport}
-                                            />
-
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4 mb-4">
-                                        <div className="form-outline">
-                                            <label className="form-label" htmlFor="form3Example2">
-                                                Municipio
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="form3Example2"
-                                                className="form-control"
-                                                value={deliveryInfo.delivery_man_municipality}
-                                            />
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 mb-4">
-                                    <div className="form-outline">
-                                        <label className="form-label" htmlFor="form3Example2">
-                                            CV
-                                        </label>
-                                        <iframe src="ruta-al-archivo.pdf" width="100%" height="auto"></iframe>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={() => peticionRequest(deliveryMan_Req, deliveryInfo.delivery_man_id, 'Approved')}>Aceptar</button>
-                            <button type="button" className="btn btn-danger" data-bs-dismiss="modal" style={{ marginLeft: "1%" }} onClick={() => peticionRequest(deliveryMan_Req, deliveryInfo.delivery_man_id, 'Declined')}>Rechazar</button>
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" style={{ marginLeft: "1%" }}>Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     );
 }
