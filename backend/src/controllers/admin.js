@@ -17,7 +17,7 @@ module.exports.adminLogin = async (req, res, next) => {
       // If the admin is not active
       return res.status(403).json({
         status: 403,
-        message: "Admin esta inactivo",
+        message: "Esta cuenta de administrador se encuentra inhablitada!",
       });
     }
     // Find the password
@@ -37,7 +37,7 @@ module.exports.adminLogin = async (req, res, next) => {
           .json({
             status: 200,
             type: 0,
-            message: "Login Successfully Admin",
+            message: "Inicio de sesión exitoso como admin :)",
             data: [
               {
                 adminId:result[3],
@@ -53,7 +53,7 @@ module.exports.adminLogin = async (req, res, next) => {
     res
       .status(409)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ message: "Email or password not valid" });
+      .json({ message: "Correo o contraseña incorrectos :( , intenta de nuevo." });
   } catch (error) {
     console.log(error);
     // if an error occurs

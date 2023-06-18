@@ -12,7 +12,7 @@ module.exports.companyInfo = async (req, res, next) => {
   return res
     .status(200)
     .json({
-      messsage: "Data Successfully",
+      messsage: "Información de la empresa recuperada con éxito!",
       companyData:result,
   });
 };
@@ -38,10 +38,10 @@ module.exports.newProduct = async (req, res, next) => {
       return res
         .status(200)
         .json({
-          message: `The product: ${args.productName}, was created successfully!!`,
+          message: `El producto: ${args.productName}, fue creado satisfactoriamente :)`,
       });
     }else{
-      return res.status(500).json({ message: 'Img upload failed' });
+      return res.status(500).json({ message: 'Fallo en la carga de la imágen del producto :(' });
     }
   });
 };
@@ -63,7 +63,7 @@ module.exports.editProduct = async (req, res, next) => {
       return res
         .status(200)
         .json({
-          message: `The product: ${args.productName}, was edited successfully!!`,
+          message: `El producto: ${args.productName}, fue actualizado satisfactoriamente :)`,
       });
     }else{
       let args = {
@@ -80,7 +80,7 @@ module.exports.editProduct = async (req, res, next) => {
       return res
         .status(200)
         .json({
-          message: `The product: ${args.productName}, was edited successfully!!`,
+          message: `El producto: ${args.productName}, fue actualizado satisfactoriamente :)`,
       });
     }
   });
@@ -96,7 +96,7 @@ module.exports.deleteProduct = async (req, res, next) => {
   return res
     .status(200)
     .json({
-      message: `The product: ${args.productId}, was deleted successfully!!`,
+      message: `El producto: ${args.productId}, fue eliminado satisfactoriamente :)`,
   });
 };
 
@@ -119,10 +119,10 @@ module.exports.newCombo = async (req, res, next) => {
       return res
         .status(200)
         .json({
-          message: `The Combo: ${args.comboName}, was created successfully!!`,
+          message: `El combo: ${args.comboName}, fue creado satisfactoriamente :)`,
       });
     }else{
-      return res.status(500).json({ message: 'Img upload failed' });
+      return res.status(500).json({ message: 'Fallo en la carga de la imágen del combo :(' });
     }
   });
 };
