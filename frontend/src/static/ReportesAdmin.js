@@ -38,7 +38,7 @@ const ReportesAdmin = () => {
          <button
             type="button"
             onClick={() => actualizar()}
-            class="btn"
+            className="btn"
             style={{
                marginTop: "2%",
                backgroundColor: "#DB4F23",
@@ -47,8 +47,8 @@ const ReportesAdmin = () => {
          >
             Actualizar
          </button>
-         <ul
-            class="nav nav-tabs"
+         {/* <ul
+            className="nav nav-tabs"
             id="myTab"
             role="tablist"
             style={{ marginTop: "2%" }}
@@ -96,9 +96,9 @@ const ReportesAdmin = () => {
                </button>
             </li>
          </ul>
-         <div class="tab-content" id="myTabContent">
+         <div className="tab-content" id="myTabContent">
             <div
-               class="tab-pane fade show active"
+               className="tab-pane fade show active"
                id="home"
                role="tabpanel"
                aria-labelledby="home-tab"
@@ -107,7 +107,7 @@ const ReportesAdmin = () => {
                INFORME DE VENTAS
             </div>
             <div
-               class="tab-pane fade"
+               className="tab-pane fade"
                id="profile"
                role="tabpanel"
                aria-labelledby="profile-tab"
@@ -226,7 +226,7 @@ const ReportesAdmin = () => {
                </div>
             </div>
             <div
-               class="tab-pane fade"
+               className="tab-pane fade"
                id="repartidores"
                role="tabpanel"
                aria-labelledby="profile-tab"
@@ -234,7 +234,7 @@ const ReportesAdmin = () => {
             >
                INFORME DE REPARTIDORES
             </div>
-         </div>
+         </div> */}
       </div>
    );
 };

@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import Cookie from "cookie-universal";
+const cookies = Cookie();
+const crr_user = cookies.get("crr_user");
 
 const ModuleAdmin = () => {
+    const deliveryMan_Req = 'admin/delivery-man-request'
+    const company_Req = 'admin/company-request'
     const [deliveryRequest, setDeliveryRequest] = useState([]);
     const [companyRequest, setcompanyRequest] = useState([]);
     const [deliveryInfo, setDeliveryInfo] = useState({})
@@ -10,9 +15,14 @@ const ModuleAdmin = () => {
         const body = {
             adminId: -1
         }
+        // console.log(`Bearer ${crr_user.data[0].authToken}`);
+
         fetch(`http://localhost:4200/admin/info`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+             },
             body: JSON.stringify(body)
         })
             .then(res => res.json())
@@ -20,6 +30,7 @@ const ModuleAdmin = () => {
                 console.error('Error:', err)
             })
             .then(response => {
+                console.log("REPONSE///",response)
                 const delivery = response.adminData[1].deliveryMenWating /* JSON.stringify(response.adminData[1].deliveryMenWating) */
                 const company = response.adminData[2].CompaniesWaiting
                 setDeliveryRequest(delivery)
@@ -34,7 +45,10 @@ const ModuleAdmin = () => {
         }
         fetch(`http://localhost:4200/${url}`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+             },
             body: JSON.stringify(body)
         })
             .then(res => res.json())
@@ -74,27 +88,27 @@ const ModuleAdmin = () => {
     return (
         <div style={{ width: "80%", margin: "auto", marginTop: "8%" }}>
             <h1>Bienvenido Administrador, </h1>
-            <button type="button" onClick={() => peticion()} class="btn" style={{ marginTop: "2%", backgroundColor: "#DB4F23", color: "white" }}>Actualizar</button>
+            <button type="button" onClick={() => peticion()} className="btn" style={{ marginTop: "2%", backgroundColor: "#DB4F23", color: "white" }}>Actualizar</button>
 
             {/* FILA DE BOTONES */}
-            <ul class="nav nav-tabs" id="myTab" role="tablist" style={{ marginTop: "2%" }}>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
+            <ul className="nav nav-tabs" id="myTab" role="tablist" style={{ marginTop: "2%" }}>
+                <li className="nav-item" role="presentation">
+                    <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
                         Solicitud de Repartidores
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                <li className="nav-item" role="presentation">
+                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
                         Solicitud de Empresas
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                <li className="nav-item" role="presentation">
+                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="profile" aria-selected="false">
                         Deshabilitar usuarios
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#mantenimiento" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                <li className="nav-item" role="presentation">
+                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#mantenimiento" type="button" role="tab" aria-controls="profile" aria-selected="false">
                         Mantenimiento de repartidores y empresas
                     </button>
                 </li>
@@ -102,11 +116,11 @@ const ModuleAdmin = () => {
 
             {/* CONTENEDORES */}
             {/* DELIVERY REQUEST */}
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" style={{ padding: "2%" }}>
+            <div className="tab-content" id="myTabContent">
+                <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" style={{ padding: "2%" }}>
                     <center><h3>SOLICITUDES DE REPARTIDORES</h3></center>
                     <table className="table" style={{ width: "80%", margin: "auto", marginTop: "2%" }}>
-                        <thead class="table-dark">
+                        <thead className="table-dark">
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
@@ -116,16 +130,16 @@ const ModuleAdmin = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {deliveryRequest.map((fila) => (
-                                <tr className='table-light'>
+                            {deliveryRequest.map((fila,index) => (
+                                <tr className='table-light' key={`P${index}`}>
                                     <td>{fila.delivery_man_id}</td>
                                     <td>{fila.delivery_man_name}</td>
                                     <td>{fila.delivery_man_surname}</td>
                                     <td>{fila.delivery_man_department}</td>
                                     <td>
-                                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#deliveryModal" onClick={() => verInfoDelivery(fila.delivery_man_id)}>Ver Más</button>
-                                        <button type="button" class="btn btn-success" style={{ marginLeft: "2%" }} onClick={() => peticionRequest('admin/delivery-man-request', fila.delivery_man_id, 'Approved')}>Aceptar</button>
-                                        <button type="button" class="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => peticionRequest('admin/delivery-man-request', fila.delivery_man_id, 'Declined')}>Rechazar</button>
+                                        <button type="button" className="btn btn-info" data-bs-toggle="modal" data-bs-target="#deliveryModal" onClick={() => verInfoDelivery(fila.delivery_man_id)}>Ver Más</button>
+                                        <button type="button" className="btn btn-success" style={{ marginLeft: "2%" }} onClick={() => peticionRequest(deliveryMan_Req, fila.delivery_man_id, 'Approved')}>Aceptar</button>
+                                        <button type="button" className="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => peticionRequest(deliveryMan_Req, fila.delivery_man_id, 'Declined')}>Rechazar</button>
                                     </td>
                                 </tr>
                             ))}
@@ -135,10 +149,10 @@ const ModuleAdmin = () => {
 
                 {/* COMPANY REQUEST */}
 
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
+                <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>SOLICITUDES DE EMPRESA</h3></center>
                     <table className="table" style={{ width: "80%", margin: "auto", marginTop: "2%" }}>
-                        <thead class="table-dark">
+                        <thead className="table-dark">
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
@@ -148,26 +162,26 @@ const ModuleAdmin = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {companyRequest.map((fila) => (
-                                <tr className='table-light'>
+                            {companyRequest.map((fila,index) => (
+                                <tr className='table-light' key={index}>
                                     <td>{fila.company_id}</td>
                                     <td>{fila.company_name}</td>
                                     <td>{fila.company_category}</td>
                                     <td>{fila.company_department}</td>
                                     <td>
                                         <button className="btn btn-info" data-bs-toggle="modal" data-bs-target="#companyModal" onClick={() => verInfoCompany(fila.company_id)}>Ver Más</button>
-                                        <button type="button" class="btn btn-success" style={{ marginLeft: "2%" }} onClick={() => peticionRequest('admin/company-request', fila.company_id, 'Approved')}>Aceptar</button>
-                                        <button type="button" class="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => peticionRequest('admin/company-request', fila.company_id, 'Declined')}>Rechazar</button>
+                                        <button type="button" className="btn btn-success" style={{ marginLeft: "2%" }} onClick={() => peticionRequest(company_Req, fila.company_id, 'Approved')}>Aceptar</button>
+                                        <button type="button" className="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => peticionRequest(company_Req, fila.company_id, 'Declined')}>Rechazar</button>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
-                <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
+                <div className="tab-pane fade" id="users" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>DESHABILITAR USUARIOS</h3></center>
                 </div>
-                <div class="tab-pane fade" id="mantenimiento" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
+                <div className="tab-pane fade" id="mantenimiento" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>MANTENIMIENTO</h3></center>
                 </div>
             </div>
@@ -290,8 +304,8 @@ const ModuleAdmin = () => {
                             </fieldset>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" onClick={() => peticionRequest('admin/company-request', companyInfo.company_id, 'Approved')}>Aceptar</button>
-                            <button type="button" class="btn btn-danger" style={{ marginLeft: "1%" }} data-bs-dismiss="modal" onClick={() => peticionRequest('admin/company-request', companyInfo.company_id, 'Declined')}>Rechazar</button>
+                            <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={() => peticionRequest(company_Req, companyInfo.company_id, 'Approved')}>Aceptar</button>
+                            <button type="button" className="btn btn-danger" style={{ marginLeft: "1%" }} data-bs-dismiss="modal" onClick={() => peticionRequest(company_Req, companyInfo.company_id, 'Declined')}>Rechazar</button>
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" style={{ marginLeft: "1%" }} >Cerrar</button>
                         </div>
                     </div>
@@ -442,8 +456,8 @@ const ModuleAdmin = () => {
                             </fieldset>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" onClick={() => peticionRequest('admin/delivery-man-request', deliveryInfo.delivery_man_id, 'Approved')}>Aceptar</button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style={{ marginLeft: "1%" }} onClick={() => peticionRequest('admin/delivery-man-request', deliveryInfo.delivery_man_id, 'Declined')}>Rechazar</button>
+                            <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={() => peticionRequest(deliveryMan_Req, deliveryInfo.delivery_man_id, 'Approved')}>Aceptar</button>
+                            <button type="button" className="btn btn-danger" data-bs-dismiss="modal" style={{ marginLeft: "1%" }} onClick={() => peticionRequest(deliveryMan_Req, deliveryInfo.delivery_man_id, 'Declined')}>Rechazar</button>
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" style={{ marginLeft: "1%" }}>Cerrar</button>
                         </div>
                     </div>
