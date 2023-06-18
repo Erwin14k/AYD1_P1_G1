@@ -1,4 +1,4 @@
-import NavBar from "../components/NavBar";
+import NavBar from "./NavBar";
 import NavBarModule from "../static/NavBarModule";
 import ModuleDelivery from "../static/ModuleDelivery";
 import ModuleClient from "../static/ModuleClient";
