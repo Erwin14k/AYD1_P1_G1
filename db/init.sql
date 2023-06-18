@@ -68,6 +68,7 @@ CREATE TABLE IF NOT EXISTS delivery_man(
   delivery_man_status VARCHAR(50) NOT NULL,
   delivery_man_rating DECIMAL(10,2) NOT NULL,
   delivery_man_resume VARCHAR(500) NOT NULL,
+  delivery_man_resume_key VARCHAR(500) NOT NULL,
   admin_id BIGINT NOT NULL,
   FOREIGN KEY (admin_id) REFERENCES admin(admin_id) ON DELETE CASCADE
 );
@@ -108,6 +109,7 @@ CREATE TABLE IF NOT EXISTS company(
   company_status VARCHAR(100) NOT NULL,
   admin_id BIGINT NOT NULL,
   company_file VARCHAR(500) NOT NULL,
+  company_file_key VARCHAR(500) NOT NULL,
   FOREIGN KEY (admin_id) REFERENCES admin(admin_id) ON DELETE CASCADE
 );
 
@@ -122,6 +124,7 @@ CREATE TABLE IF NOT EXISTS product(
   product_price DECIMAL(10,2) NOT NULL,
   product_description VARCHAR(500) NOT NULL,
   product_img VARCHAR(500) NOT NULL,
+  product_img_key VARCHAR(500) NOT NULL,
   product_number_of_sales INTEGER NOT NULL,
   product_stock INTEGER NOT NULL,
   FOREIGN KEY (company_id) REFERENCES company(company_id) ON DELETE CASCADE
