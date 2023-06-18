@@ -21,21 +21,21 @@ module.exports.companyRegistration = async (req, res) => {
         //Verify if the email already exists
         if(verifyEmail.length>0 &&verifyEmail[0].companyId){
           // If exists the company cannot register
-          return res.status(500).json({ message: 'El correo proporcionado ya está asociado a otra cuenta de empresa, intenta con otro correo o inicia sesión con la cuenta asociada!'});
+          return res.status(500).json({status:500, message: 'El correo proporcionado ya está asociado a otra cuenta de empresa, intenta con otro correo o inicia sesión con la cuenta asociada!'});
         }
         // If the email not exists, the company can register
         await Company.register(companyName,companyDescription,companyCategory,companyEmail,
               bcrypt.hashSync(companyPassword, 8),companyDepartment,companyMunicipality,
               companyAddress,companyFile);
         res.status(200).json(
-          { message: 'Empresa registrada satisfactoriamente, a la espera de la aprobación por el administrador!'}
+          {status:200,  message: 'Empresa registrada satisfactoriamente, a la espera de la aprobación por el administrador!'}
         );
       } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error registrando a la empresa con el correo: '+companyEmail});
+        res.status(500).json({status:500, message: 'Error registrando a la empresa con el correo: '+companyEmail});
       }
     }else{
-      return res.status(500).json({ message: 'Fallo en la carga del PDF :(' });
+      return res.status(500).json({status:500, message: 'Fallo en la carga del PDF :(' });
     }
   });
 };
@@ -72,7 +72,7 @@ module.exports.companyLogin = async (req, res, next) => {
           .status(200)
           .json({
             status: 200,
-            type: 2,
+            type: 3,
             message: "Inicio de sesión exitoso de empresa :)",
             data: [
               {
