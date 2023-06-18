@@ -13,7 +13,7 @@ module.exports.companyRegistration = async (req, res) => {
       const { companyName, companyDescription,companyEmail,companyPassword,companyCategory,
         companyDepartment,companyMunicipality,companyAddress} = req.body;
       const companyFile = req.file.location;
-      const keyFile = req.file.key 
+      const keyFile = req.file.key; 
       // console.log(keyFile);
 
       try {
@@ -26,7 +26,7 @@ module.exports.companyRegistration = async (req, res) => {
         // If the email not exists, the company can register
         await Company.register(companyName,companyDescription,companyCategory,companyEmail,
               bcrypt.hashSync(companyPassword, 8),companyDepartment,companyMunicipality,
-              companyAddress,companyFile);
+              companyAddress,companyFile,keyFile);
         res.status(200).json(
           {status:200,  message: 'Empresa registrada satisfactoriamente, a la espera de la aprobación por el administrador!'}
         );
