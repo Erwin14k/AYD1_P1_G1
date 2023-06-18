@@ -130,18 +130,36 @@ module.exports.newProduct = async ({companyId, productType,productName, productP
 // Editing a product associated to the company on the db
 module.exports.editProduct = async ({productId,productName, productPrice,
   productDescription,productImg,productStock}) => {
-  if(productImg!="No"){
-    const updateStatementIncludingImg = `UPDATE product SET   product_name = ?, product_price = ?, product_description = ?,
-    product_img = ?, product_stock = ? WHERE product_id = ?`;
+
+  if(productName!==undefined){
+    const updateProductNameStatement = `UPDATE product SET product_name = ? WHERE product_id = ?`;
     //bindings
-    const binds = [productName,productPrice,productDescription,productImg,productStock,productId];
-    return(await db.pool(updateStatementIncludingImg, binds));
-  }else{
-    const updateStatement = `UPDATE product SET   product_name = ?, product_price = ?, product_description = ?,
-    product_stock = ? WHERE product_id = ?`;
+    const binds = [productName,productId];
+    await db.pool(updateProductNameStatement, binds);
+  }
+  if(productPrice!==undefined){
+    const updateProductPriceStatement = `UPDATE product SET product_price = ? WHERE product_id = ?`;
     //bindings
-    const binds = [productName,productPrice,productDescription,productStock,productId];
-    return(await db.pool(updateStatement, binds));
+    const binds = [productPrice,productId];
+    await db.pool(updateProductPriceStatement, binds);
+  }
+  if(productDescription!==undefined){
+    const updateProductDescriptionStatement = `UPDATE product SET product_description = ? WHERE product_id = ?`;
+    //bindings
+    const binds = [productDescription,productId];
+    await db.pool(updateProductDescriptionStatement, binds);
+  }
+  if(productStock!==undefined){
+    const updateProductStockStatement = `UPDATE product SET product_stock = ? WHERE product_id = ?`;
+    //bindings
+    const binds = [productStock,productId];
+    await db.pool(updateProductStockStatement, binds);
+  }
+  if(productImg!==undefined){
+    const updateProductImgStatement = `UPDATE product SET product_img = ? WHERE product_id = ?`;
+    //bindings
+    const binds = [productImg,productId];
+    await db.pool(updateProductImgStatement, binds);
   }
   
 };
