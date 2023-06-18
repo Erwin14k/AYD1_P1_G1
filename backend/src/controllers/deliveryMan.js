@@ -28,7 +28,7 @@ module.exports.deliveryManRegistration = async (req, res) => {
         // If the email not exists, the delivery_man can register
         await DeliveryMan.register(deliveryManName,deliveryManSurname,deliveryManEmail,
               bcrypt.hashSync(deliveryManPassword, 8),deliveryManPhone,deliveryManDepartment,
-              deliveryManMunicipality,deliveryManLicenseType,deliveryManTransport,deliveryManResume);
+              deliveryManMunicipality,deliveryManLicenseType,deliveryManTransport,deliveryManResume,keyFile);
         res.status(200).json({status:200 ,message: 'Repartidor registrado satisfactoriamente, a la espera de la aprobación por el administrador!'}
         );
       } catch (error) {
