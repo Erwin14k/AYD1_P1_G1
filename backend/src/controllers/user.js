@@ -9,16 +9,16 @@ module.exports.userRegistration = async (req, res) => {
     //Verify if the email already exists
     if(verifyEmail.length>0 &&verifyEmail[0].userId){
       // If exists the user cannot register
-      return res.status(500).json({ message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
+      return res.status(500).json({status: 500, message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
     }
     // If not exists the user can register
     await User.register(userEmail, bcrypt.hashSync(userPassword, 8),userName,userSurname);
     res.status(200).json(
-      { message: 'User registered successfully'}
+      { status: 200,message: 'User registered successfully'}
     );
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Error registering the user with the email: '+userEmail});
+    res.status(500).json({status: 500, message: 'Error registering the user with the email: '+userEmail});
   }
 };
 

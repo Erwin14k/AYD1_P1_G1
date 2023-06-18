@@ -30,11 +30,11 @@ const SingUpClient = ({ url }) => {
             return response.json(); 
          })
          .then((data) => {
+            alert(data.message);
+            console.log(data);
             if(data.status===200){
-               console.log("DAtos:",data);
-            }else{
-               alert(data.message);
-            }     
+               e.target.reset();
+            } 
          })
          .catch((error) => {
            console.log("Error en la solicitud:", error);
