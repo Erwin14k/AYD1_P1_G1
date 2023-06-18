@@ -83,7 +83,7 @@ module.exports.deliveryManLogin = async (req, res, next) => {
           .status(200)
           .json({
             status: 200,
-            type: 3,
+            type: 2,
             message: "Login Successfully Delivery Man",
             data: [
               {

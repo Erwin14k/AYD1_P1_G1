@@ -21,21 +21,21 @@ module.exports.companyRegistration = async (req, res) => {
         //Verify if the email already exists
         if(verifyEmail.length>0 &&verifyEmail[0].companyId){
           // If exists the company cannot register
-          return res.status(500).json({ message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
+          return res.status(500).json({status: 500, message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
         }
         // If the email not exists, the company can register
         await Company.register(companyName,companyDescription,companyCategory,companyEmail,
               bcrypt.hashSync(companyPassword, 8),companyDepartment,companyMunicipality,
               companyAddress,companyFile);
         res.status(200).json(
-          { message: 'Company registered successfully, Waiting for admission approval!!'}
+          {status: 200,  message: 'Company registered successfully, Waiting for admission approval!!'}
         );
       } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error registering the company with the email: '+companyEmail});
+        res.status(500).json({status: 500, message: 'Error registering the company with the email: '+companyEmail});
       }
     }else{
-      return res.status(500).json({ message: 'PDF upload failed' });
+      return res.status(500).json({status: 500, message: 'PDF upload failed' });
     }
   });
 };
@@ -72,7 +72,7 @@ module.exports.companyLogin = async (req, res, next) => {
           .status(200)
           .json({
             status: 200,
-            type: 2,
+            type: 3,
             message: "Login Successfully Company",
             data: [
               {
