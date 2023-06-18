@@ -5,6 +5,26 @@ const crr_user = cookies.get("crr_user");
 
 
 const FormAgregar = (props) => {
+    const [stock, setStock] = useState(0);
+    const [price, setPrice] = useState(0);
+
+    const handleStockChange = (event) => {
+        const value = event.target.value;
+        const intValue = parseInt(value);
+
+        if (!isNaN(intValue) && intValue >= 0) {
+            setStock(intValue.toString());
+        }
+    };
+    const handleStockPrice = (event) => {
+        const value = event.target.value;
+
+        // Validar el formato utilizando una expresión regular
+        const regex = /^\d+(\.\d{0,2})?$/;
+        if (regex.test(value)) {
+            setPrice(value);
+        }
+    };
     const handleFileSelect = (event) => {
         const files = event.target.files;
         if (files.length > 1) {
@@ -13,43 +33,55 @@ const FormAgregar = (props) => {
         }
     };
 
-    const handelSubmit = (e, url) => {
+    const handelSubmit = (e) => {
         e.preventDefault();
-        console.log("Formulario Enviado Company");
 
-        const formData = new FormData();
-        formData.append("companyId", crr_user.data[0].companyId)
-        formData.append("productType", e.target[4].value)
-        formData.append("productName", e.target[0].value)
-        formData.append("productPrice", e.target[3].value)
-        formData.append("product_description", e.target[2].value)
-        formData.append("product_img", e.target[1].files[0])
-        formData.append("product_number_of_sales", 0)
-        formData.append("product_stock", e.target[5].value)
+
+        var formData = new FormData();
+        formData.append("companyId", "121")/* formData.append("companyId", crr_user.data[0].companyId) */
+
+        var url = ""
+        if (props.type === 0) {
+            formData.append("productType", e.target[4].value)
+            formData.append("productName", e.target[0].value)
+            formData.append("productPrice", e.target[3].value)
+            formData.append("product_description", e.target[2].value)
+            formData.append("product_img", e.target[1].files[0])
+            formData.append("product_number_of_sales", 0)
+            formData.append("product_stock", e.target[5].value)
+
+            url = "company/new-product"
+        } else {
+            formData.append("comboName", e.target[0].value)
+            formData.append("comboPrice", e.target[3].value)
+            formData.append("comboDescription", e.target[2].value)
+            formData.append("comboImg", e.target[1].files[0])
+            formData.append("comboNumberOfSales", 0)
+            formData.append("combo_stock", e.target[4].value)
+
+            url = "company/new-combo"
+        }
 
         console.log(formData)
 
-        /* fetch(url, {
+        fetch(`http://localhost:4200/${url}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
-            },companyId
+                Authorization: `Bearer 1123123123`,//Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+            },
             body: formData,
         })
             .then((response) => response.json())
             .then((data) => {
-                // Handle the response from the backend
-                console.log(data);
-                //alert(data.message);
-                if (data.status === 200) {
-                    e.target.reset();
-                }
+                alert(data.message)
             })
             .catch((error) => {
                 // Handle any errors that occur during the request
-                console.log(error);
-            }); */
+                console.error('Error:', error)
+            });
+
+        console.log("Formulario Enviado Company");
     };
     return (
         <div>
@@ -87,7 +119,9 @@ const FormAgregar = (props) => {
                                     type="number"
                                     step="0.01"
                                     className="form-control"
+                                    value={price}
                                     id="formPrice"
+                                    onChange={handleStockPrice}
                                 />
                                 <label className="form-label" htmlFor="formPrice">
                                     Precio
@@ -110,15 +144,17 @@ const FormAgregar = (props) => {
                                     Categoria
                                 </label>
                             </div>
-                        </div>: <></>}
-                        
+                        </div> : <></>}
+
                         <div className="col-md-6 mb-4">
                             <div className="form-outline">
                                 <input
                                     type="number"
                                     step="1"
                                     className="form-control"
+                                    value={stock}
                                     id="formStock"
+                                    onChange={handleStockChange}
                                 />
                                 <label className="form-label" htmlFor="formStock">
                                     Stock
@@ -128,7 +164,7 @@ const FormAgregar = (props) => {
                     </div>
 
                 </div>
-                <center><button type="submit" className="btn btn-primary">Agregar Producto</button></center>
+                <center><button type="submit" className="btn btn-primary">Agregar</button></center>
             </form>
         </div>
     );
