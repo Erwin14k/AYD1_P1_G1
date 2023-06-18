@@ -21,6 +21,7 @@ const ReportesAdmin = () => {
          .then((data) => {
             // Aquí puedes trabajar con los datos obtenidos
             console.log(data);
+            setUsersInfo(data.data);
          })
          .catch((error) => {
             // Manejo de errores
@@ -47,7 +48,7 @@ const ReportesAdmin = () => {
          >
             Actualizar
          </button>
-         {/* <ul
+         <ul
             className="nav nav-tabs"
             id="myTab"
             role="tablist"
@@ -171,7 +172,7 @@ const ReportesAdmin = () => {
                      </div>
                   </div>
 
-                  <div className="col-md-6">
+                  <div className="col-md-12">
                      <div className="card mb-4">
                         <div className="card-header">
                            Repartidores Rechazados
@@ -210,7 +211,7 @@ const ReportesAdmin = () => {
                      </div>
                   </div>
 
-                  <div className="col-md-6">
+                  <div className="col-md-12">
                      <div className="card mb-4">
                         <div className="card-header">Empresas Rechazadas</div>
                         <div className="card-body">
@@ -234,7 +235,7 @@ const ReportesAdmin = () => {
             >
                INFORME DE REPARTIDORES
             </div>
-         </div> */}
+         </div>
       </div>
    );
 };
