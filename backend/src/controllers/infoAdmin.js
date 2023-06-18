@@ -22,7 +22,6 @@ module.exports.deliveryManRequest = async (req, res, next) => {
     deliveryManId: req.body.deliveryManId,
     deliveryManStatus:req.body.deliveryManStatus,
   };
-  console.log(args);
   // Operations on db
   const result=await Admin.deliveryManRequest(args);
   // response
@@ -38,6 +37,7 @@ module.exports.companyRequest = async (req, res, next) => {
     companyId: req.body.companyId,
     companyStatus:req.body.companyStatus,
   };
+  console.log(args);
   // Operations on db
   const result=await Admin.companyRequest(args);
   // response
