@@ -5,12 +5,15 @@ const crr_user = cookies.get("crr_user")
 
 export const ProtectedRouteUsers = ({redirectTo,condition,condition2}) => {
    console.log("Cookie",crr_user,"Condition",condition)
-   if(crr_user.type === condition || crr_user.type === condition2){
-      return <Outlet/>
-   }else{
-      console.error("ERR User Redirecting to",redirectTo)
-      return <Navigate to={redirectTo}/>
+   if(crr_user !== undefined){
+      if(crr_user.type === condition || crr_user.type === condition2){
+         return <Outlet/>
+      }
    }
+
+   console.error("ERR User Redirecting to",redirectTo)
+   return <Navigate to={redirectTo}/>
+   
 }
 
    

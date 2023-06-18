@@ -31,11 +31,12 @@ function SingIn({ url, noUrl }) {
          })
          .then((data) => {
             if(data.status===200){
+               alert(data.message);
                console.log("DAtos:",data);
                const cookies = Cookie()
                cookies.set("crr_user",data,{path:"/"});
                console.log("Cookies:",cookies.get("crr_user"));
-
+               window.location.reload();
             }else{
                alert(data.message);
             }     
