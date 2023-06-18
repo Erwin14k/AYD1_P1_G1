@@ -66,6 +66,7 @@ function App() {
             <Route path="/MiPerfil" element={<Perfil  noUrl={2} />}/>
           </Route>
          
+          <Route path="/Prueba-Empresa" element={<Module  noUrl={3} />}/>
         </Routes>
     </BrowserRouter>
 
