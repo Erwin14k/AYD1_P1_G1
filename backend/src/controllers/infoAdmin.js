@@ -37,6 +37,7 @@ module.exports.companyRequest = async (req, res, next) => {
     companyId: req.body.companyId,
     companyStatus:req.body.companyStatus,
   };
+  console.log(args);
   // Operations on db
   const result=await Admin.companyRequest(args);
   // response

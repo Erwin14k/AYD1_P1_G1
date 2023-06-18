@@ -23,7 +23,7 @@ module.exports.deliveryManRegistration = async (req, res) => {
         //Verify if the email already exists
         if(verifyEmail.length>0 &&verifyEmail[0].deliveryManId){
           // If exists the delivery_man cannot register
-          return res.status(500).json({ message: 'El correo proporcionado ya está asociado a otra cuenta de repartidor, intenta con otro correo o inicia sesión con la cuenta asociada!'});
+          return res.status(500).json({ status:500,essage: 'El correo proporcionado ya está asociado a otra cuenta de repartidor, intenta con otro correo o inicia sesión con la cuenta asociada!'});
         }
         // If the email not exists, the delivery_man can register
         await DeliveryMan.register(deliveryManName,deliveryManSurname,deliveryManEmail,
@@ -36,7 +36,7 @@ module.exports.deliveryManRegistration = async (req, res) => {
         res.status(500).json({status:500, message: 'Error registrando al repartidor con el correo: '+deliveryManEmail});
       }
     }else{
-      return res.status(500).json({ message: 'Fallo en la carga del PDF :(' });
+      return res.status(500).json({ status:500,message: 'Fallo en la carga del PDF :(' });
     }
 
     // Delete element from S3
@@ -83,7 +83,7 @@ module.exports.deliveryManLogin = async (req, res, next) => {
           .status(200)
           .json({
             status: 200,
-            type: 3,
+            type: 2,
             message: "Inicio de sesión exitoso de repartidor :)",
             data: [
               {
@@ -101,13 +101,13 @@ module.exports.deliveryManLogin = async (req, res, next) => {
     res
       .status(409)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ message: "Correo o contraseña incorrectos :( , intenta de nuevo." });
+      .json({ status:409,message: "Correo o contraseña incorrectos :( , intenta de nuevo." });
   } catch (error) {
     console.log(error);
     // if an error occurs
     res
       .status(400)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ message: error});
+      .json({status:400, message: error});
   }
 };
