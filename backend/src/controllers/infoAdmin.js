@@ -12,7 +12,7 @@ module.exports.adminInfo = async (req, res, next) => {
   return res
     .status(200)
     .json({
-      messsage: "Data Successfully",
+      messsage: "Información del administrador recuperada con éxito!",
       adminData:result,
   });
 };
@@ -28,7 +28,7 @@ module.exports.deliveryManRequest = async (req, res, next) => {
   return res
     .status(200)
     .json({
-      message: `Delivery man with the id: ${args.deliveryManId}, updated to: ${args.deliveryManStatus}`,
+      message: `El repartidor con el id: ${args.deliveryManId}, Su estado a cambiado a: ${args.deliveryManStatus}`,
   });
 };
 
@@ -43,7 +43,7 @@ module.exports.companyRequest = async (req, res, next) => {
   return res
     .status(200)
     .json({
-      message: `Company with the id: ${args.companyId}, updated to: ${args.companyStatus}`,
+      message: `La empresa con el id: ${args.companyId}, Su estado a cambiado a: ${args.companyStatus}`,
   });
 };
 
@@ -55,7 +55,7 @@ module.exports.getUserCounters = async (req, res, next) => {
   return res
     .status(200)
     .json({
-      message: `Users counters obtained successfully!!`,
+      message: `Contadores de usuarios segun sus estados, obtenidos con éxito!`,
       data:{
         activeUserCount:result[0].activeUserCount,
         blockedUserCount:result[0].blockedUserCount,

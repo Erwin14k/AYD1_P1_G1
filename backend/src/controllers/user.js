@@ -9,16 +9,16 @@ module.exports.userRegistration = async (req, res) => {
     //Verify if the email already exists
     if(verifyEmail.length>0 &&verifyEmail[0].userId){
       // If exists the user cannot register
-      return res.status(500).json({status: 500, message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
+      return res.status(500).json({status: 500, message: 'El correo proporcionado ya está asociado a otra cuenta de cliente, intenta con otro correo o inicia sesión con la cuenta asociada!'});
     }
     // If not exists the user can register
     await User.register(userEmail, bcrypt.hashSync(userPassword, 8),userName,userSurname);
     res.status(200).json(
-      { status: 200,message: 'User registered successfully'}
+      { status: 200,message: 'Cliente registrado satisfactoriamente!!'}
     );
   } catch (error) {
     console.log(error);
-    res.status(500).json({status: 500, message: 'Error registering the user with the email: '+userEmail});
+    res.status(500).json({status: 500, message: 'Error registrando al cliente con el correo: '+userEmail});
   }
 };
 
@@ -37,7 +37,7 @@ module.exports.userLogin = async (req, res, next) => {
       // If the user is not active
       return res.status(403).json({
         status: 403,
-        message: "Usuario esta inactivo",
+        message: "Esta cuenta de cliente, se encuentra inhabilitada del sistema :(",
       });
     }
     // Find the password
@@ -57,7 +57,7 @@ module.exports.userLogin = async (req, res, next) => {
           .json({
             status: 200,
             type: 1,
-            message: "Login Successfully Client",
+            message: "Inicio de sesión exitoso como cliente :)",
             data: [
               {
                 userId:result[4],
@@ -74,7 +74,7 @@ module.exports.userLogin = async (req, res, next) => {
     res
       .status(409)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ message: "Email or password not valid" });
+      .json({ message: "Correo o contraseña incorrectos :( , intenta de nuevo." });
   } catch (error) {
     console.log(error);
     // if an error occurs

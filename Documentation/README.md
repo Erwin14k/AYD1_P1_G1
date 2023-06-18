@@ -143,7 +143,7 @@ que les permita acceder a su módulo correspondiente si se encuentran coincidenc
 **Curso normal de los eventos:**
 	 1. El usuario se dirige al módulo de inicio de sesión.
 	 2. El usuario ingresa sus credenciales.
-   3. El usuario ingresa al sistema.
+    3. El usuario ingresa al sistema.
 **Cursos alternos:**
 	 1. El usuario recibe una notificación que le indica credenciales incorrectas, para
 			que intente de nuevo.
@@ -158,8 +158,8 @@ para su posteriror uso,el sistema comprueba que el cliente no este registrado co
 **Curso normal de los eventos:**
 	 1. El cliente se dirige al módulo de registro de clientes.
 	 2. El cliente ingresa sus datos, con los que se quiere registrar.
-   3. El sistema busca que no existan coincidencias de datos al querer registrarse.
-   4. El sistema notifica que el cliente se ha registrado satisfactoriamente.
+    3. El sistema busca que no existan coincidencias de datos al querer registrarse.
+    4. El sistema notifica que el cliente se ha registrado satisfactoriamente.
 **Cursos alternos:**
 	 1. El sistema notifica que ya existe un cliente con la misma dirección de correo eléctronico
       registrado en el sistema.
@@ -193,8 +193,8 @@ no este registrado con anterioridad para poder registrarse y ofrecer sus product
 **Curso normal de los eventos:**
 	 1. La empresa se dirige al módulo de registro de empresas.
 	 2. La empresa ingresa sus datos, con los que se quiere registrar.
-   3. El sistema busca que no existan coincidencias de datos al querer registrarse.
-   4. El sistema notifica que la empresa se ha registrado satisfactoriamente, a la
+    3. El sistema busca que no existan coincidencias de datos al querer registrarse.
+    4. El sistema notifica que la empresa se ha registrado satisfactoriamente, a la
       espera que se apruebe su solicitud por un administrador.
 **Cursos alternos:**
 	 1. El sistema notifica que ya existe una empresa con la misma dirección de correo eléctronico
@@ -210,11 +210,11 @@ incluidas sus calificaciones.
 **Curso normal de los eventos:**
 	 1. El repartidor se autentica con sus credenciales en el módulo de inicio de sesión.
 	 2. El sistema valida credenciales correctas y que haya sido aprobado por un administrador.
-   3. El repartidor inicia sesión satisfactoriamente.
-   4. El repartidor puede acceder a su perfil, donde encontrará todos sus datos.
+    3. El repartidor inicia sesión satisfactoriamente.
+    4. El repartidor puede acceder a su perfil, donde encontrará todos sus datos.
 **Cursos alternos:**
 	 1. El sistema notifica que el repartidor ingresó credenciales incorrectas.
-   2. El sistema notifica que el repartidor aún no ha sido aprobado por un administrador.
+    2. El sistema notifica que el repartidor aún no ha sido aprobado por un administrador.
 ```
 
 ```
@@ -226,11 +226,11 @@ además podrá agregar información que detalle el proudcto.
 **Curso normal de los eventos:**
 	 1. La empresa se autentica con sus credenciales en el módulo de inicio de sesión.
 	 2. El sistema valida credenciales correctas y que haya sido aprobada por un administrador.
-   3. La empresa inicia sesión satisfactoriamente.
-   4. La empresa puede registrar productos y combos.
+    3. La empresa inicia sesión satisfactoriamente.
+    4. La empresa puede registrar productos y combos.
 **Cursos alternos:**
 	 1. El sistema notifica que la empresa ingresó credenciales incorrectas.
-   2. El sistema notifica que la empresa aún no ha sido aprobada por un administrador.
+    2. El sistema notifica que la empresa aún no ha sido aprobada por un administrador.
 ```
 
 # Herramienta de gestión de proyectos

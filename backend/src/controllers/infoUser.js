@@ -12,7 +12,7 @@ module.exports.userInfo = async (req, res, next) => {
   return res
     .status(200)
     .json({
-      messsage: "Data Successfully",
+      messsage: "Información del cliente recuperada con éxito!",
       userData:result,
   });
 };
