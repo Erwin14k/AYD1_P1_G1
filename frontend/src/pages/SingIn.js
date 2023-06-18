@@ -1,21 +1,23 @@
 import React from "react";
 import NavBar from "../components/NavBar";
 import NavBarLanding from "../static/NavBarLanding";
+import Cookie from 'cookie-universal'
+
 import { isEmail } from "validator";
 
 function SingIn({ url, noUrl }) {
    const handelSubmit = (e) => {
       e.preventDefault();
-      console.log("Formulario enviado", url);
+      // console.log("Formulario enviado", url);
 
       if (!isEmail(e.target[0].value)) return alert("Correo inválido");
-      console.log(e.target[0].value);
-      console.log(e.target[1].value);
-
+      
       const userData = {
          userEmail: e.target[0].value,
          userPassword: e.target[1].value,
       };
+
+      // console.log("Datos del usuario:", userData);
 
       fetch(url, {
          method: "POST",
@@ -30,6 +32,10 @@ function SingIn({ url, noUrl }) {
          .then((data) => {
             if(data.status===200){
                console.log("DAtos:",data);
+               const cookies = Cookie()
+               cookies.set("crr_user",data,{path:"/"});
+               console.log("Cookies:",cookies.get("crr_user"));
+
             }else{
                alert(data.message);
             }     

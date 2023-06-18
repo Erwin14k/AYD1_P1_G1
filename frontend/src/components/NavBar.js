@@ -1,10 +1,15 @@
 import {  Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
-
 import MiLogo from '../assets/AlChilazoLogo.png'
+import Cookie from 'cookie-universal'
+const cookies = Cookie()
+const crr_user = cookies.get("crr_user")
 
 function NavBar({customContend}) {
+
+
+
     return (
         <div className='App'>
             <nav className="navbar navbar-expand-lg" data-bs-theme="dark" style={{ backgroundColor: "black", position:"fixed", top:"0", left:"0", width:"100%" }}>

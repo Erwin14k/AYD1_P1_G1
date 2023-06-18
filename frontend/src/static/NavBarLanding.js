@@ -2,8 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import LoginIMG from '../assets/login.png'
 import regimg from '../assets/registro.png'
+import Cookie from 'cookie-universal'
+const cookies = Cookie()
+const crr_user = cookies.get("crr_user")
 
 const NavBarLanding = () => { 
+
   return (
     <ul className="navbar-nav">
       <li className="nav-item dropdown" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center" }}>

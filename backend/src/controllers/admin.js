@@ -3,11 +3,13 @@ const bcrypt = require("bcryptjs");
 
 
 module.exports.adminLogin = async (req, res, next) => {
+  
   // Body request parameters
   let args = {
     adminEmail: req.body.userEmail,
     adminPassword: req.body.userPassword,
   };
+  console.log("adminLogin",args);
   try {
     const verifyStatus=await Admin.verifyStatus(args.adminEmail);
     //Verify if the admin has an active status
@@ -35,7 +37,7 @@ module.exports.adminLogin = async (req, res, next) => {
           .json({
             status: 200,
             type: 0,
-            messsage: "Login Successfully Admin",
+            message: "Login Successfully Admin",
             data: [
               {
                 adminId:result[3],
@@ -51,7 +53,7 @@ module.exports.adminLogin = async (req, res, next) => {
     res
       .status(409)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ messsage: "Email or password not valid" });
+      .json({ message: "Email or password not valid" });
   } catch (error) {
     console.log(error);
     // if an error occurs

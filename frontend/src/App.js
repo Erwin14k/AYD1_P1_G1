@@ -14,6 +14,8 @@ import SingUpClient from './static/SingUpClient';
 import SingUpDeliveryMan from './static/SingUpDeliveryMan';
 import SingUpCompany from './static/SingUpCompany';
 
+import { ProtectedRoute } from './security/ProtectedRoute';
+
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -25,10 +27,12 @@ function App() {
           <Route path="/preguntas" element={<Preguntas/>} />
           <Route path="/politicas" element={<Politicas/>} />
 
-          <Route path="/Login-Admin" element={<SingIn url={"http://localhost:4200/admin/login"} noUrl={0}/>}/>
-          <Route path="/Login-Cliente" element={<SingIn url={"http://localhost:4200/user/login"} noUrl={1}/>}/>
-          <Route path="/Login-Repartidor" element={<SingIn url={"http://localhost:4200/delivery-man/login"} noUrl={2}/>}/>
-          <Route path="/Login-Empresa" element={<SingIn url={"http://localhost:4200/company/login"} noUrl={3}/>} />
+          <Route element={<ProtectedRoute redirectTo="/" condition={undefined} />}>
+            <Route path="/Login-Admin" element={<SingIn url={"http://localhost:4200/admin/login"} noUrl={0}/>}/>
+            <Route path="/Login-Cliente" element={<SingIn url={"http://localhost:4200/user/login"} noUrl={1}/>}/>
+            <Route path="/Login-Repartidor" element={<SingIn url={"http://localhost:4200/delivery-man/login"} noUrl={2}/>}/>
+            <Route path="/Login-Empresa" element={<SingIn url={"http://localhost:4200/company/login"} noUrl={3}/>} />
+          </Route>
 
           <Route path="/SingUp-Cliente" element={<SingUp  noUrl={1} customContent={<SingUpClient url={"http://localhost:4200/user/register"}/>} />}/>
           <Route path="/SingUp-Repartidor" element={<SingUp  noUrl={2} customContent={<SingUpDeliveryMan url={"http://localhost:4200/delivery-man/register"}/>} />}/>
