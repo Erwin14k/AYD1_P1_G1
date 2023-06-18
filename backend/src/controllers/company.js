@@ -21,21 +21,21 @@ module.exports.companyRegistration = async (req, res) => {
         //Verify if the email already exists
         if(verifyEmail.length>0 &&verifyEmail[0].companyId){
           // If exists the company cannot register
-          return res.status(500).json({ message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
+          return res.status(500).json({ message: 'El correo proporcionado ya está asociado a otra cuenta de empresa, intenta con otro correo o inicia sesión con la cuenta asociada!'});
         }
         // If the email not exists, the company can register
         await Company.register(companyName,companyDescription,companyCategory,companyEmail,
               bcrypt.hashSync(companyPassword, 8),companyDepartment,companyMunicipality,
               companyAddress,companyFile);
         res.status(200).json(
-          { message: 'Company registered successfully, Waiting for admission approval!!'}
+          { message: 'Empresa registrada satisfactoriamente, a la espera de la aprobación por el administrador!'}
         );
       } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error registering the company with the email: '+companyEmail});
+        res.status(500).json({ message: 'Error registrando a la empresa con el correo: '+companyEmail});
       }
     }else{
-      return res.status(500).json({ message: 'PDF upload failed' });
+      return res.status(500).json({ message: 'Fallo en la carga del PDF :(' });
     }
   });
 };
@@ -53,7 +53,7 @@ module.exports.companyLogin = async (req, res, next) => {
       // If the company is not active and not waiting a response
       return res.status(403).json({
         status: 403,
-        message: "Compañia es inactiva o no ha sido aprobada",
+        message: "La empresa está inhabilitada del sistema, o no ha sido aprobada por un administrador.",
       });
     }
     // Find the password
@@ -73,7 +73,7 @@ module.exports.companyLogin = async (req, res, next) => {
           .json({
             status: 200,
             type: 2,
-            message: "Login Successfully Company",
+            message: "Inicio de sesión exitoso de empresa :)",
             data: [
               {
                 companyId:result[4],
@@ -91,7 +91,7 @@ module.exports.companyLogin = async (req, res, next) => {
     res
       .status(409)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ message: "Email or password not valid" });
+      .json({ message: "Correo o contraseña incorrectos :( , intenta de nuevo." });
   } catch (error) {
     console.log(error);
     // if an error occurs
