@@ -65,8 +65,6 @@ function App() {
           <Route element={<ProtectedRouteUsers redirectTo="/Login-Cliente" condition={1}  condition2={2}/>}>
             <Route path="/MiPerfil" element={<Perfil  noUrl={2} />}/>
           </Route>
-         
-          <Route path="/Prueba-Empresa" element={<Module  noUrl={3} />}/>
         </Routes>
     </BrowserRouter>
 
