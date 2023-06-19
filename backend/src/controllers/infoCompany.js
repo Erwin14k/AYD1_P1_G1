@@ -57,6 +57,7 @@ module.exports.editProduct = async (req, res, next) => {
         productDescription:req.body.productDescription,
         productImg:req.file.location,
         productStock:req.body.productStock,
+        productImgKey: req.file.key
       };
       // Operations on db
       const result=await Company.editProduct(args);
@@ -73,6 +74,7 @@ module.exports.editProduct = async (req, res, next) => {
         productPrice:req.body.productPrice,
         productDescription:req.body.productDescription,
         productImg:undefined,
+        productImgKey: undefined,
         productStock:req.body.productStock,
       };
       // Operations on db
