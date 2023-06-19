@@ -60,11 +60,18 @@ module.exports.deliveryManLogin = async (req, res, next) => {
   try {
     const verifyStatus=await DeliveryMan.verifyStatus(args.deliveryManEmail);
     //Verify if the delivery_man has an active status
-    if(verifyStatus.length>0 &&verifyStatus[0].deliveryManStatus!=="Active"){
+    if(verifyStatus.length>0 &&verifyStatus[0].deliveryManStatus!=="Active" && verifyStatus[0].deliveryManStatus==="Waiting"){
       // If the user is not active
       return res.status(403).json({
         status: 403,
-        message: "Esta cuenta de repartidor está inhabilitada del sistema, o no ha sido aprobada por un administrador.",
+        message: "Estimado repartidor, su solicitud aún está a la espera de una aprobación por un administrador, intenta de nuevo en otro momento!",
+      });
+    }
+    if(verifyStatus.length>0 &&verifyStatus[0].deliveryManStatus!=="Active" && verifyStatus[0].deliveryManStatus==="Declined"){
+      // If the user is not active
+      return res.status(403).json({
+        status: 403,
+        message: "Estimado repartidor, su solicitud para el registro de su persona como repartidor fue rechazada por un administrador :(",
       });
     }
     // Find the password

@@ -49,11 +49,18 @@ module.exports.companyLogin = async (req, res, next) => {
   try {
     const verifyStatus=await Company.verifyStatus(args.companyEmail);
     //Verify if the company has an active or waiting status 
-    if(verifyStatus.length>0 && verifyStatus[0].companyStatus!=="Active"){
+    if(verifyStatus.length>0 && verifyStatus[0].companyStatus!=="Active" && verifyStatus[0].companyStatus==="Waiting"){
       // If the company is not active and not waiting a response
       return res.status(403).json({
         status: 403,
-        message: "La empresa está inhabilitada del sistema, o no ha sido aprobada por un administrador.",
+        message: "La empresa aún está a la espera de una aprobación por un administrador, intenta de nuevo en otro momento!",
+      });
+    }
+    if(verifyStatus.length>0 && verifyStatus[0].companyStatus!=="Active" && verifyStatus[0].companyStatus==="Declined"){
+      // If the company is not active and not waiting a response
+      return res.status(403).json({
+        status: 403,
+        message: "La solicitud para el registro de esta empresa fue rechazada por un administrador :(",
       });
     }
     // Find the password
