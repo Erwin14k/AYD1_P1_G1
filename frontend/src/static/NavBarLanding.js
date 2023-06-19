@@ -2,14 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import LoginIMG from '../assets/login.png'
 import regimg from '../assets/registro.png'
-import Cookie from 'cookie-universal'
-const cookies = Cookie()
-const crr_user = cookies.get("crr_user")
 
 const NavBarLanding = () => { 
 
   return (
-    <ul className="navbar-nav">
+    <ul className="navbar-nav" style={{marginRight: "20px"}}>
       <li className="nav-item dropdown" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center" }}>
         <img src={regimg} alt="Bootstrap" width="32" height="27" />
         <button type="button" className="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
