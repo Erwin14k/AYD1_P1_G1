@@ -167,7 +167,7 @@ module.exports.editProduct = async ({productId,productName, productPrice,
       Key: result[0].product_img_key,
     };
     const commandDelete = new DeleteObjectCommand(deleteParams);
-    await s3.send(commandDelete);
+    await amazonConfig.s3.send(commandDelete);
 
     // Update img file
     const updateProductImgStatement = `UPDATE product SET product_img = ?, product_img_key = ? WHERE product_id = ?`;
