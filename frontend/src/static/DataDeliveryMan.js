@@ -98,7 +98,7 @@ const DataDeliveryMan = ({ delivery_man_name,delivery_man_surname,delivery_man_d
                         type="text"
                         id="form3Example2"
                         className="form-control"
-                        value={delivery_man_transport}
+                        value={delivery_man_transport === "1" ? "Si" : "No"}
                      />
                   </div>
                </div>
