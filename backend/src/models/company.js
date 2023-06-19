@@ -130,7 +130,7 @@ module.exports.newProduct = async ({companyId, productType,productName, productP
 
 // Editing a product associated to the company on the db
 module.exports.editProduct = async ({productId,productName, productPrice,
-  productDescription,productImg,productStock,productImgkey}) => {
+  productDescription,productImg,productStock,productImgKey}) => {
 
   if(productName!==undefined){
     const updateProductNameStatement = `UPDATE product SET product_name = ? WHERE product_id = ?`;
@@ -172,7 +172,7 @@ module.exports.editProduct = async ({productId,productName, productPrice,
     // Update img file
     const updateProductImgStatement = `UPDATE product SET product_img = ?, product_img_key = ? WHERE product_id = ?`;
     //bindings
-    const binds = [productImg,productImgkey,productId];
+    const binds = [productImg,productImgKey,productId];
     await db.pool(updateProductImgStatement, binds);
   }
   
