@@ -13,7 +13,7 @@ module.exports.companyRegistration = async (req, res) => {
       const { companyName, companyDescription,companyEmail,companyPassword,companyCategory,
         companyDepartment,companyMunicipality,companyAddress} = req.body;
       const companyFile = req.file.location;
-      const keyFile = req.file.key 
+      const keyFile = req.file.key; 
       // console.log(keyFile);
 
       try {
@@ -21,21 +21,21 @@ module.exports.companyRegistration = async (req, res) => {
         //Verify if the email already exists
         if(verifyEmail.length>0 &&verifyEmail[0].companyId){
           // If exists the company cannot register
-          return res.status(500).json({ message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
+          return res.status(500).json({status:500, message: 'El correo proporcionado ya está asociado a otra cuenta de empresa, intenta con otro correo o inicia sesión con la cuenta asociada!'});
         }
         // If the email not exists, the company can register
         await Company.register(companyName,companyDescription,companyCategory,companyEmail,
               bcrypt.hashSync(companyPassword, 8),companyDepartment,companyMunicipality,
-              companyAddress,companyFile);
+              companyAddress,companyFile,keyFile);
         res.status(200).json(
-          { message: 'Company registered successfully, Waiting for admission approval!!'}
+          {status:200,  message: 'Empresa registrada satisfactoriamente, a la espera de la aprobación por el administrador!'}
         );
       } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error registering the company with the email: '+companyEmail});
+        res.status(500).json({status:500, message: 'Error registrando a la empresa con el correo: '+companyEmail});
       }
     }else{
-      return res.status(500).json({ message: 'PDF upload failed' });
+      return res.status(500).json({status:500, message: 'Fallo en la carga del PDF :(' });
     }
   });
 };
@@ -49,11 +49,18 @@ module.exports.companyLogin = async (req, res, next) => {
   try {
     const verifyStatus=await Company.verifyStatus(args.companyEmail);
     //Verify if the company has an active or waiting status 
-    if(verifyStatus.length>0 && verifyStatus[0].companyStatus!=="Active"){
+    if(verifyStatus.length>0 && verifyStatus[0].companyStatus!=="Active" && verifyStatus[0].companyStatus==="Waiting"){
       // If the company is not active and not waiting a response
       return res.status(403).json({
         status: 403,
-        message: "Compañia es inactiva o no ha sido aprobada",
+        message: "La empresa aún está a la espera de una aprobación por un administrador, intenta de nuevo en otro momento!",
+      });
+    }
+    if(verifyStatus.length>0 && verifyStatus[0].companyStatus!=="Active" && verifyStatus[0].companyStatus==="Declined"){
+      // If the company is not active and not waiting a response
+      return res.status(403).json({
+        status: 403,
+        message: "La solicitud para el registro de esta empresa fue rechazada por un administrador :(",
       });
     }
     // Find the password
@@ -72,8 +79,8 @@ module.exports.companyLogin = async (req, res, next) => {
           .status(200)
           .json({
             status: 200,
-            type: 2,
-            message: "Login Successfully Company",
+            type: 3,
+            message: "Inicio de sesión exitoso de empresa :)",
             data: [
               {
                 companyId:result[4],
@@ -91,7 +98,7 @@ module.exports.companyLogin = async (req, res, next) => {
     res
       .status(409)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ message: "Email or password not valid" });
+      .json({ message: "Correo o contraseña incorrectos :( , intenta de nuevo." });
   } catch (error) {
     console.log(error);
     // if an error occurs

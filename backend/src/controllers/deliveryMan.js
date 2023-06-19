@@ -23,20 +23,20 @@ module.exports.deliveryManRegistration = async (req, res) => {
         //Verify if the email already exists
         if(verifyEmail.length>0 &&verifyEmail[0].deliveryManId){
           // If exists the delivery_man cannot register
-          return res.status(500).json({ message: 'This email is already associated with another account, try again with a new email or log in to your associated account!'});
+          return res.status(500).json({ status:500,essage: 'El correo proporcionado ya está asociado a otra cuenta de repartidor, intenta con otro correo o inicia sesión con la cuenta asociada!'});
         }
         // If the email not exists, the delivery_man can register
         await DeliveryMan.register(deliveryManName,deliveryManSurname,deliveryManEmail,
               bcrypt.hashSync(deliveryManPassword, 8),deliveryManPhone,deliveryManDepartment,
-              deliveryManMunicipality,deliveryManLicenseType,deliveryManTransport,deliveryManResume);
-        res.status(200).json({status:200 ,message: 'Delivery Man registered successfully, Waiting for admission approval!!'}
+              deliveryManMunicipality,deliveryManLicenseType,deliveryManTransport,deliveryManResume,keyFile);
+        res.status(200).json({status:200 ,message: 'Repartidor registrado satisfactoriamente, a la espera de la aprobación por el administrador!'}
         );
       } catch (error) {
         console.log(error);
-        res.status(500).json({status:500, message: 'Error registering the delivery_man with the email: '+deliveryManEmail});
+        res.status(500).json({status:500, message: 'Error registrando al repartidor con el correo: '+deliveryManEmail});
       }
     }else{
-      return res.status(500).json({ message: 'PDF upload failed' });
+      return res.status(500).json({ status:500,message: 'Fallo en la carga del PDF :(' });
     }
 
     // Delete element from S3
@@ -60,11 +60,18 @@ module.exports.deliveryManLogin = async (req, res, next) => {
   try {
     const verifyStatus=await DeliveryMan.verifyStatus(args.deliveryManEmail);
     //Verify if the delivery_man has an active status
-    if(verifyStatus.length>0 &&verifyStatus[0].deliveryManStatus!=="Active"){
+    if(verifyStatus.length>0 &&verifyStatus[0].deliveryManStatus!=="Active" && verifyStatus[0].deliveryManStatus==="Waiting"){
       // If the user is not active
       return res.status(403).json({
         status: 403,
-        message: "Usuario aun no ha sido autorizado",
+        message: "Estimado repartidor, su solicitud aún está a la espera de una aprobación por un administrador, intenta de nuevo en otro momento!",
+      });
+    }
+    if(verifyStatus.length>0 &&verifyStatus[0].deliveryManStatus!=="Active" && verifyStatus[0].deliveryManStatus==="Declined"){
+      // If the user is not active
+      return res.status(403).json({
+        status: 403,
+        message: "Estimado repartidor, su solicitud para el registro de su persona como repartidor fue rechazada por un administrador :(",
       });
     }
     // Find the password
@@ -83,8 +90,8 @@ module.exports.deliveryManLogin = async (req, res, next) => {
           .status(200)
           .json({
             status: 200,
-            type: 3,
-            message: "Login Successfully Delivery Man",
+            type: 2,
+            message: "Inicio de sesión exitoso de repartidor :)",
             data: [
               {
                 deliveryManId:result[4],
@@ -101,13 +108,13 @@ module.exports.deliveryManLogin = async (req, res, next) => {
     res
       .status(409)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ message: "Email or password not valid" });
+      .json({ status:409,message: "Correo o contraseña incorrectos :( , intenta de nuevo." });
   } catch (error) {
     console.log(error);
     // if an error occurs
     res
       .status(400)
       .clearCookie("auth_token", { sameSite: "none", secure: true })
-      .json({ message: error});
+      .json({status:400, message: error});
   }
 };

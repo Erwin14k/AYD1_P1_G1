@@ -40,29 +40,29 @@ function App() {
           </Route>
 
           {/*admin = 0*/}
-          <Route element={<ProtectedRouteUsers redirectTo="/" condition={0} />}>
+          <Route element={<ProtectedRouteUsers redirectTo="/Login-Admin" condition={0} />}>
             <Route path="/Module-Admin" element={<Module  noUrl={0} />}/>
             <Route path="/Reportes-Admin" element={<Reportes noUrl={0}/>}/>
           </Route>
 
           {/*client = 1*/}
-          <Route element={<ProtectedRouteUsers redirectTo="/" condition={1} />}>
+          <Route element={<ProtectedRouteUsers redirectTo="/Login-Cliente" condition={1} />}>
             <Route path="/Module-Cliente" element={<Module  noUrl={1} />}/>
           </Route>
 
           {/*deliveryman = 2*/}
-          <Route element={<ProtectedRouteUsers redirectTo="/" condition={2} />}>
+          <Route element={<ProtectedRouteUsers redirectTo="/Login-Repartidor" condition={2} />}>
             <Route path="/Module-Repartidor" element={<Module  noUrl={2} />}/>
           </Route>
 
           {/*company = 3*/}
-          <Route element={<ProtectedRouteUsers redirectTo="/" condition={3} />}>
+          <Route element={<ProtectedRouteUsers redirectTo="/Login-Empresa" condition={3} />}>
             <Route path="/Module-Empresa" element={<Module  noUrl={3} />}/>
             <Route path="/Reportes-Empresa" element={<Reportes noUrl={3}/>}/>
           </Route>
 
           
-          <Route element={<ProtectedRouteUsers redirectTo="/" condition={1}  condition2={2}/>}>
+          <Route element={<ProtectedRouteUsers redirectTo="/Login-Cliente" condition={1}  condition2={2}/>}>
             <Route path="/MiPerfil" element={<Perfil  noUrl={2} />}/>
           </Route>
          

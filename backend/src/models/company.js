@@ -1,5 +1,6 @@
 const db = require('../utils/db');
-
+const { DeleteObjectCommand} = require("@aws-sdk/client-s3");
+const amazonConfig = require("../config/amazonS3");
 
 module.exports.hashPassword = ({ companyEmail }) => {
   const SQL_HASH_PASSWORD = `SELECT company_password FROM company WHERE company_email = ?`;
@@ -9,12 +10,12 @@ module.exports.hashPassword = ({ companyEmail }) => {
 
 // Registering a new company on the db
 module.exports.register = async (companyName, companyDescription,companyCategory, companyEmail,
-                                companyPassword,companyDepartment,companyMunicipality,companyAddress,companyFile) => {
+                                companyPassword,companyDepartment,companyMunicipality,companyAddress,companyFile,companyFileKey) => {
   const statement = `INSERT INTO company (company_name, company_description, company_category, company_email,
-                      company_password,company_department,company_municipality,company_address,company_status,admin_id,company_file) 
-                      VALUES (?,?,?,?,?,?,?,?,?,?,?)`;
+                      company_password,company_department,company_municipality,company_address,company_status,admin_id,company_file,company_file_key) 
+                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`;
   const binds = [companyName,companyDescription,companyCategory,companyEmail,companyPassword,
-                companyDepartment,companyMunicipality,companyAddress,'Waiting',-1,companyFile];
+                companyDepartment,companyMunicipality,companyAddress,'Waiting',-1,companyFile,companyFileKey];
   return(await db.pool(statement, binds));
 };
 
@@ -116,20 +117,20 @@ module.exports.info = ({ companyId }) => {
 
 // Registering a new product associated to the company on the db
 module.exports.newProduct = async ({companyId, productType,productName, productPrice,
-  productDescription,productImg,productNumberOfSales,productStock}) => {
+  productDescription,productImg,productNumberOfSales,productStock,productImgKey}) => {
   const statement = `INSERT INTO product (company_id, product_type, product_name, product_price,
-    product_description,product_img,product_number_of_sales,product_stock) 
-    VALUES (?,?,?,?,?,?,?,?)`;
+    product_description,product_img,product_number_of_sales,product_stock,product_img_key) 
+    VALUES (?,?,?,?,?,?,?,?,?)`;
 //bindings
   const binds = [companyId,productType,productName,productPrice,productDescription,
-  productImg,productNumberOfSales,productStock];
+  productImg,productNumberOfSales,productStock,productImgKey];
   return(await db.pool(statement, binds));
 };
 
 
 // Editing a product associated to the company on the db
 module.exports.editProduct = async ({productId,productName, productPrice,
-  productDescription,productImg,productStock}) => {
+  productDescription,productImg,productStock,productImgkey}) => {
 
   if(productName!==undefined){
     const updateProductNameStatement = `UPDATE product SET product_name = ? WHERE product_id = ?`;
@@ -156,9 +157,22 @@ module.exports.editProduct = async ({productId,productName, productPrice,
     await db.pool(updateProductStockStatement, binds);
   }
   if(productImg!==undefined){
-    const updateProductImgStatement = `UPDATE product SET product_img = ? WHERE product_id = ?`;
+    const selectProductImgStatement = `SELECT product_img_key FROM product WHERE product_id = ?`;
     //bindings
-    const binds = [productImg,productId];
+    const selectBinds = [productId];
+    const result=await db.pool(selectProductImgStatement, selectBinds);
+    // Delete element from S3
+    const deleteParams = {
+      Bucket: amazonConfig.bucketName,
+      Key: result[0].product_img_key,
+    };
+    const commandDelete = new DeleteObjectCommand(deleteParams);
+    await s3.send(commandDelete);
+
+    // Update img file
+    const updateProductImgStatement = `UPDATE product SET product_img = ?, product_img_key = ? WHERE product_id = ?`;
+    //bindings
+    const binds = [productImg,productImgkey,productId];
     await db.pool(updateProductImgStatement, binds);
   }
   

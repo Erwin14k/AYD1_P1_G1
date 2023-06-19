@@ -21,6 +21,7 @@ const ReportesAdmin = () => {
          .then((data) => {
             // Aquí puedes trabajar con los datos obtenidos
             console.log(data);
+            setUsersInfo(data.data);
          })
          .catch((error) => {
             // Manejo de errores
@@ -38,7 +39,7 @@ const ReportesAdmin = () => {
          <button
             type="button"
             onClick={() => actualizar()}
-            class="btn"
+            className="btn"
             style={{
                marginTop: "2%",
                backgroundColor: "#DB4F23",
@@ -48,7 +49,7 @@ const ReportesAdmin = () => {
             Actualizar
          </button>
          <ul
-            class="nav nav-tabs"
+            className="nav nav-tabs"
             id="myTab"
             role="tablist"
             style={{ marginTop: "2%" }}
@@ -96,9 +97,9 @@ const ReportesAdmin = () => {
                </button>
             </li>
          </ul>
-         <div class="tab-content" id="myTabContent">
+         <div className="tab-content" id="myTabContent">
             <div
-               class="tab-pane fade show active"
+               className="tab-pane fade show active"
                id="home"
                role="tabpanel"
                aria-labelledby="home-tab"
@@ -107,7 +108,7 @@ const ReportesAdmin = () => {
                INFORME DE VENTAS
             </div>
             <div
-               class="tab-pane fade"
+               className="tab-pane fade"
                id="profile"
                role="tabpanel"
                aria-labelledby="profile-tab"
@@ -171,7 +172,7 @@ const ReportesAdmin = () => {
                      </div>
                   </div>
 
-                  <div className="col-md-6">
+                  <div className="col-md-12">
                      <div className="card mb-4">
                         <div className="card-header">
                            Repartidores Rechazados
@@ -210,7 +211,7 @@ const ReportesAdmin = () => {
                      </div>
                   </div>
 
-                  <div className="col-md-6">
+                  <div className="col-md-12">
                      <div className="card mb-4">
                         <div className="card-header">Empresas Rechazadas</div>
                         <div className="card-body">
@@ -226,7 +227,7 @@ const ReportesAdmin = () => {
                </div>
             </div>
             <div
-               class="tab-pane fade"
+               className="tab-pane fade"
                id="repartidores"
                role="tabpanel"
                aria-labelledby="profile-tab"

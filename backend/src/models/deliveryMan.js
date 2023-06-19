@@ -10,14 +10,14 @@ module.exports.hashPassword = ({ deliveryManEmail }) => {
 // Registering a new delivery_man on the db
 module.exports.register = async (deliveryManName, deliveryManSurname,deliveryManEmail, deliveryManPassword,
   deliveryManPhone,deliveryManDepartment,deliveryManMunicipality,deliveryManLicenseType,deliveryManTransport,
-  deliveryManResume) => {
+  deliveryManResume,deliveryManResumeKey) => {
   const statement = `INSERT INTO delivery_man (delivery_man_name, delivery_man_surname, delivery_man_email, delivery_man_password,
                       delivery_man_phone,delivery_man_department,delivery_man_municipality,delivery_man_license_type,
-                      delivery_man_transport,delivery_man_status,delivery_man_rating,delivery_man_resume,admin_id) 
-                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+                      delivery_man_transport,delivery_man_status,delivery_man_rating,delivery_man_resume,admin_id,delivery_man_resume_key) 
+                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
   const binds = [deliveryManName,deliveryManSurname,deliveryManEmail,deliveryManPassword,deliveryManPhone,
     deliveryManDepartment,deliveryManMunicipality,deliveryManLicenseType,deliveryManTransport,
-    'Waiting',0.00,deliveryManResume,-1];
+    'Waiting',0.00,deliveryManResume,-1,deliveryManResumeKey];
   return(await db.pool(statement, binds));
 };
 

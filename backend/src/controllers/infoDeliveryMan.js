@@ -12,7 +12,7 @@ module.exports.deliveryManInfo = async (req, res, next) => {
   return res
     .status(200)
     .json({
-      messsage: "Data Successfully",
+      messsage: "Información del repartidor recuperada con éxito!",
       deliveryManData:result,
   });
 };

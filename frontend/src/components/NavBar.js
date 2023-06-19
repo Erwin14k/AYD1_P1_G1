@@ -24,7 +24,7 @@ function NavBar({customContend}) {
 
     return (
         <div className='App'>
-            <nav className="navbar navbar-expand-lg" data-bs-theme="dark" style={{ backgroundColor: "black", position:"fixed", top:"0", left:"0", width:"100%" }}>
+            <nav className="navbar navbar-expand-lg" data-bs-theme="dark" style={{ backgroundColor: "black", position:"fixed", top:"0", left:"0", width:"100%", zIndex: "1000" }}>
                 <div className="container-fluid">
                     <img src={MiLogo} alt="Bootstrap" width="30" height="30" />
                     <Link to="/" className="navbar-brand" style={{ marginLeft: "0.5%" }}>AlChilazo</Link>
