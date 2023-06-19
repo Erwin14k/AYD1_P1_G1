@@ -83,23 +83,27 @@ const ModuleCompany = () => {
 
     const FormAgregar = (props) => {
         const [stock, setStock] = useState(0);
-        const [price, setPrice] = useState(0);
+        const [price, setPrice] = useState(0.01);
 
         const handleStockChange = (event) => {
             const value = event.target.value;
             const intValue = parseInt(value);
 
-            if (!isNaN(intValue) && intValue >= 0) {
+            if (intValue >= 0) {
                 setStock(intValue.toString());
+            }else{
+                alert("El stock debe ser un 0 o positivo")
             }
         };
         const handleStockPrice = (event) => {
             const value = event.target.value;
 
             // Validar el formato utilizando una expresión regular
-            const regex = /^\d+(\.\d{0,2})?$/;
-            if (regex.test(value)) {
+          
+            if (event.target.value > 0) {
                 setPrice(value);
+            }else{
+                alert("El precio debe ser mayor a 0")
             }
         };
         const handleFileSelect = (event) => {
@@ -148,6 +152,7 @@ const ModuleCompany = () => {
                 formData.append("comboDescription", e.target[2].value)
                 formData.append("comboNumberOfSales", 0)
                 formData.append("comboStock", e.target[4].value)
+                formData.append("img", e.target[1].files[0])
 
                 if (props.edit === 1) {
                     /* formData.append("productId", props.combo_id) */
@@ -178,6 +183,7 @@ const ModuleCompany = () => {
                     console.error('Error:', error)
                 });
         };
+
         return (
             <div>
                 <form onSubmit={handelSubmit} style={{ width: "80%", margin: "auto", marginTop: "3%" }}>
@@ -215,9 +221,9 @@ const ModuleCompany = () => {
                                         type="number"
                                         step="0.01"
                                         className="form-control"
-                                        defaultValue={props.type === 0 && props.edit === 1 ? props.info.product_price : props.type === 1 && props.edit === 1 ? props.info.combo_price : price}
                                         id="formPrice"
                                         onChange={handleStockPrice}
+                                        value={props.type === 0 && props.edit === 1 ? props.info.product_price : props.type === 1 && props.edit === 1 ? props.info.combo_price : price}
                                     />
                                     <label className="form-label" htmlFor="formPrice">
                                         Precio
@@ -248,9 +254,9 @@ const ModuleCompany = () => {
                                         type="number"
                                         step="1"
                                         className="form-control"
-                                        defaultValue={props.type === 0 && props.edit === 1 ? props.info.product_stock : props.type === 1 && props.edit === 1 ? props.info.combo_stock : stock}
                                         id="formStock"
                                         onChange={handleStockChange}
+                                        value={props.type === 0 && props.edit === 1 ? props.info.product_stock : props.type === 1 && props.edit === 1 ? props.info.combo_stock : stock}
                                     />
                                     <label className="form-label" htmlFor="formStock">
                                         Stock
