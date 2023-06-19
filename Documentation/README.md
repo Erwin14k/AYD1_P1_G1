@@ -1,5 +1,6 @@
 # Documentación Fase 1 - AlChilazo
 
+
 # Integrantes
 
 | Carné | Nombre |
@@ -7,6 +8,9 @@
 | 202004816 | Kevin Steve Martinez Lemus |
 | 202001534 | Erwin Fernando Vásquez Peñate |
 | 202000119 | Sergie Daniel Arizandieta Yol |
+
+# Logo
+![Untitled](Images/logo.png)
 
 # Modelo de branching utilizado
 
@@ -71,6 +75,28 @@ Además de estas ramas principales, Gitflow utiliza ramas auxiliares para gestio
 - Dashboard Principal (Perfil)
 
 ![Untitled](Images/profile.png)
+
+# Tecnologías usadas
+## Frontend:
+Para el desarrollo del frontend de la aplicación web, hemos utilizado React. React es una biblioteca de JavaScript ampliamente utilizada y respaldada por Facebook. Su enfoque en componentes reutilizables y su capacidad para actualizar de manera eficiente la interfaz de usuario hacen de React una elección ideal para aplicaciones web interactivas y receptivas.
+
+
+## Backend:
+En cuanto al backend de la aplicación, hemos utilizado Node.js. Node.js es un entorno de ejecución de JavaScript basado en el motor V8 de Google Chrome. Gracias a su arquitectura de un solo subproceso y su capacidad para manejar solicitudes de forma asincrónica, Node.js ofrece un rendimiento óptimo y escalabilidad para aplicaciones web de alta carga.
+
+## Base de datos:
+Para almacenar y gestionar los datos de la aplicación, hemos utilizado Amazon RDS en conjunto con MySQL. RDS (Amazon Relational Database Service) es un servicio de bases de datos relacionales totalmente administrado proporcionado por Amazon Web Services (AWS). MySQL, por su parte, es un sistema de gestión de bases de datos relacional ampliamente utilizado y confiable. La combinación de RDS y MySQL nos brinda una solución robusta y escalable para la persistencia de datos en nuestra aplicación.
+
+## Bucket S3:
+Además, hemos aprovechado el servicio de almacenamiento en la nube de AWS llamado Amazon S3 (Simple Storage Service) para guardar los archivos PDF e imágenes generados o utilizados en la aplicación. Los buckets de S3 proporcionan un almacenamiento seguro, escalable y duradero para los datos de la aplicación, permitiendo un acceso rápido y confiable a los archivos multimedia.
+
+## Resumen de tecnologías:
+La aplicación web "AlChilado" ha sido desarrollada utilizando React para el frontend, Node.js para el backend, Amazon RDS con MySQL para la base de datos, y Amazon S3 para el almacenamiento de archivos PDF e imágenes. Estas tecnologías han sido seleccionadas cuidadosamente para proporcionar un rendimiento óptimo, escalabilidad y seguridad en la aplicación.
+
+Por el momento el frontend y el backen solo se han utilizado de forma local debido a su constates modificaciones para esta primer fase y por temas de escalabilidad se implementaron los servicios de AWS que se mencionaron para que sea más accesible para todos trabajar con los mismos datos.
+
+# Arquitectura
+![Untitled](Images/arquitectura.png)
 
 # Modelo Entidad Relación
 
@@ -235,4 +261,8 @@ además podrá agregar información que detalle el proudcto.
 
 # Herramienta de gestión de proyectos
 
+## Jira:
+Jira es una herramienta de gestión de proyectos ampliamente utilizada para el desarrollo de software. Permite organizar tareas, hacer un seguimiento del progreso y colaborar en equipos. También ofrece funciones de seguimiento de errores e incidencias. Con tableros visuales y paneles personalizables, facilita la planificación y la toma de decisiones. En resumen, Jira ayuda a los equipos a trabajar de manera más organizada y eficiente en sus proyectos de desarrollo de software.
+
+### Tablero:
 [https://alchilazo-ayd1.atlassian.net/jira/software/projects/AL/boards/1](https://alchilazo-ayd1.atlassian.net/jira/software/projects/AL/boards/1)
