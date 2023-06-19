@@ -30,6 +30,7 @@ const ModuleCompany = () => {
     }; */
 
     const actualizar = () => {
+        console.log("actualizar")
         fetch(`http://localhost:4200/company/info`, {
             method: "GET",
             headers: {
@@ -279,7 +280,7 @@ const ModuleCompany = () => {
     return (
         <div style={{ width: "80%", margin: "auto", marginTop: "8%" }}>
             <h1>Bienvenido Empresa,</h1>
-
+            <button type="button" onClick={() => actualizar()} className="btn" style={{ marginTop: "2%", backgroundColor: "#DB4F23", color: "white" }}>Actualizar</button>
             <ul className="nav nav-tabs" id="myTab" role="tablist" style={{ marginTop: "5%" }}>
                 <li className="nav-item" role="presentation">
                     <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
