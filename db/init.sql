@@ -139,6 +139,7 @@ CREATE TABLE IF NOT EXISTS combo(
   combo_price DECIMAL(10,2) NOT NULL,
   combo_description VARCHAR(500) NOT NULL,
   combo_img VARCHAR(500) NOT NULL,
+  combo_img_key VARCHAR(500) NOT NULL,
   combo_number_of_sales INTEGER NOT NULL,
   combo_stock INTEGER NOT NULL,
   FOREIGN KEY (company_id) REFERENCES company(company_id) ON DELETE CASCADE
