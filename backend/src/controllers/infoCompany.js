@@ -115,6 +115,7 @@ module.exports.newCombo = async (req, res, next) => {
         comboImg:req.file.location,
         comboNumberOfSales:req.body.comboNumberOfSales,
         comboStock:req.body.comboStock,
+        comboImgKey: req.file.key
       };
       // Operations on db
       const result=await Company.newCombo(args);
@@ -127,5 +128,61 @@ module.exports.newCombo = async (req, res, next) => {
     }else{
       return res.status(500).json({ message: 'Fallo en la carga de la imágen del combo :(' });
     }
+  });
+};
+
+module.exports.editCombo = async (req, res, next) => {
+  upload.single('img')(req, res, async (err) => {
+    if(req.file !== undefined){
+      let args = {
+        comboId:req.body.comboId,
+        comboName:req.body.comboName,
+        comboPrice:req.body.comboPrice,
+        comboDescription:req.body.comboDescription,
+        comboImg:req.file.location,
+        comboStock:req.body.productStock,
+        comboImgKey: req.file.key
+      };
+      // Operations on db
+      const result=await Company.editCombo(args);
+      // response
+      return res
+        .status(200)
+        .json({
+          message: `El combo: ${args.comboName}, fue actualizado satisfactoriamente :)`,
+      });
+    }else{
+      let args = {
+        comboId:req.body.comboId,
+        comboName:req.body.comboName,
+        comboPrice:req.body.comboPrice,
+        comboDescription:req.body.comboDescription,
+        comboImg:undefined,
+        comboStock:req.body.productStock,
+        comboImgKey: undefined
+      };
+      // Operations on db
+      const result=await Company.editCombo(args);
+      // response
+      return res
+        .status(200)
+        .json({
+          message: `El combo: ${args.comboName}, fue actualizado satisfactoriamente :)`,
+      });
+    }
+  });
+};
+
+module.exports.deleteCombo = async (req, res, next) => {
+  let args = {
+    comboId:req.body.comboId,
+  };
+  // Operations on db
+  const result=await Company.deleteCombo(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      message: `El combo: ${args.comboId}, fue eliminado satisfactoriamente :)`,
   });
 };

@@ -192,12 +192,72 @@ module.exports.deleteProduct = async ({productId}) => {
 
 // Registering a new combo associated to the company on the db
 module.exports.newCombo = async ({companyId,comboName,comboPrice, comboDescription,
-  comboImg,comboNumberOfSales,comboStock}) => {
+  comboImg,comboNumberOfSales,comboStock,comboImgKey}) => {
   const comboStatement = `INSERT INTO combo (company_id, combo_name, combo_price, combo_description,
-  combo_img,combo_number_of_sales,combo_stock) 
-  VALUES (?,?,?,?,?,?,?)`;
+  combo_img,combo_number_of_sales,combo_stock,combo_img_key) 
+  VALUES (?,?,?,?,?,?,?,?)`;
 //bindings
-  const comboBinds = [companyId,comboName,comboPrice,comboDescription,comboImg,comboNumberOfSales,comboStock];
+  const comboBinds = [companyId,comboName,comboPrice,comboDescription,comboImg,comboNumberOfSales,comboStock,comboImgKey];
   return(await db.pool(comboStatement, comboBinds));
+};
+
+
+// Editing a combo associated to the company on the db
+module.exports.editCombo = async ({comboId,comboName, comboPrice,
+  comboDescription,comboImg,comboStock,comboImgKey}) => {
+
+  if(comboName!==undefined){
+    const updateComboNameStatement = `UPDATE combo SET combo_name = ? WHERE combo_id = ?`;
+    //bindings
+    const binds = [comboName,comboId];
+    await db.pool(updateComboNameStatement, binds);
+  }
+  if(comboPrice!==undefined){
+    const updateComboPriceStatement = `UPDATE combo SET combo_price = ? WHERE combo_id = ?`;
+    //bindings
+    const binds = [comboPrice,comboId];
+    await db.pool(updateComboPriceStatement, binds);
+  }
+  if(comboDescription!==undefined){
+    const updateComboDescriptionStatement = `UPDATE combo SET combo_description = ? WHERE combo_id = ?`;
+    //bindings
+    const binds = [comboDescription,comboId];
+    await db.pool(updateComboDescriptionStatement, binds);
+  }
+  if(comboStock!==undefined){
+    const updateComboStockStatement = `UPDATE combo SET combo_stock = ? WHERE combo_id = ?`;
+    //bindings
+    const binds = [comboStock,comboId];
+    await db.pool(updateComboStockStatement, binds);
+  }
+  if(comboImg!==undefined){
+    const selectComboImgStatement = `SELECT combo_img_key FROM combo WHERE combo_id = ?`;
+    //bindings
+    const selectBinds = [comboId];
+    const result=await db.pool(selectComboImgStatement, selectBinds);
+    // Delete element from S3
+    const deleteParams = {
+      Bucket: amazonConfig.bucketName,
+      Key: result[0].combo_img_key,
+    };
+    const commandDelete = new DeleteObjectCommand(deleteParams);
+    await amazonConfig.s3.send(commandDelete);
+
+    // Update img file
+    const updateComboStatement = `UPDATE combo SET combo_img = ?, combo_img_key = ? WHERE combo_id = ?`;
+    //bindings
+    const binds = [comboImg,comboImgKey,comboId];
+    await db.pool(updateComboStatement, binds);
+  }
+  
+};
+
+
+// Deleting a combo
+module.exports.deleteCombo = async ({comboId}) => {
+  const statement = `DELETE FROM combo WHERE combo_id = ?`;
+  // bindings
+  const binds = [comboId];
+  return await db.pool(statement, binds);
 };
 
