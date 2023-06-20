@@ -2,8 +2,8 @@ import React from "react";
 import NavBar from "../components/NavBar";
 import NavBarLanding from "../static/NavBarLanding";
 import Cookie from 'cookie-universal'
-
 import { isEmail } from "validator";
+import swal from 'sweetalert';
 
 function SingIn({ url, noUrl }) {
    const handelSubmit = (e) => {
@@ -26,24 +26,29 @@ function SingIn({ url, noUrl }) {
          },
          body: JSON.stringify(userData),
        })
-         .then((response) => {
-            return response.json(); 
+      .then((response) => {
+         return response.json(); 
+      })
+      .then(async  (data) => {
+
+         await swal({
+            title: "Querido Usuario",
+            text: data.message,
+            icon: data.status===200 ? "success":"error",
+            button: true,
          })
-         .then((data) => {
-            if(data.status===200){
-               alert(data.message);
-               console.log("DAtos:",data);
-               const cookies = Cookie()
-               cookies.set("crr_user",data,{path:"/"});
-               console.log("Cookies:",cookies.get("crr_user"));
-               window.location.reload();
-            }else{
-               alert(data.message);
-            }     
-         })
-         .catch((error) => {
-           console.log("Error en la solicitud:", error);
-         });
+            
+         if(data.status===200){
+            console.log("DAtos:",data);
+            const cookies = Cookie()
+            cookies.set("crr_user",data,{path:"/"});
+            console.log("Cookies:",cookies.get("crr_user"));
+            window.location.reload();
+         }
+      })
+      .catch((error) => {
+         console.log("Error en la solicitud:", error);
+      });
    };
 
    return (
