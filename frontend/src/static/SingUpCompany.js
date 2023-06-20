@@ -2,18 +2,40 @@ import React, { useState } from "react";
 import departmentsGuatemala from "./departmentsGuatemala";
 import {validateName,validatePassword} from "../func/validations";
 import { isEmail } from 'validator';
+import swal from 'sweetalert';
 
 const SingUpCompany = ({ url }) => {
    const [selectedOption, setSelectedOption] = useState("Guatemala");
    const [selectedMunicipio, setSelectedMunicipio] = useState("");
 
-   const handelSubmit = (e) => {
+   const handelSubmit = async(e) => {
       e.preventDefault();
       console.log("Formulario Enviado Company");
 
-      if(!validateName(e.target[0].value)) return alert("Nombre Invalido");
-      if(!isEmail(e.target[2].value)) return alert("Correo invalido");
-      if(!validatePassword(e.target[3].value)) return alert("Contraseña debe incluir: 8 caracteres, 1 mayuscula, 1 numero y 1 caracter especial");
+      if(!validateName(e.target[0].value)) 
+         return await swal({
+            title: "Querido Usuario",
+            text: "Nombre invalido",
+            icon: "warning",
+            button: true,
+         });
+
+      if(!isEmail(e.target[2].value)) 
+         return await swal({
+            title: "Querido Usuario",
+            text: "Correo invalido",
+            icon: "warning",
+            button: true,
+         });
+
+      if(!validatePassword(e.target[3].value)) 
+         return await swal({
+            title: "Querido Usuario",
+            text: "Contraseña debe incluir: 8 caracteres, 1 mayuscula, 1 numero y 1 caracter especial",
+            icon: "warning",
+            button: true,
+         });
+
 
       const formData = new FormData();
       formData.append("companyName", e.target[0].value);
@@ -31,10 +53,17 @@ const SingUpCompany = ({ url }) => {
          body: formData,
       })
          .then((response) => response.json())
-         .then((data) => {
+         .then(async (data) => {
             // Handle the response from the backend
             console.log(data);
-            alert(data.message);
+   
+            await swal({
+               title: "Querido Usuario",
+               text: data.message,
+               icon:  data.status===200 ? "success":"error",
+               button: true,
+            });
+            
             if (data.status === 200) {
                e.target.reset();
             }

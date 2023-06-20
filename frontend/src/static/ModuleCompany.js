@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import swal from 'sweetalert';
 import Cookie from "cookie-universal";
-
 const cookies = Cookie();
 const crr_user = cookies.get("crr_user");
+
+
 
 const ModuleCompany = () => {
     const [products, setProducts] = useState([]);
@@ -55,12 +57,19 @@ const ModuleCompany = () => {
 
     }
 
-    const handleDelete = (url, productId) => {
+    const handleDelete = async(url, productId) => {
         const body = {
             productId: productId
         }
-        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar el combo?");
-        if (confirmDelete) {
+        const willDelete = await swal({
+            title: "¿Estás seguro?",
+            text: "¿Estás seguro de que deseas eliminar el producto?",
+            icon: "warning",
+            dangerMode: true,
+        })
+    
+        console.log("RESULRS",willDelete)
+        if (willDelete) {
             fetch(`http://localhost:4200/company/${url}`, {
                 method: "POST",
                 headers: {
@@ -69,25 +78,37 @@ const ModuleCompany = () => {
                 },
                 body: JSON.stringify(body)
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    alert(data.message)
-                    actualizar();
+            .then((response) => response.json())
+            .then(async(data) => {
+                await swal({
+                    title: `Querido Usuario: ${crr_user.data[0].companyName}`,
+                    text: data.message,
+                    icon: data.status===200 ? "success":"error",
+                    button: true,
                 })
-                .catch((error) => {
-                    // Handle any errors that occur during the request
-                    console.error('Error:', error)
-                });
+                actualizar();
+            })
+            .catch((error) => {
+                // Handle any errors that occur during the request
+                console.error('Error:', error)
+            });
         }
 
     };
 
-    const handleDeleteCombo = (url, productId) => {
+    const handleDeleteCombo = async(url, productId) => {
         const body = {
             comboId: productId
         }
-        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar el combo?");
-        if (confirmDelete) {
+        const willDelete = await swal({
+            title: "¿Estás seguro?",
+            text: "¿Estás seguro de que deseas eliminar el combo?",
+            icon: "warning",
+            dangerMode: true,
+        })
+
+        console.log("RESULRS",willDelete)
+        if (willDelete) {
             fetch(`http://localhost:4200/company/${url}`, {
                 method: "POST",
                 headers: {
@@ -97,8 +118,14 @@ const ModuleCompany = () => {
                 body: JSON.stringify(body)
             })
                 .then((response) => response.json())
-                .then((data) => {
-                    alert(data.message)
+                .then(async(data) => {
+                    
+                    await swal({
+                        title: `Querido Usuario: ${crr_user.data[0].companyName}`,
+                        text: data.message,
+                        icon: data.status===200 ? "success":"error",
+                        button: true,
+                    })
                     actualizar();
                 })
                 .catch((error) => {
@@ -217,8 +244,13 @@ const ModuleCompany = () => {
                 body: formData,
             })
                 .then((response) => response.json())
-                .then((data) => {
-                    alert(data.message)
+                .then(async(data) => {
+                    await swal({
+                        title: `Querido Usuario: ${crr_user.data[0].companyName}`,
+                        text: data.message,
+                        icon: data.status===200 ? "success":"error",
+                        button: true,
+                     })
                     actualizar();
                 })
                 .catch((error) => {

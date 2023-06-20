@@ -2,20 +2,57 @@ import React, { useState } from "react";
 import departmentsGuatemala from "./departmentsGuatemala";
 import { validateName, validatePassword } from "../func/validations";
 import { isEmail } from "validator";
+import swal from 'sweetalert';
 
 const SingUpDeliveryMan = ({ url }) => {
    const [selectedOption, setSelectedOption] = useState("Guatemala");
    const [selectedMunicipio, setSelectedMunicipio] = useState("");
 
-   const handelSubmit = (e) => {
+   const handelSubmit = async(e) => {
       e.preventDefault();
       console.log("Formulario Enviado DeliveryMan");
 
-      if(!validateName( e.target[0].value)){alert("Nombre inválido"); return}
-      if(!validateName( e.target[1].value)){alert("Apellido inválido"); return}
-      if(!isEmail(e.target[2].value)){alert("Correo inválido"); return}
-      if(!validatePassword(e.target[3].value)){alert("Contraseña debe incluir: 8 caracteres, 1 mayuscula, 1 numero y 1 caracter especial"); return}
-      if(e.target[4].value.length!==8){alert("Telefono inválido"); return}
+      if(!validateName( e.target[0].value))
+         return await swal({
+            title: "Querido Usuario",
+            text: "Nombre invalido",
+            icon: "warning",
+            button: true,
+         });
+
+      if(!validateName( e.target[1].value))
+         return await swal({
+            title: "Querido Usuario",
+            text: "Apellido invalido",
+            icon: "warning",
+            button: true,
+         });
+     
+      if(!isEmail(e.target[2].value))
+         return await swal({
+            title: "Querido Usuario",
+            text: "Correo invalido",
+            icon: "warning",
+            button: true,
+         });
+      
+    
+      if(!validatePassword(e.target[3].value))
+         return await swal({
+            title: "Querido Usuario",
+            text: "Contraseña debe incluir: 8 caracteres, 1 mayuscula, 1 numero y 1 caracter especial",
+            icon: "warning",
+            button: true,
+         });
+      
+      
+      if(e.target[4].value.length!==8)
+         return await swal({
+            title: "Querido Usuario",
+            text: "Telefono inválido",
+            icon: "warning",
+            button: true,
+         });
       
 
       const formData = new FormData();
@@ -36,10 +73,17 @@ const SingUpDeliveryMan = ({ url }) => {
          body: formData,
       })
          .then((response) => response.json())
-         .then((data) => {
+         .then(async (data) => {
             // Handle the response from the backend
             console.log(data);
-            alert(data.message);
+            
+            await swal({
+               title: "Querido Usuario",
+               text: data.message,
+               icon: data.status===200 ? "success":"error",
+               button: true,
+            })
+
             if (data.status === 200) {
                e.target.reset();
             }

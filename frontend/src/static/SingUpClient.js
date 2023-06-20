@@ -1,16 +1,47 @@
 import React from "react";
 import {validateName,validatePassword} from "../func/validations";
 import { isEmail } from 'validator';
+import swal from 'sweetalert';
 
-const SingUpClient = ({ url }) => {
-   const handelSubmit = (e) => {
+const SingUpClient =  ({ url }) => {
+
+
+   const handelSubmit = async (e) => {
       e.preventDefault();
       console.log("Formulario Enviado Client");
 
-      if(!validateName(e.target[0].value)) return alert("Nombre invalido");
-      if(!validateName(e.target[1].value)) return alert("Apellido invalido");
-      if(!isEmail(e.target[2].value)) return alert("Correo invalido");
-      if(!validatePassword(e.target[3].value)) return alert("Contraseña debe incluir: 8 caracteres, 1 mayuscula, 1 numero y 1 caracter especial");
+      if(!validateName(e.target[0].value))  
+         return await swal({
+            title: "Querido Usuario",
+            text: "Nombre invalido",
+            icon: "warning",
+            button: true,
+         });
+
+      if(!validateName(e.target[1].value)) 
+         return await swal({
+            title: "Querido Usuario",
+            text: "Apellido invalido",
+            icon: "warning",
+            button: true,
+         });
+         
+      if(!isEmail(e.target[2].value)) 
+         return await swal({
+            title: "Querido Usuario",
+            text: "Correo invalido",
+            icon: "warning",
+            button: true,
+         });
+
+      if(!validatePassword(e.target[3].value)) 
+         return await swal({
+            title: "Querido Usuario",
+            text: "Contraseña debe incluir: 8 caracteres, 1 mayuscula, 1 numero y 1 caracter especial",
+            icon: "warning",
+            button: true,
+         });
+
 
       const SendData = {
          userEmail: e.target[2].value, 
@@ -29,9 +60,16 @@ const SingUpClient = ({ url }) => {
          .then((response) => {
             return response.json(); 
          })
-         .then((data) => {
-            alert(data.message);
+         .then(async (data) => {
             console.log(data);
+
+            await swal({
+               title: "Querido Usuario",
+               text: data.message,
+               icon: data.status===200 ? "success":"error",
+               button: true,
+            })
+            
             if(data.status===200){
                e.target.reset();
             } 
