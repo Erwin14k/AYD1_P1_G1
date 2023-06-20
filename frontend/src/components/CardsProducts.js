@@ -1,4 +1,4 @@
-function CardsProducts({id,product_img,product_name,product_price,product_description}) {
+function CardsProducts({id,product_img,product_name,product_price,product_description,handleEditProduct,type}) {
     return (
         <div className="col-md-4 mb-4" key={id} >
         <div className="card">
@@ -7,7 +7,7 @@ function CardsProducts({id,product_img,product_name,product_price,product_descri
                 <h5 className="card-title">{product_name}</h5>
                 <p className="card-text">Precio: Q.{product_price}</p>
                 <p className="card-text">{product_description}</p>
-                <button className="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#editProductModal">
+                <button className="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target={type} onClick={ (e) => handleEditProduct(e,id)}>
                     Editar
                 </button>
                 <button className="btn btn-danger" style={{ marginLeft: "2%" }}>

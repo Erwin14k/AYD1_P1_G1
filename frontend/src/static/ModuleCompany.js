@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CardsProducts from '../components/CardsProducts';
+import FormProducts from '../components/FormProducts';
 import ModalBase from '../components/ModalBase';
 import Cookie from "cookie-universal";
 const cookies = Cookie();
@@ -8,6 +9,7 @@ const crr_user = cookies.get("crr_user");
 const ModuleCompany = () => {
     const [products, setProducts] = useState([]);
     const [combos, setCombos] = useState([]);
+    const [id, setId] = useState(0);
 
     const actualizar = () => {
         console.log("actualizar")
@@ -81,6 +83,11 @@ const ModuleCompany = () => {
 
     };
 
+    const handleEditProduct = (event,productId) => {
+        event.preventDefault();
+        console.log("handleEditProduct", productId)
+        setId(productId);
+    };
  
 
     useEffect(() => {
@@ -123,20 +130,24 @@ const ModuleCompany = () => {
                     <div className="row" style={{ marginTop: "2%" }}>
                         {products.map((product) => (
                             <CardsProducts
+                                type={"#editProductModal"}
                                 id={product.product_id}
                                 product_img={product.product_img}
                                 product_name={product.product_name}
                                 product_price={product.product_price}
                                 product_description={product.product_description}
+                                handleEditProduct = {handleEditProduct}
                             />
                         ))}
                         {combos.map((product) => (
                             <CardsProducts
+                                type={"#editComboModal"}
                                 id={product.combo_id}
                                 product_img={product.combo_img}
                                 product_name={product.combo_name}
                                 product_price={product.combo_price}
                                 product_description={product.combo_description}
+                                handleEditProduct = {handleEditProduct}
                             />
                         ))}
                     </div>
@@ -144,6 +155,7 @@ const ModuleCompany = () => {
 
                 <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>AGREGA UN NUEVO PRODUCTO</h3></center>
+                    <FormProducts type={0} operation={0}/>
                     {/* <FormAgregar type={0} edit={0} info={{}} /> */}
 
                 </div>
@@ -152,15 +164,16 @@ const ModuleCompany = () => {
                 </div>
                 <div className="tab-pane fade" id="mantenimiento" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>AGREGA UN NUEVO COMBO</h3></center>
+                    <FormProducts type={1} operation={0}/>
                     {/* <FormAgregar type={1} edit={0} info={{}} /> */}
                 </div>
             </div>
 
             {/* MODAL EDITAR PRODUCTO */}
-            <ModalBase title={"Editar Producto"} />
+            <ModalBase type={"editProductModal"} title={"Editar Producto"} children={<FormProducts type={0} operation={1} id={id}/>} />
            
             {/* MODAL EDITAR COMBO*/}
-            <ModalBase title={"Editar Combo"} />
+            <ModalBase type={"editComboModal"} title={"Editar Combo"} children={<FormProducts type={1} operation={1} id={id}/>}/>
         </div>
     );
 }
