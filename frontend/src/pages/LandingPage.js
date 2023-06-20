@@ -57,23 +57,19 @@ function LandingPage() {
                     <div className="row">
                         <div className="col">
                             <h3>Erwin Fernando Vásquez Peñate</h3>
-                            <p>Desarrollador de Backend</p>
+                            <p>Backend Developer</p>
                             <h4>&nbsp;</h4>
                         </div>
                         <div className="col">
                             <h3>Sergie Daniel Arizandieta Yol</h3>
-                            <p>Desarrollador de Frontend</p>
+                            <p>Frontend Developer</p>
                             <h4>&nbsp;</h4>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col">
                             <h3>Kevin Steve Martinez Lemus</h3>
-                            <p>Desarrollador de Frontend</p>
-                        </div>
-                        <div className="col">
-                            <h3>Kevin Golwer Enrique Ruiz Barbales</h3>
-                            <p>Desarrollador de Backend</p>
+                            <p>Frontend Developer</p>
                         </div>
                     </div>
                 </div>
