@@ -1,0 +1,118 @@
+.link-list {
+    list-style-type: none;
+    text-align: left;
+}
+
+.presentacion {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-image: url('../assets/heroImage.jpg');
+    background-size: cover;
+    background-position: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.frase {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    color: white;
+    background-color: #DB4F23;
+    padding: 1%;
+    border-radius: 2%;
+    align-items: center;
+    justify-content: center;
+}
+
+.ff {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.logoFrase {
+    height: 7vh;
+}
+
+
+.somos {
+    width: 100%;
+    height: 30vh;
+    /* background-color: #F9F4EF; */
+    padding: 2%;
+    text-align: justify;
+    vertical-align: middle;
+    display: flex;
+}
+
+.equipo {
+    width: 100%;
+    /* height: 55vh; */
+    /* background-color: #F9F4EF; */
+    padding: 2%;
+    text-align: justify;
+    /* border-top: 1px solid gray; */
+}
+
+.nombres {
+    width: 100%;
+    margin-top: 5%;
+    text-align: center;
+}
+
+.ventajas {
+    width: 100%;
+    padding: 2%;
+    text-align: justify;
+}
+
+.ventajas-list {
+    padding: 0;
+    margin-top: 20px;
+    margin-left:5% ;
+}
+
+.ventajas-item {
+    margin-bottom: 10px;
+    padding-left: 20px;
+}
+
+.ventajas-item strong {
+    font-weight: bold;
+    color: #333;
+}
+
+.LVentajas{
+    display: flex;
+    margin-top: 2%;
+}
+
+.Registro2 {
+    padding: 3%;
+    display: flex;
+    /* border-top: 1px solid gray; */
+}
+
+.box {
+    flex: 1;
+    margin: 5px;
+}
+
+.rimg {
+    width: 40vh;
+    height: 25vh;
+}
+
+.f1 {
+    width: 25%;
+    margin-left: 3%;
+}
+
+h1 {
+    font-weight: bold;
+}
+
+footer {
+    border-top: 1px solid gray;
+}
