@@ -9,7 +9,7 @@ const ModuleCompany = () => {
     const [combos, setCombos] = useState([]);
 
     const [productInfo, setProductInfo] = useState([]);
-    /* const [comboInfo, setComboInfo] = useState([]); */
+    const [comboInfo, setComboInfo] = useState([]); 
 
     const verInfoProduct = (value) => {
         products.map((fila) => {
@@ -20,14 +20,14 @@ const ModuleCompany = () => {
         });
     };
 
-    /* const verInfoCombo = (value) => {
+    const verInfoCombo = (value) => {
         combos.map((fila) => {
             if (fila.combo_id === value) {
                 setComboInfo(fila);
             }
             return null; // Agrega esta línea si no hay un valor de retorno requerido
         });
-    }; */
+    }; 
 
     const actualizar = () => {
         console.log("actualizar")
@@ -56,6 +56,33 @@ const ModuleCompany = () => {
     }
 
     const handleDelete = (url, productId) => {
+        const body = {
+            productId: productId
+        }
+        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar el producto?");
+        if (confirmDelete) {
+            fetch(`http://localhost:4200/company/${url}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+                },
+                body: JSON.stringify(body)
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    alert(data.message)
+                    actualizar();
+                })
+                .catch((error) => {
+                    // Handle any errors that occur during the request
+                    console.error('Error:', error)
+                });
+        }
+
+    };
+
+    const handleDeleteCombo = (url, productId) => {
         const body = {
             productId: productId
         }
@@ -333,12 +360,12 @@ const ModuleCompany = () => {
                                         <h5 className="card-title">{product.combo_name}</h5>
                                         <p className="card-text">Precio: Q.{product.combo_price}</p>
                                         <p className="card-text">{product.combo_description}</p>
-                                        {/* <button className="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#editComboModal" onClick={() => verInfoCombo(product.combo_id)}>
+                                        <button className="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#editComboModal" onClick={() => verInfoCombo(product.combo_id)}>
                                             Editar
                                         </button>
                                         <button className="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => handleDelete("delete-combo", product.combo_id)}>
                                             Eliminar
-                                        </button> */}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -378,7 +405,7 @@ const ModuleCompany = () => {
             </div>
 
             {/* MODAL EDITAR COMBO*/}
-            {/* <div className="modal fade" id="editComboModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
+            <div className="modal fade" id="editComboModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
                 <div className="modal-dialog modal-dialog-centered modal-xl">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -393,7 +420,7 @@ const ModuleCompany = () => {
                         </div>
                     </div>
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 }
