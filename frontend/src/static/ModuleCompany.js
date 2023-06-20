@@ -140,7 +140,7 @@ const ModuleCompany = () => {
         const [stock, setStock] = useState(0);
         const [price, setPrice] = useState(0.01);
 
-        const handleStockChange = (event) => {
+        const handleStockChange = async(event) => {
             const value = event.target.value;
             const intValue = parseInt(value);
 
@@ -149,11 +149,15 @@ const ModuleCompany = () => {
             }else{
                 setStock(0)
                 event.target.value = 0
-                alert("El stock debe ser un 0 o positivo")
-                
+                await swal({
+                    title: "Error en el stock",
+                    text: "El stock debe ser un 0 o positivo",
+                    icon:  "error",
+                    button: true,
+                 });  
             }
         };
-        const handleStockPrice = (event) => {
+        const handleStockPrice = async(event) => {
             const value = event.target.value;
 
             // Validar el formato utilizando una expresión regular
@@ -162,27 +166,54 @@ const ModuleCompany = () => {
             }else{
                 setStock(1)
                 event.target.value = 1
-                alert("El precio debe ser mayor a 0")
+                await swal({
+                    title: "Error en el precio",
+                    text: "El precio debe ser mayor a 0",
+                    icon:  "error",
+                    button: true,
+                 });  
             }
         };
-        const handleFileSelect = (event) => {
+        const handleFileSelect = async(event) => {
             const files = event.target.files;
             if (files.length > 1) {
-                alert("Solo se permiten un máximo de 1 archivo.");
+                await swal({
+                    title: "Error en las imagenes",
+                    text: "Solo se permiten un máximo de 1 archivo.",
+                    icon:  "error",
+                    button: true,
+                 });
                 event.target.value = null; // Limpiar los archivos seleccionados si se excede el límite
             }
         };
 
-        const handelSubmit = (e) => {
+        const handelSubmit = async(e) => {
             e.preventDefault();
 
-            if(e.target[0].value === "") return alert("Nombre Inválido");
-            if(e.target[2].value === "") return alert("Descripción Inválida");
+            if(e.target[0].value === "") 
+                return await swal({
+                    title: `Querido Usuario ${crr_user.data[0].companyName}`,
+                    text: "Nombre Inválido",
+                    icon: "warning",
+                    button: true,
+                });
+           
+            if(e.target[2].value === "") 
+                return await swal({
+                    title: `Querido Usuario ${crr_user.data[0].companyName}`,
+                    text: "Descripción Inválida",
+                    icon: "warning",
+                    button: true,
+                });
 
             if (props.edit !== 1) {
-                if (!e.target[1].value) {
-                    return alert("Ingrese una imagen.");
-                  } 
+                if (!e.target[1].value) 
+                    return await swal({
+                        title: `Querido Usuario ${crr_user.data[0].companyName}`,
+                        text: "Ingrese una imagen.",
+                        icon: "warning",
+                        button: true,
+                    });
             }
 
             var formData = new FormData();
