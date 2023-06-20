@@ -9,7 +9,7 @@ const ModuleCompany = () => {
     const [combos, setCombos] = useState([]);
 
     const [productInfo, setProductInfo] = useState([]);
-    /* const [comboInfo, setComboInfo] = useState([]); */
+    const [comboInfo, setComboInfo] = useState([]); 
 
     const verInfoProduct = (value) => {
         products.map((fila) => {
@@ -20,14 +20,14 @@ const ModuleCompany = () => {
         });
     };
 
-    /* const verInfoCombo = (value) => {
+    const verInfoCombo = (value) => {
         combos.map((fila) => {
             if (fila.combo_id === value) {
                 setComboInfo(fila);
             }
             return null; // Agrega esta línea si no hay un valor de retorno requerido
         });
-    }; */
+    }; 
 
     const actualizar = () => {
         console.log("actualizar")
@@ -59,7 +59,34 @@ const ModuleCompany = () => {
         const body = {
             productId: productId
         }
-        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar el producto?");
+        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar el combo?");
+        if (confirmDelete) {
+            fetch(`http://localhost:4200/company/${url}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+                },
+                body: JSON.stringify(body)
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    alert(data.message)
+                    actualizar();
+                })
+                .catch((error) => {
+                    // Handle any errors that occur during the request
+                    console.error('Error:', error)
+                });
+        }
+
+    };
+
+    const handleDeleteCombo = (url, productId) => {
+        const body = {
+            comboId: productId
+        }
+        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar el combo?");
         if (confirmDelete) {
             fetch(`http://localhost:4200/company/${url}`, {
                 method: "POST",
@@ -93,17 +120,21 @@ const ModuleCompany = () => {
             if (intValue >= 0) {
                 setStock(intValue.toString());
             }else{
+                setStock(0)
+                event.target.value = 0
                 alert("El stock debe ser un 0 o positivo")
+                
             }
         };
         const handleStockPrice = (event) => {
             const value = event.target.value;
 
             // Validar el formato utilizando una expresión regular
-          
             if (event.target.value > 0) {
                 setPrice(value);
             }else{
+                setStock(1)
+                event.target.value = 1
                 alert("El precio debe ser mayor a 0")
             }
         };
@@ -149,14 +180,25 @@ const ModuleCompany = () => {
 
             } else {
                 formData.append("comboName", e.target[0].value)
-                formData.append("comboPrice", e.target[3].value)
-                formData.append("comboDescription", e.target[2].value)
-                formData.append("comboNumberOfSales", 0)
-                formData.append("comboStock", e.target[4].value)
                 formData.append("img", e.target[1].files[0])
+                formData.append("comboDescription", e.target[2].value)
+                formData.append("comboPrice", e.target[3].value)
+                formData.append("comboStock", e.target[4].value)
+                formData.append("comboNumberOfSales", props.edit === 1 ? comboInfo.comboNumberOfSales : 0)
+                
+                console.log("DATA")
+                console.log(props)
+
+                console.log(e.target[0].value)
+                console.log(e.target[1].files[0])
+                console.log(e.target[2].value)
+                console.log(e.target[3].value)
+                console.log(e.target[4].value)
+                console.log(props.edit === 1 ? comboInfo.comboNumberOfSales : 0)
+                console.log(comboInfo.combo_id)
 
                 if (props.edit === 1) {
-                    /* formData.append("productId", props.combo_id) */
+                    formData.append("comboId", comboInfo.combo_id)
                     url = "company/edit-combo"
                 } else {
                     url = "company/new-combo"
@@ -224,7 +266,7 @@ const ModuleCompany = () => {
                                         className="form-control"
                                         id="formPrice"
                                         onChange={handleStockPrice}
-                                        value={props.type === 0 && props.edit === 1 ? props.info.product_price : props.type === 1 && props.edit === 1 ? props.info.combo_price : price}
+                                        Value={props.type === 0 && props.edit === 1 ? props.info.product_price : props.type === 1 && props.edit === 1 ? props.info.combo_price : price}
                                     />
                                     <label className="form-label" htmlFor="formPrice">
                                         Precio
@@ -257,7 +299,7 @@ const ModuleCompany = () => {
                                         className="form-control"
                                         id="formStock"
                                         onChange={handleStockChange}
-                                        value={props.type === 0 && props.edit === 1 ? props.info.product_stock : props.type === 1 && props.edit === 1 ? props.info.combo_stock : stock}
+                                        Value={props.type === 0 && props.edit === 1 ? props.info.product_stock : props.type === 1 && props.edit === 1 ? props.info.combo_stock : stock}
                                     />
                                     <label className="form-label" htmlFor="formStock">
                                         Stock
@@ -333,12 +375,12 @@ const ModuleCompany = () => {
                                         <h5 className="card-title">{product.combo_name}</h5>
                                         <p className="card-text">Precio: Q.{product.combo_price}</p>
                                         <p className="card-text">{product.combo_description}</p>
-                                        {/* <button className="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#editComboModal" onClick={() => verInfoCombo(product.combo_id)}>
+                                        <button className="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#editComboModal" onClick={() => verInfoCombo(product.combo_id)}>
                                             Editar
                                         </button>
-                                        <button className="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => handleDelete("delete-combo", product.combo_id)}>
+                                        <button className="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => handleDeleteCombo("delete-combo", product.combo_id)}>
                                             Eliminar
-                                        </button> */}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -378,7 +420,7 @@ const ModuleCompany = () => {
             </div>
 
             {/* MODAL EDITAR COMBO*/}
-            {/* <div className="modal fade" id="editComboModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
+            <div className="modal fade" id="editComboModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
                 <div className="modal-dialog modal-dialog-centered modal-xl">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -393,7 +435,7 @@ const ModuleCompany = () => {
                         </div>
                     </div>
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 }
