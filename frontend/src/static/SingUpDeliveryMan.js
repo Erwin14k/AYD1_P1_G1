@@ -49,10 +49,19 @@ const SingUpDeliveryMan = ({ url }) => {
       if(e.target[4].value.length!==8)
          return await swal({
             title: "Querido Usuario",
-            text: "Telefono inválido",
+            text: "Telefono inválido de 8 digitos",
             icon: "warning",
             button: true,
          });
+
+         if(e.target[9].files[0] === undefined){
+            return await swal({
+               title: "Error de archivo",
+               text: "Se debe subir obligatoriamente el archivo PDF de si CV.",
+               icon:  "error",
+               button: true,
+            });
+         }
       
 
       const formData = new FormData();

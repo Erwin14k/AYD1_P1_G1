@@ -35,7 +35,32 @@ const SingUpCompany = ({ url }) => {
             icon: "warning",
             button: true,
          });
+      
+      if(e.target[8].files[0] === undefined){
+         return await swal({
+            title: "Querido Usuario",
+            text: "Se debe subir obligatoriamente el archivo PDF de sanidad.",
+            icon:  "error",
+            button: true,
+         });
+      }
 
+      if(e.target[7].value === "")
+         return await swal({
+            title: "Querido Usuario",
+            text: "Se debe ingresar obligatoriamente la dirección de la empresa.",
+            icon:  "error",
+            button: true,
+         });
+      
+      if(e.target[1].value === "")
+         return await swal({
+            title: "Querido Usuario",
+            text: "Se debe ingresar obligatoriamente la dirección de la empresa.",
+            icon:  "error",
+            button: true,
+         });   
+            
 
       const formData = new FormData();
       formData.append("companyName", e.target[0].value);
@@ -63,7 +88,7 @@ const SingUpCompany = ({ url }) => {
                icon:  data.status===200 ? "success":"error",
                button: true,
             });
-            
+
             if (data.status === 200) {
                e.target.reset();
             }
