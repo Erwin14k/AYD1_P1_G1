@@ -6,7 +6,7 @@ function Politicas() {
     return (
         <div style={{ width: "80%", margin: "auto", textAlign: "justify" }}>
             <NavBar />
-            <h1 style={{ marginTop: "6%" }}>Politicas de seguridad</h1>
+            <h1 style={{ marginTop: "6%" }}>Politicas de privacidad</h1>
             <br></br>
 
             <h2>Protección de datos personales</h2>
@@ -27,11 +27,6 @@ function Politicas() {
             <h2>Protección contra fraudes</h2>
             <p>
                 Estamos comprometidos en protegerte contra actividades fraudulentas. Monitoreamos de cerca todas las transacciones y utilizamos sistemas de detección de fraudes avanzados para identificar y prevenir actividades sospechosas.
-            </p>
-
-            <h2>Política de privacidad</h2>
-            <p>
-                Nuestra Política de Privacidad describe cómo recopilamos, utilizamos y protegemos tus datos personales. Te invitamos a leerla para obtener más información sobre cómo manejamos tus datos y respetamos tu privacidad.
             </p>
 
             <h2>Actualización de políticas de seguridad</h2>
