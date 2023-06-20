@@ -32,7 +32,6 @@ module.exports.newProduct = async (req, res, next) => {
         productStock:req.body.productStock,
         productImgKey: req.file.key
       };
-      console.log(args);
       // Operations on db
       const result=await Company.newProduct(args);
       // response

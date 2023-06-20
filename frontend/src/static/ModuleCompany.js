@@ -1,47 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import CardsProducts from '../components/CardsProducts';
-import FormProducts from '../components/FormProducts';
-import ModalBase from '../components/ModalBase';
 import Cookie from "cookie-universal";
+
 const cookies = Cookie();
 const crr_user = cookies.get("crr_user");
 
 const ModuleCompany = () => {
     const [products, setProducts] = useState([]);
     const [combos, setCombos] = useState([]);
-    const [id, setId] = useState(0);
+
+    const [productInfo, setProductInfo] = useState([]);
+    const [comboInfo, setComboInfo] = useState([]); 
+
+    const verInfoProduct = (value) => {
+        products.map((fila) => {
+            if (fila.product_id === value) {
+                setProductInfo(fila);
+            }
+            return null; // Agrega esta línea si no hay un valor de retorno requerido
+        });
+    };
+
+    const verInfoCombo = (value) => {
+        combos.map((fila) => {
+            if (fila.combo_id === value) {
+                setComboInfo(fila);
+            }
+            return null; // Agrega esta línea si no hay un valor de retorno requerido
+        });
+    }; 
 
     const actualizar = () => {
         console.log("actualizar")
         fetch(`http://localhost:4200/company/info`, {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${crr_user.data[0].authToken}`, 
+                /* "Content-Type": "application/json", */
+                Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
             }
         })
             .then((response) => response.json())
             .then((data) => {
-                setProducts(data.companyData[1].companyProducts);
-                setCombos(data.companyData[2].companyCombos);
+                const productos = data.companyData[1].companyProducts
+                const cc = data.companyData[2].companyCombos
 
+                setProducts(productos);
+                setCombos(cc);
+
+                verInfoProduct(productInfo.product_id);
             })
             .catch((error) => {
+                // Handle any errors that occur during the request
                 console.error('Error:', error)
             });
 
     }
 
-    const handleDeleteProduct = ( productId) => {
+    const handleDelete = (url, productId) => {
         const body = {
             productId: productId
         }
-        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar el producto?");
+        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar el combo?");
         if (confirmDelete) {
-            fetch(`http://localhost:4200/company/delete-product`, {
+            fetch(`http://localhost:4200/company/${url}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${crr_user.data[0].authToken}`,
+                    Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
                 },
                 body: JSON.stringify(body)
             })
@@ -51,23 +75,24 @@ const ModuleCompany = () => {
                     actualizar();
                 })
                 .catch((error) => {
+                    // Handle any errors that occur during the request
                     console.error('Error:', error)
                 });
         }
 
     };
 
-    const handleDeleteCombo = ( productId) => {
+    const handleDeleteCombo = (url, productId) => {
         const body = {
-            productId: productId
+            comboId: productId
         }
-        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar el producto?");
+        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar el combo?");
         if (confirmDelete) {
-            fetch(`http://localhost:4200/company/delete-combo`, {
+            fetch(`http://localhost:4200/company/${url}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${crr_user.data[0].authToken}`,
+                    Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
                 },
                 body: JSON.stringify(body)
             })
@@ -77,18 +102,218 @@ const ModuleCompany = () => {
                     actualizar();
                 })
                 .catch((error) => {
+                    // Handle any errors that occur during the request
                     console.error('Error:', error)
                 });
         }
 
     };
 
-    const handleEditProduct = (event,productId) => {
-        event.preventDefault();
-        console.log("handleEditProduct", productId)
-        setId(productId);
-    };
- 
+    const FormAgregar = (props) => {
+        const [stock, setStock] = useState(0);
+        const [price, setPrice] = useState(0.01);
+
+        const handleStockChange = (event) => {
+            const value = event.target.value;
+            const intValue = parseInt(value);
+
+            if (intValue >= 0) {
+                setStock(intValue.toString());
+            }else{
+                setStock(0)
+                event.target.value = 0
+                alert("El stock debe ser un 0 o positivo")
+                
+            }
+        };
+        const handleStockPrice = (event) => {
+            const value = event.target.value;
+
+            // Validar el formato utilizando una expresión regular
+            if (event.target.value > 0) {
+                setPrice(value);
+            }else{
+                setStock(1)
+                event.target.value = 1
+                alert("El precio debe ser mayor a 0")
+            }
+        };
+        const handleFileSelect = (event) => {
+            const files = event.target.files;
+            if (files.length > 1) {
+                alert("Solo se permiten un máximo de 1 archivo.");
+                event.target.value = null; // Limpiar los archivos seleccionados si se excede el límite
+            }
+        };
+
+        const handelSubmit = (e) => {
+            e.preventDefault();
+
+            if(e.target[0].value === "") return alert("Nombre Inválido");
+            if(e.target[2].value === "") return alert("Descripción Inválida");
+
+            if (props.edit !== 1) {
+                if (!e.target[1].value) {
+                    return alert("Ingrese una imagen.");
+                  } 
+            }
+
+            var formData = new FormData();
+            formData.append("companyId", crr_user.data[0].companyId)
+
+            var url = ""
+            if (props.type === 0) {
+                formData.append("productType", e.target[4].value)
+                formData.append("productName", e.target[0].value)
+                formData.append("productPrice", e.target[3].value)
+                formData.append("productDescription", e.target[2].value)
+                formData.append("img", e.target[1].files[0])
+                formData.append("productNumberOfSales", props.edit === 1 ? productInfo.product_number_of_sales : 0)
+                formData.append("productStock", e.target[5].value)
+
+                if (props.edit === 1) {
+                    formData.append("productId", productInfo.product_id)
+                    url = "company/edit-product"
+                } else {
+                    url = "company/new-product"
+                }
+
+            } else {
+                formData.append("comboName", e.target[0].value)
+                formData.append("img", e.target[1].files[0])
+                formData.append("comboDescription", e.target[2].value)
+                formData.append("comboPrice", e.target[3].value)
+                formData.append("comboStock", e.target[4].value)
+                formData.append("comboNumberOfSales", props.edit === 1 ? comboInfo.comboNumberOfSales : 0)
+                
+                console.log("DATA")
+                console.log(props)
+
+                console.log(e.target[0].value)
+                console.log(e.target[1].files[0])
+                console.log(e.target[2].value)
+                console.log(e.target[3].value)
+                console.log(e.target[4].value)
+                console.log(props.edit === 1 ? comboInfo.comboNumberOfSales : 0)
+                console.log(comboInfo.combo_id)
+
+                if (props.edit === 1) {
+                    formData.append("comboId", comboInfo.combo_id)
+                    url = "company/edit-combo"
+                } else {
+                    url = "company/new-combo"
+                }
+
+            }
+
+            console.log(formData)
+
+            fetch(`http://localhost:4200/${url}`, {
+                method: "POST",
+                headers: {
+                    /* "Content-Type": "application/json", */
+                    Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+                },
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    alert(data.message)
+                    actualizar();
+                })
+                .catch((error) => {
+                    // Handle any errors that occur during the request
+                    console.error('Error:', error)
+                });
+        };
+
+        return (
+            <div>
+                <form onSubmit={handelSubmit} style={{ width: "80%", margin: "auto", marginTop: "3%" }}>
+                    <div className="form-outline mb-4">
+                        <div className="form-outline mb-4">
+                            <input type="text" id="form3Example3" className="form-control" defaultValue={props.type === 0 ? props.info.product_name : props.info.combo_name} />
+                            <label className="form-label" htmlFor="form3Example3">
+                                Nombre
+                            </label>
+                        </div>
+                        <input
+                            type="file"
+                            id="form3Example3"
+                            className="form-control"
+                            accept=".jpg, .jpeg, .png"
+                            multiple
+                            onChange={handleFileSelect}
+                        />
+                        <label className="form-label" htmlFor="form3Example3">
+                            {props.edit === 1 ? "Si no desea cambiar la imagen, no suba ningun archivo a este apartado." : "Seleccionar imagen"}
+                        </label>
+
+                        <div className="form-outline mb-4">
+                            <textarea id="form3Example3" className="form-control"
+                                defaultValue={props.type === 0 ? props.info.product_description : props.info.combo_description} />
+                            <label className="form-label" htmlFor="form3Example3">
+                                Descripción
+                            </label>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-md-6 mb-4">
+                                <div className="form-outline">
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        className="form-control"
+                                        id="formPrice"
+                                        onChange={handleStockPrice}
+                                        Value={props.type === 0 && props.edit === 1 ? props.info.product_price : props.type === 1 && props.edit === 1 ? props.info.combo_price : price}
+                                    />
+                                    <label className="form-label" htmlFor="formPrice">
+                                        Precio
+                                    </label>
+                                </div>
+                            </div>
+                            {props.type === 0 ? <div className="col-md-6 mb-4">
+                                <div className="form-outline">
+                                    <select
+                                        className="form-control"
+                                        id="form3Example4"
+                                    >
+                                        {["Entradas", "Platos Fuertes", "Postres", "Bebidas", "Medicamento", "Producto Básico"].map((option, index) => (
+                                            <option key={index} value={option} selected={props.info.product_type === option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <label className="form-label" htmlFor="form3Example4">
+                                        Categoria
+                                    </label>
+                                </div>
+                            </div> : <></>}
+
+                            <div className="col-md-6 mb-4">
+                                <div className="form-outline">
+                                    <input
+                                        type="number"
+                                        step="1"
+                                        className="form-control"
+                                        id="formStock"
+                                        onChange={handleStockChange}
+                                        Value={props.type === 0 && props.edit === 1 ? props.info.product_stock : props.type === 1 && props.edit === 1 ? props.info.combo_stock : stock}
+                                    />
+                                    <label className="form-label" htmlFor="formStock">
+                                        Stock
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <center><button type="submit" data-bs-dismiss={props.edit === 1 ? "modal" : ""} className="btn btn-primary" >{props.edit === 1 ? "Actualizar" : "Agregar"}</button></center>
+                </form>
+            </div>
+        );
+    }
 
     useEffect(() => {
         actualizar();
@@ -98,7 +323,6 @@ const ModuleCompany = () => {
         <div style={{ width: "80%", margin: "auto", marginTop: "8%" }}>
             <h1>Bienvenido Empresa,</h1>
             <button type="button" onClick={() => actualizar()} className="btn" style={{ marginTop: "2%", backgroundColor: "#DB4F23", color: "white" }}>Actualizar</button>
-            {/* Windows */}
             <ul className="nav nav-tabs" id="myTab" role="tablist" style={{ marginTop: "5%" }}>
                 <li className="nav-item" role="presentation">
                     <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
@@ -121,42 +345,51 @@ const ModuleCompany = () => {
                     </button>
                 </li>
             </ul>
-
-             {/* Sections */}
             <div className="tab-content" id="myTabContent">
                 <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" style={{ padding: "2%" }}>
-                    
                     <center><h3>CATÁLOGO DE PRODUCTOS</h3></center>
                     <div className="row" style={{ marginTop: "2%" }}>
                         {products.map((product) => (
-                            <CardsProducts
-                                type={"#editProductModal"}
-                                id={product.product_id}
-                                product_img={product.product_img}
-                                product_name={product.product_name}
-                                product_price={product.product_price}
-                                product_description={product.product_description}
-                                handleEditProduct = {handleEditProduct}
-                            />
+                            <div className="col-md-4 mb-4" key={product.product_id} >
+                                <div className="card">
+                                    <img src={product.product_img} className="card-img-top" alt={product.product_name} style={{height:"30vh"}}/>
+                                    <div className="card-body">
+                                        <h5 className="card-title">{product.product_name}</h5>
+                                        <p className="card-text">Precio: Q.{product.product_price}</p>
+                                        <p className="card-text">{product.product_description}</p>
+                                        <button className="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#editProductModal" onClick={() => verInfoProduct(product.product_id)}>
+                                            Editar
+                                        </button>
+                                        <button className="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => handleDelete("delete-product", product.product_id)}>
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         ))}
                         {combos.map((product) => (
-                            <CardsProducts
-                                type={"#editComboModal"}
-                                id={product.combo_id}
-                                product_img={product.combo_img}
-                                product_name={product.combo_name}
-                                product_price={product.combo_price}
-                                product_description={product.combo_description}
-                                handleEditProduct = {handleEditProduct}
-                            />
+                            <div className="col-md-4 mb-4" key={product.combo_id}>
+                                <div className="card">
+                                    <img src={product.combo_img} className="card-img-top" alt={product.combo_name} style={{height:"30vh"}} />
+                                    <div className="card-body">
+                                        <h5 className="card-title">{product.combo_name}</h5>
+                                        <p className="card-text">Precio: Q.{product.combo_price}</p>
+                                        <p className="card-text">{product.combo_description}</p>
+                                        <button className="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#editComboModal" onClick={() => verInfoCombo(product.combo_id)}>
+                                            Editar
+                                        </button>
+                                        <button className="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => handleDeleteCombo("delete-combo", product.combo_id)}>
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         ))}
                     </div>
                 </div>
-
                 <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>AGREGA UN NUEVO PRODUCTO</h3></center>
-                    <FormProducts type={0} operation={0} actualizar={actualizar}/>
-                    {/* <FormAgregar type={0} edit={0} info={{}} /> */}
+                    <FormAgregar type={0} edit={0} info={{}} />
 
                 </div>
                 <div className="tab-pane fade" id="users" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
@@ -164,16 +397,45 @@ const ModuleCompany = () => {
                 </div>
                 <div className="tab-pane fade" id="mantenimiento" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>AGREGA UN NUEVO COMBO</h3></center>
-                    <FormProducts type={1} operation={0} actualizar={actualizar} />
-                    {/* <FormAgregar type={1} edit={0} info={{}} /> */}
+                    <FormAgregar type={1} edit={0} info={{}} />
                 </div>
             </div>
 
             {/* MODAL EDITAR PRODUCTO */}
-            <ModalBase type={"editProductModal"} title={"Editar Producto"} children={<FormProducts type={0} operation={1} id={id}/>} actualizar={actualizar}  />
-           
+            <div className="modal fade" id="editProductModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
+                <div className="modal-dialog modal-dialog-centered modal-xl">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-10" id="staticBackdropLabel">Editar Producto</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <FormAgregar type={0} edit={1} info={productInfo} />
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" style={{ marginLeft: "1%" }} >Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* MODAL EDITAR COMBO*/}
-            <ModalBase type={"editComboModal"} title={"Editar Combo"} children={<FormProducts type={1} operation={1} id={id} actualizar={actualizar}/>}/>
+            <div className="modal fade" id="editComboModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
+                <div className="modal-dialog modal-dialog-centered modal-xl">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-10" id="staticBackdropLabel">Editar Combo</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <FormAgregar type={1} edit={1} info={comboInfo} />
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" style={{ marginLeft: "1%" }} >Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
