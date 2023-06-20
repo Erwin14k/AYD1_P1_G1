@@ -12,12 +12,11 @@ module.exports.companyInfo = async (req, res, next) => {
   return res
     .status(200)
     .json({
+      status:200,
       messsage: "Información de la empresa recuperada con éxito!",
       companyData:result,
   });
 };
-
-
 
 module.exports.newProduct = async (req, res, next) => {
   upload.single('img')(req, res, async (err) => {
@@ -33,16 +32,18 @@ module.exports.newProduct = async (req, res, next) => {
         productStock:req.body.productStock,
         productImgKey: req.file.key
       };
+      console.log(args);
       // Operations on db
       const result=await Company.newProduct(args);
       // response
       return res
         .status(200)
         .json({
+          status:200,
           message: `El producto: ${args.productName}, fue creado satisfactoriamente :)`,
       });
     }else{
-      return res.status(500).json({ message: 'Fallo en la carga de la imágen del producto :(' });
+      return res.status(500).json({ status:500, message: 'Fallo en la carga de la imágen del producto :(' });
     }
   });
 };
@@ -65,6 +66,7 @@ module.exports.editProduct = async (req, res, next) => {
       return res
         .status(200)
         .json({
+          status:200,
           message: `El producto: ${args.productName}, fue actualizado satisfactoriamente :)`,
       });
     }else{
@@ -83,6 +85,7 @@ module.exports.editProduct = async (req, res, next) => {
       return res
         .status(200)
         .json({
+          status:200,
           message: `El producto: ${args.productName}, fue actualizado satisfactoriamente :)`,
       });
     }
@@ -99,10 +102,10 @@ module.exports.deleteProduct = async (req, res, next) => {
   return res
     .status(200)
     .json({
+      status:200,
       message: `El producto: ${args.productId}, fue eliminado satisfactoriamente :)`,
   });
 };
-
 
 module.exports.newCombo = async (req, res, next) => {
   upload.single('img')(req, res, async (err) => {
@@ -123,10 +126,11 @@ module.exports.newCombo = async (req, res, next) => {
       return res
         .status(200)
         .json({
+          status:200,
           message: `El combo: ${args.comboName}, fue creado satisfactoriamente :)`,
       });
     }else{
-      return res.status(500).json({ message: 'Fallo en la carga de la imágen del combo :(' });
+      return res.status(500).json({status:500, message: 'Fallo en la carga de la imágen del combo :(' });
     }
   });
 };
@@ -149,6 +153,7 @@ module.exports.editCombo = async (req, res, next) => {
       return res
         .status(200)
         .json({
+          status:200,
           message: `El combo: ${args.comboName}, fue actualizado satisfactoriamente :)`,
       });
     }else{
@@ -167,6 +172,7 @@ module.exports.editCombo = async (req, res, next) => {
       return res
         .status(200)
         .json({
+          status:200,
           message: `El combo: ${args.comboName}, fue actualizado satisfactoriamente :)`,
       });
     }
@@ -183,6 +189,7 @@ module.exports.deleteCombo = async (req, res, next) => {
   return res
     .status(200)
     .json({
+      status:200,
       message: `El combo: ${args.comboId}, fue eliminado satisfactoriamente :)`,
   });
 };
