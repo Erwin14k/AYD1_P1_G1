@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import DataCompany from './DataCompany';
 import DataDeliveryMan from './DataDeliveryMan';
+import swal from 'sweetalert';
 import Cookie from "cookie-universal";
 const cookies = Cookie();
 const crr_user = cookies.get("crr_user");
+
+
 
 const ModuleAdmin = () => {
     const [deliveryRequest, setDeliveryRequest] = useState([]);
@@ -58,8 +61,13 @@ const ModuleAdmin = () => {
             .catch(err => {
                 /* console.error('Error:', err) */
             })
-            .then(response => {
-                alert(response.message)
+            .then(async response => {
+                await swal({
+                    title: "Querido Usuario Adinistrador",
+                    text: response.message,
+                    icon: response.status===200 ? "success":"error",
+                    button: true,
+                 })
                 peticion();
             })
 
@@ -86,8 +94,13 @@ const ModuleAdmin = () => {
             .catch(err => {
                 /* console.error('Error:', err) */
             })
-            .then(response => {
-                alert(response.message)
+            .then(async response => {
+                await swal({
+                    title: "Querido Usuario Adinistrador",
+                    text: response.message,
+                    icon: response.status===200 ? "success":"error",
+                    button: true,
+                 })
                 peticion();
             })
     }

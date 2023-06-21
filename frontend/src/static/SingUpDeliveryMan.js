@@ -54,6 +54,15 @@ const SingUpDeliveryMan = ({ url }) => {
             button: true,
          });
 
+      if (isNaN(e.target[4].value)) {
+         return await swal({
+            title: "Querido Usuario",
+            text: "Telefono inválido, se deben ingreat solo numeros",
+            icon: "warning",
+            button: true,
+         });
+       }
+
          if(e.target[9].files[0] === undefined){
             return await swal({
                title: "Error de archivo",
