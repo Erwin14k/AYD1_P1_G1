@@ -78,8 +78,8 @@ const guard = async (req, res, next) => {
     const args = { TOKEN };
     const rows = await Guard.verifyCompanyToken(args);
     if (rows.length > 0) {
-      // Verify if the company is active or waiting
-      if(rows[0].companyStatus==="Active" || rows[0].companyStatus==="Waiting"){
+      // Verify if the company is active
+      if(rows[0].companyStatus==="Active"){
         req.body.companyId = rows[0].companyId;
         return next();
       }else{

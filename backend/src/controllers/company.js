@@ -60,7 +60,14 @@ module.exports.companyLogin = async (req, res, next) => {
       // If the company is not active and not waiting a response
       return res.status(403).json({
         status: 403,
-        message: "La solicitud para el registro de esta empresa fue rechazada por un administrador :(",
+        message: "Estimada empresa, su solicitud para el registro de su organización fue rechazada por un administrador :(",
+      });
+    }
+    if(verifyStatus.length>0 && verifyStatus[0].companyStatus!=="Active" && verifyStatus[0].companyStatus==="Disabled"){
+      // If the company is not active and not waiting a response
+      return res.status(403).json({
+        status: 403,
+        message: "Estimada empresa, su cuenta fue deshabilitada por un administrador por infringir las normas de AlChilazo",
       });
     }
     // Find the password

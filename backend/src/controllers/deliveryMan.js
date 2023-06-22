@@ -74,6 +74,13 @@ module.exports.deliveryManLogin = async (req, res, next) => {
         message: "Estimado repartidor, su solicitud para el registro de su persona como repartidor fue rechazada por un administrador :(",
       });
     }
+    if(verifyStatus.length>0 &&verifyStatus[0].deliveryManStatus!=="Active" && verifyStatus[0].deliveryManStatus==="Disabled"){
+      // If the user is not active
+      return res.status(403).json({
+        status: 403,
+        message: "Estimado repartidor, su cuenta fue deshabilitada en el sistema por infringir las normas de AlChilazo",
+      });
+    }
     // Find the password
     const collectedPassword = await DeliveryMan.hashPassword(args);
     // Verify if exists the password

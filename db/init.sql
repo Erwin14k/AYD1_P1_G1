@@ -152,13 +152,16 @@ CREATE TABLE IF NOT EXISTS _order(
   coupon_id BIGINT,
   delivery_man_id BIGINT NOT NULL,
   user_id BIGINT NOT NULL,
+  company_id BIGINT NOT NULL,
   user_address_id BIGINT NOT NULL,
   order_status VARCHAR(150) NOT NULL,
   order_date TIMESTAMP NOT NULL,
   order_total DECIMAL(10,2),
+  order_commission DECIMAL(10,2),
   FOREIGN KEY (coupon_id) REFERENCES coupon(coupon_id) ON DELETE CASCADE,
   FOREIGN KEY (delivery_man_id) REFERENCES delivery_man(delivery_man_id) ON DELETE CASCADE,
   FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE,
+  FOREIGN KEY (company_id) REFERENCES company(company_id) ON DELETE CASCADE,
   FOREIGN KEY (user_address_id) REFERENCES user_address(user_address_id) ON DELETE CASCADE
 );
 

@@ -1,7 +1,7 @@
 const Admin = require("../models/admin");
 
 
-
+// Admin info
 module.exports.adminInfo = async (req, res, next) => {
   let args = {
     adminId: req.body.adminId,
@@ -18,6 +18,7 @@ module.exports.adminInfo = async (req, res, next) => {
   });
 };
 
+// Delivery man registration request
 module.exports.deliveryManRequest = async (req, res, next) => {
   let args = {
     deliveryManId: req.body.deliveryManId,
@@ -34,6 +35,7 @@ module.exports.deliveryManRequest = async (req, res, next) => {
   });
 };
 
+// Company registration request
 module.exports.companyRequest = async (req, res, next) => {
   let args = {
     companyId: req.body.companyId,
@@ -52,6 +54,79 @@ module.exports.companyRequest = async (req, res, next) => {
 };
 
 
+// Disable a client
+module.exports.disableClient = async (req, res, next) => {
+  let args = {
+    userId: req.body.userId,
+  };
+  // Operations on db
+  const result=await Admin.disableClient(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      message: `El usuario con el id: ${args.userId}, se ha deshabilitado del sistema!`,
+  });
+};
+
+// Disable a delivery_man
+module.exports.disableDeliveryMan = async (req, res, next) => {
+  let args = {
+    deliveryManId: req.body.deliveryManId,
+  };
+  // Operations on db
+  const result=await Admin.disableDeliveryMan(args);
+  if (result==="Disabled"){
+    // response
+    return res
+    .status(200)
+    .json({
+      status:200,
+      message: `El Repartidor con el id: ${args.deliveryManId}, se ha deshabilitado del sistema!`,
+    });
+  }else if(result=="Pending"){
+    // response
+    return res
+    .status(200)
+    .json({
+      status:200,
+      message: `El Repartidor con el id: ${args.deliveryManId}, no puede deshabilitarse del sistema, tiene un pedido en progreso!`,
+    });
+  }
+  
+};
+
+// Disable a company
+module.exports.disableCompany = async (req, res, next) => {
+  let args = {
+    companyId: req.body.companyId,
+  };
+  // Operations on db
+  const result=await Admin.disableCompany(args);
+  if (result==="Disabled"){
+    // response
+    return res
+    .status(200)
+    .json({
+      status:200,
+      message: `La empresa con el id: ${args.companyId}, se ha deshabilitado del sistema!`,
+    });
+  }else if(result=="Pending"){
+    // response
+    return res
+    .status(200)
+    .json({
+      status:200,
+      message: `La empresa con el id: ${args.companyId}, no puede deshabilitarse del sistema, tiene un pedido en progreso!`,
+    });
+  }
+  
+};
+
+
+
+// Users counters by status report
 module.exports.getUserCounters = async (req, res, next) => {
   // Operations on db
   const result=await Admin.getUserCounters();
