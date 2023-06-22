@@ -114,6 +114,61 @@ module.exports.companyRequest = ({ companyId, companyStatus }) => {
   return db.pool(updateCompanyStatusStatemnet, binds);
 };
 
+
+// Disable a client
+module.exports.disableClient = ({ userId }) => {
+  // Update status statement
+  const updateUserStatusStatemnet = `UPDATE user
+                          SET user_status = ?
+                          WHERE user_id = ?`;
+  // bindings
+  const binds = ['Disabled', userId];
+  return db.pool(updateUserStatusStatemnet, binds);
+};
+
+// Disable a delivery_man
+module.exports.disableDeliveryMan = async ({ deliveryManId }) => {
+  // Verify if the delivery_man has a pending order
+  const selectDeliveryManPendingOrders = `SELECT order_id
+  FROM _order WHERE delivery_man_id = ? AND order_status= ?`;
+  const orderBinds=[deliveryManId,'OnTheWay'];
+  const ordersResult= await db.pool(selectDeliveryManPendingOrders, orderBinds);
+  // If the delivery_man has a pending order, cannot be disabled of the system.
+  if(ordersResult[0].order_id){
+    return "Pending";
+  }
+  // Update status statement
+  const updateDeliveryManStatusStatemnet = `UPDATE delivery_man
+                          SET delivery_man_status = ?
+                          WHERE delivery_man_id = ?`;
+  // bindings
+  const binds = ['Disabled', deliveryManId];
+  await db.pool(updateDeliveryManStatusStatemnet, binds);
+  return "Disabled";
+};
+
+// Disable a company
+module.exports.disableCompany = async ({ companyId }) => {
+  // Verify if the company has a pending order
+  const selectCompanyPendingOrders = `SELECT order_id
+  FROM _order WHERE company_id = ? AND order_status= ?`;
+  const orderBinds=[companyId,'OnTheWay'];
+  const ordersResult= await db.pool(selectCompanyPendingOrders, orderBinds);
+  // If the company has a pending order, cannot be disabled of the system.
+  if(ordersResult[0].order_id){
+    return "Pending";
+  }
+  // Update status statement
+  const updateCompanyStatusStatemnet = `UPDATE company
+                          SET company_status = ?
+                          WHERE company_id = ?`;
+  // bindings
+  const binds = ['Disabled', companyId];
+  await db.pool(updateCompanyStatusStatemnet, binds);
+  return "Disabled";
+};
+
+
 module.exports.getUserCounters = async () => {
   const statement = `
     SELECT
