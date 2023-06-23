@@ -169,6 +169,62 @@ module.exports.disableCompany = async ({ companyId }) => {
 };
 
 
+// Get All clients
+module.exports.getAllClients = ({ adminId }) => {
+	// db querys
+  // Collecting all delivery Men
+	const selectAdminClientsStatement = `SELECT user_id,user_email,user_name,
+  user_surname,user_status FROM user WHERE admin_id = ?`;
+  // bindings
+  const binds = [adminId];
+  // Info collected
+	let dataCollected=[];
+  return db.pool(selectAdminClientsStatement, binds)
+		// Admin principal data
+		.then(results=>{
+      dataCollected.push({"clients":results});
+      return dataCollected;
+		});
+};
+
+// Get All delivery_men
+module.exports.getAllDevliveryMen = ({ adminId }) => {
+	// db querys
+  // Collecting all delivery Men
+	const selectAdminDeliveryMenStatement = `SELECT delivery_man_id,delivery_man_name,delivery_man_surname,
+  delivery_man_email,delivery_man_phone,delivery_man_department,delivery_man_municipality,delivery_man_license_type,
+  delivery_man_transport,delivery_man_status,delivery_man_resume
+  FROM delivery_man WHERE admin_id = ?`;
+  // bindings
+  const binds = [adminId];
+  // Info collected
+	let dataCollected=[];
+  return db.pool(selectAdminDeliveryMenStatement, binds)
+		// Admin principal data
+		.then(results=>{
+      dataCollected.push({"deliveryMen":results});
+      return dataCollected;
+		});
+};
+
+
+// Get All delivery_men
+module.exports.getAllCompanies = async ({adminId}) => {
+	// db querys
+  // Collecting all companies
+	const selectAdminCompaniesStatement = `SELECT company_id,company_name,company_description,company_category,
+  company_email,company_department,company_municipality,company_address,company_status,company_file
+  FROM company WHERE admin_id = ?`;
+  // bindings
+  const binds = [adminId];
+  // Info collected
+	let dataCollected=[];
+  const results = await db.pool(selectAdminCompaniesStatement, binds);
+  dataCollected.push({ "companies": results });
+  return dataCollected;
+};
+
+
 module.exports.getUserCounters = async () => {
   const statement = `
     SELECT

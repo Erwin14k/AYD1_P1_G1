@@ -125,6 +125,57 @@ module.exports.disableCompany = async (req, res, next) => {
 };
 
 
+// Get all clients
+module.exports.getAllClients = async (req, res, next) => {
+  let args = {
+    adminId: req.body.adminId,
+  };
+  // Operations on db
+  const result=await Admin.getAllClients(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      messsage: "Clientes obtenidos con éxito!!",
+      adminData:result,
+  });
+};
+
+// Get all delivery_men
+module.exports.getAllDevliveryMen = async (req, res, next) => {
+  let args = {
+    adminId: req.body.adminId,
+  };
+  // Operations on db
+  const result=await Admin.getAllDevliveryMen(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      messsage: "Repartidores obtenidos con éxito!!",
+      adminData:result,
+  });
+};
+
+// Get all companies
+module.exports.getAllCompanies = async (req, res, next) => {
+  let args = {
+    adminId: req.body.adminId,
+  };
+  // Operations on db
+  const result=await Admin.getAllCompanies(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      messsage: "Empresas obtenidas con éxito!!",
+      adminData:result,
+  });
+};
+
 
 // Users counters by status report
 module.exports.getUserCounters = async (req, res, next) => {
