@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DataCompany from './DataCompany';
 import DataDeliveryMan from './DataDeliveryMan';
+import UsersTable from './UsersTable';
 import swal from 'sweetalert';
 import Cookie from "cookie-universal";
 const cookies = Cookie();
@@ -11,8 +12,10 @@ const crr_user = cookies.get("crr_user");
 const ModuleAdmin = () => {
     const [deliveryRequest, setDeliveryRequest] = useState([]);
     const [companyRequest, setcompanyRequest] = useState([]);
-    const [deliveryInfo, setDeliveryInfo] = useState({})
-    const [companyInfo, setCompanyInfo] = useState({})
+    const [deliveryInfo, setDeliveryInfo] = useState({});
+    const [companyInfo, setCompanyInfo] = useState({});
+
+    const [refresh, setRefresh] = useState(false);
 
     const peticion = () => {
         const body = {
@@ -37,8 +40,9 @@ const ModuleAdmin = () => {
                 const delivery = response.adminData[1].deliveryMenWating /* JSON.stringify(response.adminData[1].deliveryMenWating) */
                 const company = response.adminData[2].CompaniesWaiting
                 setDeliveryRequest(delivery)
-                console.log("delivery",delivery)
+                //console.log("delivery",delivery)
                 setcompanyRequest(company)
+                setRefresh(!refresh);
             })
     }
 
@@ -63,7 +67,7 @@ const ModuleAdmin = () => {
             })
             .then(async response => {
                 await swal({
-                    title: "Querido Usuario Adinistrador",
+                    title: "Querido Usuario Administrador",
                     text: response.message,
                     icon: response.status===200 ? "success":"error",
                     button: true,
@@ -96,7 +100,7 @@ const ModuleAdmin = () => {
             })
             .then(async response => {
                 await swal({
-                    title: "Querido Usuario Adinistrador",
+                    title: "Querido Usuario Administrador",
                     text: response.message,
                     icon: response.status===200 ? "success":"error",
                     button: true,
@@ -227,11 +231,12 @@ const ModuleAdmin = () => {
                 {/* DISABLE USERS */}
                 <div className="tab-pane fade" id="users" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>DESHABILITAR USUARIOS</h3></center>
+                    <UsersTable refresh={refresh} />
                 </div>
 
                 {/* MAINTENANCE */}
                 <div className="tab-pane fade" id="mantenimiento" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
-                    <center><h3>MANTENIMIENTO</h3></center>
+                    <center><h3>MANTENIMIENTO DE REPARTIDORES Y EMPRESAS</h3></center>
                 </div>
             </div>
             
