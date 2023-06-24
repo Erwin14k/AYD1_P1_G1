@@ -261,3 +261,65 @@ module.exports.deleteCombo = async ({comboId}) => {
   return await db.pool(statement, binds);
 };
 
+// Get top 5 most selled products
+module.exports.getMostSelledProducts = async ({companyId}) => {
+	// db querys
+  // Collecting top 5
+	const selectCompanyMostSelledProductsMenStatement = `SELECT product_id,product_type,product_name,
+  product_price,product_description,product_img,product_number_of_sales,product_stock,
+  getCompanyName(company_id) AS company_name
+  FROM product WHERE company_id = ? ORDER BY product_number_of_sales DESC LIMIT 5`;
+  // bindings
+  const binds = [companyId];
+  // Info collected
+	let dataCollected=[];
+  const results = await db.pool(selectCompanyMostSelledProductsMenStatement, binds);
+  dataCollected.push({ "products": results });
+  return dataCollected;
+};
+
+
+// Get all orders associated to the company
+module.exports.getAllCompanyOrders = async ({companyId}) => {
+	// db querys
+  // Collecting the orders
+	const selectCompanyOrdersStatement = `SELECT order_id,delivery_man_id,user_id,
+  company_id,order_status,order_date,order_total,order_commission,
+  getCompanyName(company_id) AS company_name,getDeliveryManName(delivery_man_id) AS delivery_man_name,
+  getClientName(user_id) AS user_name
+  FROM _order WHERE company_id = ?`;
+  // bindings
+  const binds = [companyId];
+  // Info collected
+	let dataCollected=[];
+  const results = await db.pool(selectCompanyOrdersStatement, binds);
+  dataCollected.push({ "orders": results });
+  return dataCollected;
+};
+
+
+// Approving an order
+module.exports.approveOrder = async ({orderId}) => {
+  const updateOrderStatement = `UPDATE _order SET order_status = ? WHERE order_id = ?`;
+  // bindings
+  const binds = ["Approved",orderId];
+  return await db.pool(updateOrderStatement, binds);
+};
+
+// Get waiting orders associated to the company
+module.exports.getAllWaitingCompanyOrders = async ({companyId}) => {
+	// db querys
+  // Collecting the orders
+	const selectCompanyOrdersStatement = `SELECT order_id,delivery_man_id,user_id,
+  company_id,order_status,order_date,order_total,order_commission,
+  getCompanyName(company_id) AS company_name,getDeliveryManName(delivery_man_id) AS delivery_man_name,
+  getClientName(user_id) AS user_name
+  FROM _order WHERE company_id = ? AND order_status = ?`;
+  // bindings
+  const binds = [companyId,"Waiting"];
+  // Info collected
+	let dataCollected=[];
+  const results = await db.pool(selectCompanyOrdersStatement, binds);
+  dataCollected.push({ "orders": results });
+  return dataCollected;
+};

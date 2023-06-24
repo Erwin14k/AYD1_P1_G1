@@ -210,3 +210,28 @@ BEGIN
   WHERE company_id = companyIdParam;
   RETURN companyName;
 END //
+
+-- Function to obtain the full name of a delivery man by the delivery_man_id
+DELIMITER //
+CREATE FUNCTION getDeliveryManName(deliveryManIdParam BIGINT) RETURNS VARCHAR(100)
+BEGIN
+  DECLARE deliveryManName VARCHAR(100);
+  SELECT CONCAT(delivery_man_name, ' ', delivery_man_surname) INTO deliveryManName
+  FROM delivery_man
+  WHERE delivery_man_id = deliveryManIdParam;
+  RETURN deliveryManName;
+END //
+DELIMITER ;
+
+
+-- Function to obtain the full name of a client by the user_id
+DELIMITER //
+CREATE FUNCTION getClientName(UserIdParam BIGINT) RETURNS VARCHAR(100)
+BEGIN
+  DECLARE clientName VARCHAR(100);
+  SELECT CONCAT(user_name, ' ', user_surname) INTO clientName
+  FROM user
+  WHERE user_id = UserIdParam;
+  RETURN clientName;
+END //
+DELIMITER ;
