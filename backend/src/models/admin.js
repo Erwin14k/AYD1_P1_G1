@@ -134,8 +134,10 @@ module.exports.disableDeliveryMan = async ({ deliveryManId }) => {
   const orderBinds=[deliveryManId,'OnTheWay'];
   const ordersResult= await db.pool(selectDeliveryManPendingOrders, orderBinds);
   // If the delivery_man has a pending order, cannot be disabled of the system.
-  if(ordersResult[0].order_id){
-    return "Pending";
+  if(ordersResult[0]){
+    if(ordersResult[0].order_id){
+      return "Pending";
+    }
   }
   // Update status statement
   const updateDeliveryManStatusStatemnet = `UPDATE delivery_man
@@ -155,8 +157,10 @@ module.exports.disableCompany = async ({ companyId }) => {
   const orderBinds=[companyId,'OnTheWay'];
   const ordersResult= await db.pool(selectCompanyPendingOrders, orderBinds);
   // If the company has a pending order, cannot be disabled of the system.
-  if(ordersResult[0].order_id){
-    return "Pending";
+  if(ordersResult[0]){
+    if(ordersResult[0].order_id){
+      return "Pending";
+    }
   }
   // Update status statement
   const updateCompanyStatusStatemnet = `UPDATE company
