@@ -228,7 +228,7 @@ module.exports.getAllCompanies = async ({adminId}) => {
   return dataCollected;
 };
 
-
+// Users counters by status
 module.exports.getUserCounters = async () => {
   const statement = `
     SELECT
@@ -244,4 +244,24 @@ module.exports.getUserCounters = async () => {
       (SELECT COUNT(*) FROM company WHERE company_status = 'Disabled') AS blockedCompaniesCount`
       ;
   return await db.pool(statement);
+};
+
+// Get top 5 delivery man by rating
+module.exports.getTop5DeliveryManRating = ({ adminId }) => {
+	// db querys
+  // Collecting top 5
+	const selectAdminDeliveryMenStatement = `SELECT delivery_man_id,delivery_man_name,delivery_man_surname,
+  delivery_man_email,delivery_man_phone,delivery_man_department,delivery_man_municipality,delivery_man_license_type,
+  delivery_man_transport,delivery_man_status,delivery_man_resume,delivery_man_rating
+  FROM delivery_man WHERE admin_id = ? ORDER BY delivery_man_rating DESC LIMIT 5`;
+  // bindings
+  const binds = [adminId];
+  // Info collected
+	let dataCollected=[];
+  return db.pool(selectAdminDeliveryMenStatement, binds)
+		// Admin principal data
+		.then(results=>{
+      dataCollected.push({"deliveryMen":results});
+      return dataCollected;
+		});
 };

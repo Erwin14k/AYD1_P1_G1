@@ -201,3 +201,20 @@ module.exports.getUserCounters = async (req, res, next) => {
       }
   });
 };
+
+// Get all delivery_men
+module.exports.getTop5DeliveryManRating = async (req, res, next) => {
+  let args = {
+    adminId: req.body.adminId,
+  };
+  // Operations on db
+  const result=await Admin.getTop5DeliveryManRating(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      messsage: "Top 5 de repartidores en base a su calificación obtenidos con éxito!!",
+      adminData:result,
+  });
+};

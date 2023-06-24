@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { adminInfo,deliveryManRequest ,companyRequest,getUserCounters,
 disableClient,disableDeliveryMan,disableCompany,getAllClients,
-getAllCompanies,getAllDevliveryMen} = require("../controllers/infoAdmin");
+getAllCompanies,getAllDevliveryMen,getTop5DeliveryManRating} = require("../controllers/infoAdmin");
 
 router.post("/admin/info", adminInfo);
 router.post("/admin/delivery-man-request",deliveryManRequest);
@@ -14,5 +14,6 @@ router.post("/admin/disable-delivery-man",disableDeliveryMan);
 router.post("/admin/get-all-clients",getAllClients);
 router.post("/admin/get-all-delivery-man",getAllDevliveryMen);
 router.post("/admin/get-all-companies",getAllCompanies);
+router.post("/admin/get-top5-delivery-man",getTop5DeliveryManRating);
 router.get("/admin/users-counters",getUserCounters);
 module.exports = router;
