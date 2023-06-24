@@ -193,9 +193,11 @@ module.exports.getUserCounters = async (req, res, next) => {
         activeDeliveryManCount:result[0].activeDeliveryManCount,
         waitingDeliveryManCount:result[0].waitingDeliveryManCount,
         declinedDeliveryManCount:result[0].declinedDeliveryManCount,
+        blockedDeliveryManCount:result[0].blockedDeliveryManCount,
         activeCompaniesCount:result[0].activeCompaniesCount,
         waitingCompaniesCount:result[0].waitingCompaniesCount,
-        declinedCompaniesCount:result[0].declinedCompaniesCount
+        declinedCompaniesCount:result[0].declinedCompaniesCount,
+        blockedCompaniesCount:result[0].blockedCompaniesCount
       }
   });
 };

@@ -229,12 +229,15 @@ module.exports.getUserCounters = async () => {
   const statement = `
     SELECT
       (SELECT COUNT(*) FROM user WHERE user_status = 'Active') AS activeUserCount,
-      (SELECT COUNT(*) FROM user WHERE user_status = 'Blocked') AS blockedUserCount,
+      (SELECT COUNT(*) FROM user WHERE user_status = 'Disabled') AS blockedUserCount,
       (SELECT COUNT(*) FROM delivery_man WHERE delivery_man_status = 'Active') AS activeDeliveryManCount,
       (SELECT COUNT(*) FROM delivery_man WHERE delivery_man_status = 'Waiting') AS waitingDeliveryManCount,
       (SELECT COUNT(*) FROM delivery_man WHERE delivery_man_status = 'Declined') AS declinedDeliveryManCount,
+      (SELECT COUNT(*) FROM delivery_man WHERE delivery_man_status = 'Disabled') AS blockedDeliveryManCount,
       (SELECT COUNT(*) FROM company WHERE company_status = 'Active') AS activeCompaniesCount,
       (SELECT COUNT(*) FROM company WHERE company_status = 'Waiting') AS waitingCompaniesCount,
-      (SELECT COUNT(*) FROM company WHERE company_status = 'Declined') AS declinedCompaniesCount`;
+      (SELECT COUNT(*) FROM company WHERE company_status = 'Declined') AS declinedCompaniesCount,
+      (SELECT COUNT(*) FROM company WHERE company_status = 'Disabled') AS blockedCompaniesCount`
+      ;
   return await db.pool(statement);
 };
