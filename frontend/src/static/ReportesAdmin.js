@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import UsersReport from "./adminReports/UsersReport";
+import Top5 from "./adminReports/Top5";
 import Cookie from "cookie-universal";
 const cookies = Cookie();
 const crr_user = cookies.get("crr_user");
@@ -7,9 +9,6 @@ const ReportesAdmin = () => {
    const [usersInfo, setUsersInfo] = useState({});
 
    const actualizar = () => {
-      console.log("Actualizando", crr_user);
-      console.log(`Bearer ${crr_user.data[0].authToken}`);
-
       fetch(`http://localhost:4200/admin/users-counters`, {
          method: "GET",
          headers: {
@@ -108,6 +107,9 @@ const ReportesAdmin = () => {
                <center>
                   <h3>INFORME DE VENTAS</h3>
                </center>
+
+               <Top5 titulo={"Empresas con más pedidos"} ll="Pedidos"/>
+
             </div>
             <div
                className="tab-pane fade"
@@ -119,147 +121,8 @@ const ReportesAdmin = () => {
                <center>
                   <h3>INFORME DE USUARIOS</h3>
                </center>
-               <div className="row" style={{ marginTop: "2%" }}>
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">Usuarios Activos</div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>{usersInfo.activeUserCount}</strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
 
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">Usuarios Deshabilitados</div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>{usersInfo.blockedUserCount}</strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">Repartidores Activos</div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>
-                                 {usersInfo.activeDeliveryManCount}
-                              </strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">
-                           Repartidores Esperando
-                        </div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>
-                                 {usersInfo.waitingDeliveryManCount}
-                              </strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">
-                           Repartidores Rechazados
-                        </div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>
-                                 {usersInfo.declinedDeliveryManCount}
-                              </strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">
-                           Repartidores Deshabilitados
-                        </div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>
-                                 {usersInfo.blockedDeliveryManCount}
-                              </strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">Empresas Activas</div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>{usersInfo.activeCompaniesCount}</strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">Empresas Esperando</div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>{usersInfo.waitingCompaniesCount}</strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">Empresas Rechazadas</div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>
-                                 {usersInfo.declinedCompaniesCount}
-                              </strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">
-                           Empresas Deshabilitadas
-                        </div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>
-                                 {usersInfo.blockedCompaniesCount}
-                              </strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+               <UsersReport usersInfo={usersInfo} />
             </div>
             <div
                className="tab-pane fade"
@@ -271,7 +134,9 @@ const ReportesAdmin = () => {
                <center>
                   <h3>INFORME DE REPARTIDORES</h3>
                </center>
-               
+
+               <Top5 titulo={"Mejores Repartidores"} ll="Calificación" />
+
             </div>
          </div>
       </div>
