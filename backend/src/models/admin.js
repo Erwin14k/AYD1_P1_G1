@@ -274,3 +274,25 @@ module.exports.getMostSelledProducts = async () => {
   dataCollected.push({ "products": results });
   return dataCollected;
 };
+
+// Get top 5 companies by orders generated
+module.exports.getTop5CompaniesOrdersGenerated = async () => {
+	// db querys
+  // Collecting top 5
+	const selectAdminTop5CompaniesStatement = `SELECT c.company_name, (
+    SELECT COUNT(*)
+    FROM _order o
+    WHERE o.company_id = c.company_id
+    ) AS order_count
+    FROM company c
+    ORDER BY order_count DESC
+    LIMIT 5
+  `;
+  // bindings
+  const binds = [];
+  // Info collected
+	let dataCollected=[];
+  const results = await db.pool(selectAdminTop5CompaniesStatement, binds);
+  dataCollected.push({ "companies": results });
+  return dataCollected;
+};

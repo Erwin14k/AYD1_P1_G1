@@ -202,7 +202,7 @@ module.exports.getTop5DeliveryManRating = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Top 5 de repartidores en base a su calificación obtenidos con éxito!!",
+      messsage: "Top 5 de repartidores en base a su calificación obtenido con éxito!!",
       adminData:result,
   });
 };
@@ -216,7 +216,22 @@ module.exports.getMostSelledProducts = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Top 5 de los productos más vendidos obtenidos con éxito",
+      messsage: "Top 5 de los productos más vendidos obtenido con éxito",
+      adminData:result,
+  });
+};
+
+
+// Get top 5 companies by orders generated
+module.exports.getTop5CompaniesOrdersGenerated = async (req, res, next) => {
+  // Operations on db
+  const result=await Admin.getTop5CompaniesOrdersGenerated();
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      messsage: "Top 5 de las empresas con más pedidos generados obtenido con éxito",
       adminData:result,
   });
 };
