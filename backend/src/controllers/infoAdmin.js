@@ -127,11 +127,8 @@ module.exports.disableCompany = async (req, res, next) => {
 
 // Get all clients
 module.exports.getAllClients = async (req, res, next) => {
-  let args = {
-    adminId: req.body.adminId,
-  };
   // Operations on db
-  const result=await Admin.getAllClients(args);
+  const result=await Admin.getAllClients();
   // response
   return res
     .status(200)
@@ -144,11 +141,8 @@ module.exports.getAllClients = async (req, res, next) => {
 
 // Get all delivery_men
 module.exports.getAllDevliveryMen = async (req, res, next) => {
-  let args = {
-    adminId: req.body.adminId,
-  };
   // Operations on db
-  const result=await Admin.getAllDevliveryMen(args);
+  const result=await Admin.getAllDevliveryMen();
   // response
   return res
     .status(200)
@@ -161,11 +155,8 @@ module.exports.getAllDevliveryMen = async (req, res, next) => {
 
 // Get all companies
 module.exports.getAllCompanies = async (req, res, next) => {
-  let args = {
-    adminId: req.body.adminId,
-  };
   // Operations on db
-  const result=await Admin.getAllCompanies(args);
+  const result=await Admin.getAllCompanies();
   // response
   return res
     .status(200)
@@ -199,5 +190,48 @@ module.exports.getUserCounters = async (req, res, next) => {
         declinedCompaniesCount:result[0].declinedCompaniesCount,
         blockedCompaniesCount:result[0].blockedCompaniesCount
       }
+  });
+};
+
+// Get top 5 delivery man by rating
+module.exports.getTop5DeliveryManRating = async (req, res, next) => {
+  // Operations on db
+  const result=await Admin.getTop5DeliveryManRating();
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      messsage: "Top 5 de repartidores en base a su calificación obtenido con éxito!!",
+      adminData:result,
+  });
+};
+
+// Get top 5 most selled products
+module.exports.getMostSelledProducts = async (req, res, next) => {
+  // Operations on db
+  const result=await Admin.getMostSelledProducts();
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      messsage: "Top 5 de los productos más vendidos obtenido con éxito",
+      adminData:result,
+  });
+};
+
+
+// Get top 5 companies by orders generated
+module.exports.getTop5CompaniesOrdersGenerated = async (req, res, next) => {
+  // Operations on db
+  const result=await Admin.getTop5CompaniesOrdersGenerated();
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      messsage: "Top 5 de las empresas con más pedidos generados obtenido con éxito",
+      adminData:result,
   });
 };

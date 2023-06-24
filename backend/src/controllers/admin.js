@@ -9,7 +9,6 @@ module.exports.adminLogin = async (req, res, next) => {
     adminEmail: req.body.userEmail,
     adminPassword: req.body.userPassword,
   };
-  console.log("adminLogin",args);
   try {
     const verifyStatus=await Admin.verifyStatus(args.adminEmail);
     //Verify if the admin has an active status

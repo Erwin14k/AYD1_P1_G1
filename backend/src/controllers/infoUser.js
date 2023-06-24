@@ -16,3 +16,27 @@ module.exports.userInfo = async (req, res, next) => {
       userData:result,
   });
 };
+
+module.exports.getAllProducts = async (req, res, next) => {
+  // Operations on db
+  const result=await User.getAllProducts();
+  // response
+  return res
+    .status(200)
+    .json({
+      messsage: "Información de los productos recuperada con éxito!",
+      userData:result,
+  });
+};
+
+module.exports.getAllCombos = async (req, res, next) => {
+  // Operations on db
+  const result=await User.getAllCombos();
+  // response
+  return res
+    .status(200)
+    .json({
+      messsage: "Información de los combos recuperada con éxito!",
+      userData:result,
+  });
+};
