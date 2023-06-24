@@ -134,8 +134,10 @@ module.exports.disableDeliveryMan = async ({ deliveryManId }) => {
   const orderBinds=[deliveryManId,'OnTheWay'];
   const ordersResult= await db.pool(selectDeliveryManPendingOrders, orderBinds);
   // If the delivery_man has a pending order, cannot be disabled of the system.
-  if(ordersResult[0].order_id){
-    return "Pending";
+  if(ordersResult[0]){
+    if(ordersResult[0].order_id){
+      return "Pending";
+    }
   }
   // Update status statement
   const updateDeliveryManStatusStatemnet = `UPDATE delivery_man
@@ -155,8 +157,10 @@ module.exports.disableCompany = async ({ companyId }) => {
   const orderBinds=[companyId,'OnTheWay'];
   const ordersResult= await db.pool(selectCompanyPendingOrders, orderBinds);
   // If the company has a pending order, cannot be disabled of the system.
-  if(ordersResult[0].order_id){
-    return "Pending";
+  if(ordersResult[0]){
+    if(ordersResult[0].order_id){
+      return "Pending";
+    }
   }
   // Update status statement
   const updateCompanyStatusStatemnet = `UPDATE company
@@ -229,12 +233,15 @@ module.exports.getUserCounters = async () => {
   const statement = `
     SELECT
       (SELECT COUNT(*) FROM user WHERE user_status = 'Active') AS activeUserCount,
-      (SELECT COUNT(*) FROM user WHERE user_status = 'Blocked') AS blockedUserCount,
+      (SELECT COUNT(*) FROM user WHERE user_status = 'Disabled') AS blockedUserCount,
       (SELECT COUNT(*) FROM delivery_man WHERE delivery_man_status = 'Active') AS activeDeliveryManCount,
       (SELECT COUNT(*) FROM delivery_man WHERE delivery_man_status = 'Waiting') AS waitingDeliveryManCount,
       (SELECT COUNT(*) FROM delivery_man WHERE delivery_man_status = 'Declined') AS declinedDeliveryManCount,
+      (SELECT COUNT(*) FROM delivery_man WHERE delivery_man_status = 'Disabled') AS blockedDeliveryManCount,
       (SELECT COUNT(*) FROM company WHERE company_status = 'Active') AS activeCompaniesCount,
       (SELECT COUNT(*) FROM company WHERE company_status = 'Waiting') AS waitingCompaniesCount,
-      (SELECT COUNT(*) FROM company WHERE company_status = 'Declined') AS declinedCompaniesCount`;
+      (SELECT COUNT(*) FROM company WHERE company_status = 'Declined') AS declinedCompaniesCount,
+      (SELECT COUNT(*) FROM company WHERE company_status = 'Disabled') AS blockedCompaniesCount`
+      ;
   return await db.pool(statement);
 };
