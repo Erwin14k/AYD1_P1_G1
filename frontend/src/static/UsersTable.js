@@ -8,16 +8,12 @@ const UsersTable = ({ refresh }) => {
     const [usersInfo, setUsersInfo] = useState([])
 
     const llenarTabla = () => {
-        const body = {
-            adminId: -1
-        }
         fetch(`http://localhost:4200/admin/get-all-clients`, {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
-            },
-            body: JSON.stringify(body)
+            }
         })
             .then(res => res.json())
             .catch(err => {
