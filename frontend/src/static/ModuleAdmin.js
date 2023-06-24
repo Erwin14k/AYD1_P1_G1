@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DataCompany from './DataCompany';
 import DataDeliveryMan from './DataDeliveryMan';
 import UsersTable from './UsersTable';
+import MaintenaceCompanyDelivery from './MaintenanceCompanyDelivery';
 import swal from 'sweetalert';
 import Cookie from "cookie-universal";
 const cookies = Cookie();
@@ -155,8 +156,13 @@ const ModuleAdmin = () => {
                     </button>
                 </li>
                 <li className="nav-item" role="presentation">
-                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#mantenimiento" type="button" role="tab" aria-controls="profile" aria-selected="false">
-                        Mantenimiento de repartidores y empresas
+                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#mantenimientoR" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                        Mantenimiento de repartidores
+                    </button>
+                </li>
+                <li className="nav-item" role="presentation">
+                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#mantenimientoP" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                        Mantenimiento de empresas
                     </button>
                 </li>
             </ul>
@@ -235,8 +241,15 @@ const ModuleAdmin = () => {
                 </div>
 
                 {/* MAINTENANCE */}
-                <div className="tab-pane fade" id="mantenimiento" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
-                    <center><h3>MANTENIMIENTO DE REPARTIDORES Y EMPRESAS</h3></center>
+                <div className="tab-pane fade" id="mantenimientoR" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
+                    <center><h3>MANTENIMIENTO DE REPARTIDORES</h3></center>
+                    <MaintenaceCompanyDelivery refresh={refresh} url="get-all-delivery-man" noUrl={2}/>
+                </div>
+
+                {/* MAINTENANCE */}
+                <div className="tab-pane fade" id="mantenimientoP" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
+                    <center><h3>MANTENIMIENTO DE EMPRESAS</h3></center>
+                    <MaintenaceCompanyDelivery refresh={refresh} url="get-all-companies" noUrl={3}/>
                 </div>
             </div>
             

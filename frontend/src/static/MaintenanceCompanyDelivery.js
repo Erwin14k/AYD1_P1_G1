@@ -4,14 +4,14 @@ import swal from 'sweetalert';
 const cookies = Cookie();
 const crr_user = cookies.get("crr_user");
 
-const UsersTable = ({ refresh }) => {
+const MaintenaceCompanyDelivery = ({ refresh, url, noUrl }) => {
     const [usersInfo, setUsersInfo] = useState([])
 
     const llenarTabla = () => {
         const body = {
             adminId: -1
         }
-        fetch(`http://localhost:4200/admin/get-all-clients`, {
+        fetch(`http://localhost:4200/admin/${url}`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -25,27 +25,33 @@ const UsersTable = ({ refresh }) => {
             })
             .then(response => {
                 console.log("REPONSE///", response)
-                const users = response.adminData[0].clients
-                console.log(users)
+                const users = noUrl === 2 ? response.adminData[0].deliveryMen : response.adminData[0].companies
                 setUsersInfo(users)
             })
     }
 
-    const deshabilitar = async (e, id) => {
+    const deshabilitar = async (e, id, furl) => {
         e.preventDefault();
-        const body = {
-            userId: id
-        }
+        const body = noUrl === 2 ? { deliveryManId: id } : { companyId: id }
 
         const willDelete = await swal({
             title: "¿Estás seguro?",
             text: "¿Estás seguro de que deseas deshabilitar el usuario?",
             icon: "warning",
+            content: {
+                element: 'input',
+                attributes: {
+                    id: 'swal-input',
+                    placeholder: 'Ingrese la razón ...',
+                    type: 'text'
+                }
+            },
             dangerMode: true,
         })
 
         if (willDelete) {
-            fetch(`http://localhost:4200/admin/disable-client`, {
+
+            fetch(`http://localhost:4200/admin/disable-${furl}`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
@@ -65,10 +71,15 @@ const UsersTable = ({ refresh }) => {
                         button: true,
                     })
                     llenarTabla();
-                })
+                });
+        }else if (willDelete === ""){
+            swal({
+                title: "Querido Usuario Administrador",
+                text: "Para deshabilitar un usuario, debe de ingresar una razón.",
+                icon: "error",
+                button: true,
+            })
         }
-
-
     }
 
     useEffect(() => {
@@ -81,8 +92,8 @@ const UsersTable = ({ refresh }) => {
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Correo</th>
+                    <th>{noUrl === 2 ? "Apellido" : "Categoría"}</th>
+                    <th>Departamento</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -90,19 +101,20 @@ const UsersTable = ({ refresh }) => {
                 {usersInfo.map((user, index) => {
                     return (
                         <tr className='table-light' key={`P${index}`}>
-                            <td>{user.user_id}</td>
-                            <td>{user.user_name}</td>
-                            <td>{user.user_surname}</td>
-                            <td>{user.user_email}</td>
+                            <td>{noUrl === 2 ? user.delivery_man_id : user.company_id}</td>
+                            <td>{noUrl === 2 ? user.delivery_man_name : user.company_name}</td>
+                            <td>{noUrl === 2 ? user.delivery_man_surname : user.company_category}</td>
+                            <td>{noUrl === 2 ? user.delivery_man_municipality : user.company_department}</td>
                             <td>
-                                <button type="button" className="btn btn-danger" onClick={(e) => deshabilitar(e, user.user_id)}>Deshabilitar</button>
+                                <button type="button" className="btn btn-danger" onClick={(e) => deshabilitar(e, noUrl === 2 ? user.delivery_man_id : user.company_id, noUrl === 2 ? "delivery-man" : "company")}>Deshabilitar</button>
                             </td>
                         </tr>
                     );
                 })}
             </tbody>
         </table>
-    )
+
+    );
 }
 
-export default UsersTable;
+export default MaintenaceCompanyDelivery;
