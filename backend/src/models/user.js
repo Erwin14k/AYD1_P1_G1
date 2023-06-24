@@ -57,6 +57,7 @@ module.exports.login = ({ userEmail, userPassword }) => {
 // User info
 module.exports.info = ({ userId }) => {
 	// db querys
+  console.log(userId);
   const selectUserDataStatement = `SELECT user_token,user_name,user_surname,user_email,user_id,user_status FROM user WHERE user_id = ?`;
 	const selectUserPaymentMethodsStatement = `SELECT user_payment_method_id,card_type,card_number FROM user_payment_method WHERE user_id = ?`;
 	const selectUserAddressStatement = `SELECT user_address_id,department,municipality,address FROM user_address WHERE user_id = ?`;
@@ -94,3 +95,38 @@ module.exports.info = ({ userId }) => {
     });
 };
 
+
+// Get all products
+module.exports.getAllProducts = async () => {
+	// db querys
+  // Collecting all products
+	const selectAllProducts = `SELECT product_id,product_type,product_name,
+  product_price,product_description,product_img,product_number_of_sales,product_stock,
+  getCompanyName(company_id) AS company_name
+  FROM product`;
+  // bindings
+  const binds = [];
+  // Info collected
+	let dataCollected=[];
+  const results = await db.pool(selectAllProducts, binds);
+  dataCollected.push({ "products": results });
+  return dataCollected;
+};
+
+
+// Get all combos
+module.exports.getAllCombos = async () => {
+	// db querys
+  // Collecting all combos
+	const selectAllCombos = `SELECT combo_id,combo_name,combo_price,
+  combo_description,combo_img,combo_number_of_sales,combo_stock,
+  getCompanyName(company_id) AS company_name
+  FROM combo`;
+  // bindings
+  const binds = [];
+  // Info collected
+	let dataCollected=[];
+  const results = await db.pool(selectAllCombos, binds);
+  dataCollected.push({ "products": results });
+  return dataCollected;
+};
