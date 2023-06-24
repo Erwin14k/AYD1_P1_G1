@@ -241,10 +241,10 @@ module.exports.getUserCounters = async () => {
 };
 
 // Get top 5 delivery man by rating
-module.exports.getTop5DeliveryManRating = () => {
+module.exports.getTop5DeliveryManRating = async () => {
 	// db querys
   // Collecting top 5
-	const selectAdminDeliveryMenStatement = `SELECT delivery_man_id,delivery_man_name,delivery_man_surname,
+	const selectAdminTop5DeliveryMenStatement = `SELECT delivery_man_id,delivery_man_name,delivery_man_surname,
   delivery_man_email,delivery_man_phone,delivery_man_department,delivery_man_municipality,delivery_man_license_type,
   delivery_man_transport,delivery_man_status,delivery_man_resume,delivery_man_rating
   FROM delivery_man WHERE admin_id = ? ORDER BY delivery_man_rating DESC LIMIT 5`;
@@ -252,10 +252,25 @@ module.exports.getTop5DeliveryManRating = () => {
   const binds = [-1];
   // Info collected
 	let dataCollected=[];
-  return db.pool(selectAdminDeliveryMenStatement, binds)
-		// Admin principal data
-		.then(results=>{
-      dataCollected.push({"deliveryMen":results});
-      return dataCollected;
-		});
+  const results = await db.pool(selectAdminTop5DeliveryMenStatement, binds);
+  dataCollected.push({ "deliveryMen": results });
+  return dataCollected;
+};
+
+
+// Get top 5 most selled products
+module.exports.getMostSelledProducts = async () => {
+	// db querys
+  // Collecting top 5
+	const selectAdminMostSelledProductsMenStatement = `SELECT product_id,product_type,product_name,
+  product_price,product_description,product_img,product_number_of_sales,product_stock,
+  getCompanyName(company_id) AS company_name
+  FROM product ORDER BY product_number_of_sales DESC LIMIT 5`;
+  // bindings
+  const binds = [];
+  // Info collected
+	let dataCollected=[];
+  const results = await db.pool(selectAdminMostSelledProductsMenStatement, binds);
+  dataCollected.push({ "products": results });
+  return dataCollected;
 };

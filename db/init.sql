@@ -199,3 +199,14 @@ DELIMITER ;
 -- Admin user
 INSERT INTO admin (admin_id,admin_email, admin_password, admin_name,admin_status)
 VALUES (-1,'admin@root.com', 'root', 'root','Active');
+
+-- Function to get the company_name by the company_id
+DELIMITER //
+CREATE FUNCTION getCompanyName(companyIdParam BIGINT) RETURNS VARCHAR(100)
+BEGIN
+  DECLARE companyName VARCHAR(100);
+  SELECT company_name INTO companyName
+  FROM company
+  WHERE company_id = companyIdParam;
+  RETURN companyName;
+END //

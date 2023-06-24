@@ -193,7 +193,7 @@ module.exports.getUserCounters = async (req, res, next) => {
   });
 };
 
-// Get all delivery_men
+// Get top 5 delivery man by rating
 module.exports.getTop5DeliveryManRating = async (req, res, next) => {
   // Operations on db
   const result=await Admin.getTop5DeliveryManRating();
@@ -203,6 +203,20 @@ module.exports.getTop5DeliveryManRating = async (req, res, next) => {
     .json({
       status:200,
       messsage: "Top 5 de repartidores en base a su calificación obtenidos con éxito!!",
+      adminData:result,
+  });
+};
+
+// Get top 5 most selled products
+module.exports.getMostSelledProducts = async (req, res, next) => {
+  // Operations on db
+  const result=await Admin.getMostSelledProducts();
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      messsage: "Top 5 de los productos más vendidos obtenidos con éxito",
       adminData:result,
   });
 };
