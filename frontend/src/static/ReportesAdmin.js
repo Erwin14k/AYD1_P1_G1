@@ -105,7 +105,9 @@ const ReportesAdmin = () => {
                aria-labelledby="home-tab"
                style={{ padding: "2%" }}
             >
-               INFORME DE VENTAS
+               <center>
+                  <h3>INFORME DE VENTAS</h3>
+               </center>
             </div>
             <div
                className="tab-pane fade"
@@ -132,7 +134,7 @@ const ReportesAdmin = () => {
 
                   <div className="col-md-6">
                      <div className="card mb-4">
-                        <div className="card-header">Usuarios Bloqueados</div>
+                        <div className="card-header">Usuarios Deshabilitados</div>
                         <div className="card-body">
                            <p>
                               Cantidad:{" "}
@@ -172,7 +174,7 @@ const ReportesAdmin = () => {
                      </div>
                   </div>
 
-                  <div className="col-md-12">
+                  <div className="col-md-6">
                      <div className="card mb-4">
                         <div className="card-header">
                            Repartidores Rechazados
@@ -187,6 +189,23 @@ const ReportesAdmin = () => {
                         </div>
                      </div>
                   </div>
+
+                  <div className="col-md-6">
+                     <div className="card mb-4">
+                        <div className="card-header">
+                           Repartidores Deshabilitados
+                        </div>
+                        <div className="card-body">
+                           <p>
+                              Cantidad:{" "}
+                              <strong>
+                                 {usersInfo.blockedDeliveryManCount}
+                              </strong>
+                           </p>
+                        </div>
+                     </div>
+                  </div>
+
                   <div className="col-md-6">
                      <div className="card mb-4">
                         <div className="card-header">Empresas Activas</div>
@@ -211,7 +230,7 @@ const ReportesAdmin = () => {
                      </div>
                   </div>
 
-                  <div className="col-md-12">
+                  <div className="col-md-6">
                      <div className="card mb-4">
                         <div className="card-header">Empresas Rechazadas</div>
                         <div className="card-body">
@@ -219,6 +238,22 @@ const ReportesAdmin = () => {
                               Cantidad:{" "}
                               <strong>
                                  {usersInfo.declinedCompaniesCount}
+                              </strong>
+                           </p>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div className="col-md-6">
+                     <div className="card mb-4">
+                        <div className="card-header">
+                           Empresas Deshabilitadas
+                        </div>
+                        <div className="card-body">
+                           <p>
+                              Cantidad:{" "}
+                              <strong>
+                                 {usersInfo.blockedCompaniesCount}
                               </strong>
                            </p>
                         </div>
@@ -233,7 +268,10 @@ const ReportesAdmin = () => {
                aria-labelledby="profile-tab"
                style={{ padding: "2%" }}
             >
-               INFORME DE REPARTIDORES
+               <center>
+                  <h3>INFORME DE REPARTIDORES</h3>
+               </center>
+               
             </div>
          </div>
       </div>
