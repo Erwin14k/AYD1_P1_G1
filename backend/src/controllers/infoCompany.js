@@ -192,3 +192,37 @@ module.exports.deleteCombo = async (req, res, next) => {
       message: `El combo: ${args.comboId}, fue eliminado satisfactoriamente :)`,
   });
 };
+
+// Get top 5 most selled products
+module.exports.getMostSelledProducts = async (req, res, next) => {
+  let args = {
+    companyId:req.body.companyId,
+  };
+  // Operations on db
+  const result=await Company.getMostSelledProducts(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      messsage: "Top 5 de los productos más vendidos obtenido con éxito",
+      companyData:result,
+  });
+};
+
+// Get all orders associated to the company
+module.exports.getAllCompanyOrders = async (req, res, next) => {
+  let args = {
+    companyId:req.body.companyId,
+  };
+  // Operations on db
+  const result=await Company.getAllCompanyOrders(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      messsage: "Pedidos gestionados por esta empresa recuperados con éxito!!",
+      companyData:result,
+  });
+};
