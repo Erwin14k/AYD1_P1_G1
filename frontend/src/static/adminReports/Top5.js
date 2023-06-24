@@ -1,18 +1,18 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js';
 
-const Top5 = ({ titulo, ll, labels, data }) => {
+function Top5 (props) {
   const chartRef = useRef(null);
 
   useEffect(() => {
     const chartConfig = {
       type: 'horizontalBar',
       data: {
-        labels: labels,
+        labels: props.labels,
         datasets: [
           {
-            label: ll,
-            data: data,
+            label: props.ll,
+            data: props.data,
             backgroundColor: 'rgba(75, 192, 192, 0.6)' // Color de fondo de las barras
           }
         ]
@@ -32,11 +32,11 @@ const Top5 = ({ titulo, ll, labels, data }) => {
 
     const ctx = chartRef.current.getContext('2d');
     new Chart(ctx, chartConfig);
-  }, [ll, labels, data]);
-  
+  }, [props.ll, props.labels, props.data]);
+
   return (
     <div className="container" >
-      <h4 style={{ marginTop: "2%" }}>Top 5 {titulo}</h4>
+      <h4 style={{ marginTop: "2%" }}>Top 5 {props.titulo}</h4>
       <div style={{width:"55%", margin:"auto"}}>
         <canvas ref={chartRef}  />
       </div>   

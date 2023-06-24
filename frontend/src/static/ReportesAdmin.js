@@ -8,7 +8,81 @@ const crr_user = cookies.get("crr_user");
 const ReportesAdmin = () => {
    const [usersInfo, setUsersInfo] = useState({});
 
+   const [topCompaniesLabel, setTopCompaniesLabel] = useState([]);
+   const [topDeliveryLabel, setTopDeliveryLabel] = useState([]);
+
+   const [topCompaniesData, setTopCompaniesData] = useState([]);
+   const [topDeliveryData, setTopDeliveryData] = useState([]);
+
+   const topDelivery = () => {
+      fetch(`http://localhost:4200/admin/get-top5-delivery-man`, {
+         method: "GET",
+         headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+         },
+      })
+         .then((response) => response.json())
+         .then((data) => {
+            // Aquí puedes trabajar con los datos obtenidos
+
+            const deliv = data.adminData[0].deliveryMen
+
+            let dd = []
+            let label = []
+            deliv.map((deliver, index) => {
+               label.push("Top " + (index + 1) + " - " + deliver.delivery_man_name + " " + deliver.delivery_man_surname);
+               dd.push(deliver.delivery_man_rating);
+               return null;
+            })
+
+            console.log(dd)
+
+            setTopDeliveryData(dd)
+            setTopDeliveryLabel(label)
+
+         })
+         .catch((error) => {
+            // Manejo de errores
+            console.error("Error:", error);
+         });
+   }
+
+   const topCompanie = () => {
+      fetch(`http://localhost:4200/admin/get-top-5-companies`, {
+         method: "GET",
+         headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+         },
+      })
+         .then((response) => response.json())
+         .then((data) => {
+            // Aquí puedes trabajar con los datos obtenidos
+
+            const compa = data.adminData[0].companies
+
+            let dd = []
+            let label = []
+            compa.map((companie, index) => {
+               label.push("Top " + (index + 1) + " - " + companie.company_name);
+               dd.push(companie.order_count);
+               return null;
+            })
+
+            setTopCompaniesData(dd)
+            setTopCompaniesLabel(label)
+
+         })
+         .catch((error) => {
+            // Manejo de errores
+            console.error("Error:", error);
+         });
+   }
+
    const actualizar = () => {
+      topCompanie();
+      topDelivery();
       fetch(`http://localhost:4200/admin/users-counters`, {
          method: "GET",
          headers: {
@@ -19,7 +93,7 @@ const ReportesAdmin = () => {
          .then((response) => response.json())
          .then((data) => {
             // Aquí puedes trabajar con los datos obtenidos
-            console.log(data);
+            //console.log(data);
             setUsersInfo(data.data);
          })
          .catch((error) => {
@@ -53,9 +127,9 @@ const ReportesAdmin = () => {
             role="tablist"
             style={{ marginTop: "2%" }}
          >
-            <li class="nav-item" role="presentation">
+            <li className="nav-item" role="presentation">
                <button
-                  class="nav-link active"
+                  className="nav-link active"
                   id="home-tab"
                   data-bs-toggle="tab"
                   data-bs-target="#home"
@@ -63,13 +137,14 @@ const ReportesAdmin = () => {
                   role="tab"
                   aria-controls="home"
                   aria-selected="true"
+                  onClick={() => topCompanie()}
                >
                   Informe de ventas
                </button>
             </li>
-            <li class="nav-item" role="presentation">
+            <li className="nav-item" role="presentation">
                <button
-                  class="nav-link"
+                  className="nav-link"
                   id="profile-tab"
                   data-bs-toggle="tab"
                   data-bs-target="#profile"
@@ -81,9 +156,9 @@ const ReportesAdmin = () => {
                   Informe de usuarios
                </button>
             </li>
-            <li class="nav-item" role="presentation">
+            <li className="nav-item" role="presentation">
                <button
-                  class="nav-link"
+                  className="nav-link"
                   id="profile-tab"
                   data-bs-toggle="tab"
                   data-bs-target="#repartidores"
@@ -91,6 +166,7 @@ const ReportesAdmin = () => {
                   role="tab"
                   aria-controls="profile"
                   aria-selected="false"
+                  onClick={() => topDelivery()}
                >
                   Informe de repartidores
                </button>
@@ -108,7 +184,7 @@ const ReportesAdmin = () => {
                   <h3>INFORME DE VENTAS</h3>
                </center>
 
-               <Top5 titulo={"Empresas con más pedidos"} ll="Pedidos"/>
+               <Top5 titulo="Empresas con más pedidos" ll="Pedidos" labels={topCompaniesLabel} data={topCompaniesData} />
 
             </div>
             <div
@@ -135,7 +211,7 @@ const ReportesAdmin = () => {
                   <h3>INFORME DE REPARTIDORES</h3>
                </center>
 
-               <Top5 titulo={"Mejores Repartidores"} ll="Calificación" />
+               <Top5 titulo="Mejores Repartidores" ll="Calificación" labels={topDeliveryLabel} data={topDeliveryData} />
 
             </div>
          </div>
