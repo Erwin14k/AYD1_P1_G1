@@ -174,25 +174,22 @@ module.exports.disableCompany = async ({ companyId }) => {
 
 
 // Get All clients
-module.exports.getAllClients = ({ adminId }) => {
+module.exports.getAllClients = async () => {
 	// db querys
   // Collecting all delivery Men
 	const selectAdminClientsStatement = `SELECT user_id,user_email,user_name,
   user_surname,user_status FROM user WHERE admin_id = ? AND user_status = ?`;
   // bindings
-  const binds = [adminId,"Active"];
+  const binds = [-1,"Active"];
   // Info collected
 	let dataCollected=[];
-  return db.pool(selectAdminClientsStatement, binds)
-		// Admin principal data
-		.then(results=>{
-      dataCollected.push({"clients":results});
-      return dataCollected;
-		});
+  const results = await db.pool(selectAdminClientsStatement, binds);
+  dataCollected.push({ "clients": results });
+  return dataCollected;
 };
 
 // Get All delivery_men
-module.exports.getAllDevliveryMen = ({ adminId }) => {
+module.exports.getAllDevliveryMen = async () => {
 	// db querys
   // Collecting all delivery Men
 	const selectAdminDeliveryMenStatement = `SELECT delivery_man_id,delivery_man_name,delivery_man_surname,
@@ -200,27 +197,24 @@ module.exports.getAllDevliveryMen = ({ adminId }) => {
   delivery_man_transport,delivery_man_status,delivery_man_resume
   FROM delivery_man WHERE admin_id = ? AND delivery_man_status = ?`;
   // bindings
-  const binds = [adminId,"Active"];
+  const binds = [-1,"Active"];
   // Info collected
 	let dataCollected=[];
-  return db.pool(selectAdminDeliveryMenStatement, binds)
-		// Admin principal data
-		.then(results=>{
-      dataCollected.push({"deliveryMen":results});
-      return dataCollected;
-		});
+  const results = await db.pool(selectAdminDeliveryMenStatement, binds);
+  dataCollected.push({ "deliveryMen": results });
+  return dataCollected;
 };
 
 
 // Get All delivery_men
-module.exports.getAllCompanies = async ({adminId}) => {
+module.exports.getAllCompanies = async () => {
 	// db querys
   // Collecting all companies
 	const selectAdminCompaniesStatement = `SELECT company_id,company_name,company_description,company_category,
   company_email,company_department,company_municipality,company_address,company_status,company_file
   FROM company WHERE admin_id = ? AND company_status = ?`;
   // bindings
-  const binds = [adminId,"Active"];
+  const binds = [-1,"Active"];
   // Info collected
 	let dataCollected=[];
   const results = await db.pool(selectAdminCompaniesStatement, binds);
@@ -247,7 +241,7 @@ module.exports.getUserCounters = async () => {
 };
 
 // Get top 5 delivery man by rating
-module.exports.getTop5DeliveryManRating = ({ adminId }) => {
+module.exports.getTop5DeliveryManRating = () => {
 	// db querys
   // Collecting top 5
 	const selectAdminDeliveryMenStatement = `SELECT delivery_man_id,delivery_man_name,delivery_man_surname,
@@ -255,7 +249,7 @@ module.exports.getTop5DeliveryManRating = ({ adminId }) => {
   delivery_man_transport,delivery_man_status,delivery_man_resume,delivery_man_rating
   FROM delivery_man WHERE admin_id = ? ORDER BY delivery_man_rating DESC LIMIT 5`;
   // bindings
-  const binds = [adminId];
+  const binds = [-1];
   // Info collected
 	let dataCollected=[];
   return db.pool(selectAdminDeliveryMenStatement, binds)

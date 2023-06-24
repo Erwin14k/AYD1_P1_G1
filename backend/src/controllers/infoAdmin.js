@@ -127,11 +127,8 @@ module.exports.disableCompany = async (req, res, next) => {
 
 // Get all clients
 module.exports.getAllClients = async (req, res, next) => {
-  let args = {
-    adminId: req.body.adminId,
-  };
   // Operations on db
-  const result=await Admin.getAllClients(args);
+  const result=await Admin.getAllClients();
   // response
   return res
     .status(200)
@@ -144,11 +141,8 @@ module.exports.getAllClients = async (req, res, next) => {
 
 // Get all delivery_men
 module.exports.getAllDevliveryMen = async (req, res, next) => {
-  let args = {
-    adminId: req.body.adminId,
-  };
   // Operations on db
-  const result=await Admin.getAllDevliveryMen(args);
+  const result=await Admin.getAllDevliveryMen();
   // response
   return res
     .status(200)
@@ -161,11 +155,8 @@ module.exports.getAllDevliveryMen = async (req, res, next) => {
 
 // Get all companies
 module.exports.getAllCompanies = async (req, res, next) => {
-  let args = {
-    adminId: req.body.adminId,
-  };
   // Operations on db
-  const result=await Admin.getAllCompanies(args);
+  const result=await Admin.getAllCompanies();
   // response
   return res
     .status(200)
@@ -204,11 +195,8 @@ module.exports.getUserCounters = async (req, res, next) => {
 
 // Get all delivery_men
 module.exports.getTop5DeliveryManRating = async (req, res, next) => {
-  let args = {
-    adminId: req.body.adminId,
-  };
   // Operations on db
-  const result=await Admin.getTop5DeliveryManRating(args);
+  const result=await Admin.getTop5DeliveryManRating();
   // response
   return res
     .status(200)
