@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UsersReport from "./adminReports/UsersReport";
 import Top5 from "./adminReports/Top5";
+import ProductReport from "./adminReports/ProductsReport";
 import Cookie from "cookie-universal";
 const cookies = Cookie();
 const crr_user = cookies.get("crr_user");
@@ -13,6 +14,30 @@ const ReportesAdmin = () => {
 
    const [topCompaniesData, setTopCompaniesData] = useState([]);
    const [topDeliveryData, setTopDeliveryData] = useState([]);
+
+   const [topProductos, setTopProductos] = useState([])
+
+   const topProduct = () => {
+      fetch(`http://localhost:4200/admin/get-most-selled-products`, {
+         method: "GET",
+         headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+         },
+      })
+         .then((response) => response.json())
+         .then((data) => {
+            // Aquí puedes trabajar con los datos obtenidos
+
+            const pp = data.adminData[0].products
+            setTopProductos(pp)
+
+         })
+         .catch((error) => {
+            // Manejo de errores
+            console.error("Error:", error);
+         });
+   }
 
    const topDelivery = () => {
       fetch(`http://localhost:4200/admin/get-top5-delivery-man`, {
@@ -36,8 +61,6 @@ const ReportesAdmin = () => {
                return null;
             })
 
-            console.log(dd)
-
             setTopDeliveryData(dd)
             setTopDeliveryLabel(label)
 
@@ -49,6 +72,7 @@ const ReportesAdmin = () => {
    }
 
    const topCompanie = () => {
+      topProduct();
       fetch(`http://localhost:4200/admin/get-top-5-companies`, {
          method: "GET",
          headers: {
@@ -185,6 +209,8 @@ const ReportesAdmin = () => {
                </center>
 
                <Top5 titulo="Empresas con más pedidos" ll="Pedidos" labels={topCompaniesLabel} data={topCompaniesData} />
+
+               <ProductReport productos={topProductos}/>
 
             </div>
             <div

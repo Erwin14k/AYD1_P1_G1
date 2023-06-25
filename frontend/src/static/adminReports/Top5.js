@@ -13,7 +13,7 @@ function Top5 (props) {
           {
             label: props.ll,
             data: props.data,
-            backgroundColor: 'rgba(75, 192, 192, 0.6)' // Color de fondo de las barras
+            backgroundColor: '#F2890D' // Color de fondo de las barras
           }
         ]
       },
