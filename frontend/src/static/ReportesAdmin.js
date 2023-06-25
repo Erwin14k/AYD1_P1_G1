@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import UsersReport from "./adminReports/UsersReport";
+import Top5 from "./adminReports/Top5";
+import ProductReport from "./adminReports/ProductsReport";
 import Cookie from "cookie-universal";
 const cookies = Cookie();
 const crr_user = cookies.get("crr_user");
@@ -6,10 +9,104 @@ const crr_user = cookies.get("crr_user");
 const ReportesAdmin = () => {
    const [usersInfo, setUsersInfo] = useState({});
 
-   const actualizar = () => {
-      console.log("Actualizando", crr_user);
-      console.log(`Bearer ${crr_user.data[0].authToken}`);
+   const [topCompaniesLabel, setTopCompaniesLabel] = useState([]);
+   const [topDeliveryLabel, setTopDeliveryLabel] = useState([]);
 
+   const [topCompaniesData, setTopCompaniesData] = useState([]);
+   const [topDeliveryData, setTopDeliveryData] = useState([]);
+
+   const [topProductos, setTopProductos] = useState([])
+
+   const topProduct = () => {
+      fetch(`http://localhost:4200/admin/get-most-selled-products`, {
+         method: "GET",
+         headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+         },
+      })
+         .then((response) => response.json())
+         .then((data) => {
+            // Aquí puedes trabajar con los datos obtenidos
+
+            const pp = data.adminData[0].products
+            setTopProductos(pp)
+
+         })
+         .catch((error) => {
+            // Manejo de errores
+            console.error("Error:", error);
+         });
+   }
+
+   const topDelivery = () => {
+      fetch(`http://localhost:4200/admin/get-top5-delivery-man`, {
+         method: "GET",
+         headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+         },
+      })
+         .then((response) => response.json())
+         .then((data) => {
+            // Aquí puedes trabajar con los datos obtenidos
+
+            const deliv = data.adminData[0].deliveryMen
+
+            let dd = []
+            let label = []
+            deliv.map((deliver, index) => {
+               label.push("Top " + (index + 1) + " - " + deliver.delivery_man_name + " " + deliver.delivery_man_surname);
+               dd.push(deliver.delivery_man_rating);
+               return null;
+            })
+
+            setTopDeliveryData(dd)
+            setTopDeliveryLabel(label)
+
+         })
+         .catch((error) => {
+            // Manejo de errores
+            console.error("Error:", error);
+         });
+   }
+
+   const topCompanie = () => {
+      topProduct();
+      fetch(`http://localhost:4200/admin/get-top-5-companies`, {
+         method: "GET",
+         headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+         },
+      })
+         .then((response) => response.json())
+         .then((data) => {
+            // Aquí puedes trabajar con los datos obtenidos
+
+            const compa = data.adminData[0].companies
+
+            let dd = []
+            let label = []
+            compa.map((companie, index) => {
+               label.push("Top " + (index + 1) + " - " + companie.company_name);
+               dd.push(companie.order_count);
+               return null;
+            })
+
+            setTopCompaniesData(dd)
+            setTopCompaniesLabel(label)
+
+         })
+         .catch((error) => {
+            // Manejo de errores
+            console.error("Error:", error);
+         });
+   }
+
+   const actualizar = () => {
+      topCompanie();
+      topDelivery();
       fetch(`http://localhost:4200/admin/users-counters`, {
          method: "GET",
          headers: {
@@ -20,7 +117,7 @@ const ReportesAdmin = () => {
          .then((response) => response.json())
          .then((data) => {
             // Aquí puedes trabajar con los datos obtenidos
-            console.log(data);
+            //console.log(data);
             setUsersInfo(data.data);
          })
          .catch((error) => {
@@ -54,9 +151,9 @@ const ReportesAdmin = () => {
             role="tablist"
             style={{ marginTop: "2%" }}
          >
-            <li class="nav-item" role="presentation">
+            <li className="nav-item" role="presentation">
                <button
-                  class="nav-link active"
+                  className="nav-link active"
                   id="home-tab"
                   data-bs-toggle="tab"
                   data-bs-target="#home"
@@ -64,13 +161,14 @@ const ReportesAdmin = () => {
                   role="tab"
                   aria-controls="home"
                   aria-selected="true"
+                  onClick={() => topCompanie()}
                >
                   Informe de ventas
                </button>
             </li>
-            <li class="nav-item" role="presentation">
+            <li className="nav-item" role="presentation">
                <button
-                  class="nav-link"
+                  className="nav-link"
                   id="profile-tab"
                   data-bs-toggle="tab"
                   data-bs-target="#profile"
@@ -82,9 +180,9 @@ const ReportesAdmin = () => {
                   Informe de usuarios
                </button>
             </li>
-            <li class="nav-item" role="presentation">
+            <li className="nav-item" role="presentation">
                <button
-                  class="nav-link"
+                  className="nav-link"
                   id="profile-tab"
                   data-bs-toggle="tab"
                   data-bs-target="#repartidores"
@@ -92,6 +190,7 @@ const ReportesAdmin = () => {
                   role="tab"
                   aria-controls="profile"
                   aria-selected="false"
+                  onClick={() => topDelivery()}
                >
                   Informe de repartidores
                </button>
@@ -105,7 +204,14 @@ const ReportesAdmin = () => {
                aria-labelledby="home-tab"
                style={{ padding: "2%" }}
             >
-               INFORME DE VENTAS
+               <center>
+                  <h3>INFORME DE VENTAS</h3>
+               </center>
+
+               <Top5 titulo="Empresas con más pedidos" ll="Pedidos" labels={topCompaniesLabel} data={topCompaniesData} />
+
+               <ProductReport productos={topProductos}/>
+
             </div>
             <div
                className="tab-pane fade"
@@ -117,114 +223,8 @@ const ReportesAdmin = () => {
                <center>
                   <h3>INFORME DE USUARIOS</h3>
                </center>
-               <div className="row" style={{ marginTop: "2%" }}>
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">Usuarios Activos</div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>{usersInfo.activeUserCount}</strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
 
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">Usuarios Bloqueados</div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>{usersInfo.blockedUserCount}</strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">Repartidores Activos</div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>
-                                 {usersInfo.activeDeliveryManCount}
-                              </strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">
-                           Repartidores Esperando
-                        </div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>
-                                 {usersInfo.waitingDeliveryManCount}
-                              </strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="col-md-12">
-                     <div className="card mb-4">
-                        <div className="card-header">
-                           Repartidores Rechazados
-                        </div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>
-                                 {usersInfo.declinedDeliveryManCount}
-                              </strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">Empresas Activas</div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>{usersInfo.activeCompaniesCount}</strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="col-md-6">
-                     <div className="card mb-4">
-                        <div className="card-header">Empresas Esperando</div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>{usersInfo.waitingCompaniesCount}</strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="col-md-12">
-                     <div className="card mb-4">
-                        <div className="card-header">Empresas Rechazadas</div>
-                        <div className="card-body">
-                           <p>
-                              Cantidad:{" "}
-                              <strong>
-                                 {usersInfo.declinedCompaniesCount}
-                              </strong>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+               <UsersReport usersInfo={usersInfo} />
             </div>
             <div
                className="tab-pane fade"
@@ -233,7 +233,12 @@ const ReportesAdmin = () => {
                aria-labelledby="profile-tab"
                style={{ padding: "2%" }}
             >
-               INFORME DE REPARTIDORES
+               <center>
+                  <h3>INFORME DE REPARTIDORES</h3>
+               </center>
+
+               <Top5 titulo="Mejores Repartidores" ll="Calificación" labels={topDeliveryLabel} data={topDeliveryData} />
+
             </div>
          </div>
       </div>
