@@ -235,3 +235,22 @@ module.exports.getTop5CompaniesOrdersGenerated = async (req, res, next) => {
       adminData:result,
   });
 };
+
+
+
+// Delivery man change address request
+module.exports.deliveryManChangeAddressRequest = async (req, res, next) => {
+  let args = {
+    deliveryManId: req.body.deliveryManId,
+    status:req.body.status,
+  };
+  // Operations on db
+  const result=await Admin.deliveryManChangeAddressRequest(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      message: `El repartidor con el id: ${args.deliveryManId}, Su solicitud de cambio de dirección ha cambiado a: ${args.status}`,
+  });
+};
