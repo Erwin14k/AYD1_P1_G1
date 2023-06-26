@@ -121,3 +121,33 @@ module.exports.info = ({ deliveryManId }) => {
     });
 };
 
+
+// Registering a change address request associated to a delivery man
+module.exports.changeAddress = async ({deliveryManId,newDepartment,newMunicipality, changeDescription}) => {
+  const changeAddressStatement = `INSERT INTO delivery_man_change_address (delivery_man_id, new_department, 
+  new_municipality, change_description,status,admin_id) 
+  VALUES (?,?,?,?,?,?)`;
+//bindings
+  const binds = [deliveryManId,newDepartment,newMunicipality,changeDescription,"Waiting",-1];
+  return(await db.pool(changeAddressStatement, binds));
+};
+
+
+// Get all orders associated to the delivery_man
+module.exports.getAllDeliveryManOrders = async ({deliveryManId}) => {
+	// db querys
+  // Collecting the orders
+	const selectDeliveryManOrdersStatement = `SELECT order_id,delivery_man_id,user_id,
+  company_id,order_status,order_date,order_total,order_commission,
+  getCompanyName(company_id) AS company_name,getDeliveryManName(delivery_man_id) AS delivery_man_name,
+  getClientName(user_id) AS user_name
+  FROM _order WHERE company_id = ?`;
+  // bindings
+  const binds = [deliveryManId];
+  // Info collected
+	let dataCollected=[];
+  const results = await db.pool(selectDeliveryManOrdersStatement, binds);
+  dataCollected.push({ "orders": results });
+  return dataCollected;
+};
+

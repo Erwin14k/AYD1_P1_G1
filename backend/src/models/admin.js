@@ -296,3 +296,29 @@ module.exports.getTop5CompaniesOrdersGenerated = async () => {
   dataCollected.push({ "companies": results });
   return dataCollected;
 };
+
+
+
+// Admin delivery_men requests
+module.exports.deliveryManChangeAddressRequest = async ({ deliveryManId, status }) => {
+  // verify the status of the request
+  const petitionStatus=status==="Approved"?"Approved":"Declined";
+  const updateChangeAddressStatemnet = `UPDATE delivery_man_change_address
+                          SET status = ?
+                          WHERE delivery_man_id = ?`;
+  // bindings
+  const binds = [status, deliveryManId];
+  await db.pool(updateChangeAddressStatemnet, binds);
+  // If the request is approved, the delivery man address data need an update
+  if(petitionStatus==="Approved"){
+    const updateDeliveryManAddressStatemnet = `UPDATE delivery_man
+    SET delivery_man_department = ?,SET delivery_man_municipality = ?
+    WHERE delivery_man_id = ?`;
+    // update bindings
+    const updateBindings = [status, deliveryManId];
+    return db.pool(updateDeliveryManAddressStatemnet, updateBindings);
+  }
+  return "No changes on delivery man"
+  
+
+};

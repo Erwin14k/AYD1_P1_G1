@@ -4,10 +4,11 @@ const router = express.Router();
 const { adminInfo,deliveryManRequest ,companyRequest,getUserCounters,
 disableClient,disableDeliveryMan,disableCompany,getAllClients,
 getAllCompanies,getAllDevliveryMen,getTop5DeliveryManRating,
-getMostSelledProducts,getTop5CompaniesOrdersGenerated} = require("../controllers/infoAdmin");
+getMostSelledProducts,getTop5CompaniesOrdersGenerated,deliveryManChangeAddressRequest} = require("../controllers/infoAdmin");
 
 router.post("/admin/info", adminInfo);
 router.post("/admin/delivery-man-request",deliveryManRequest);
+router.post("/admin/delivery-man-change-address-request",deliveryManChangeAddressRequest);
 router.post("/admin/company-request",companyRequest);
 router.post("/admin/disable-client",disableClient);
 router.post("/admin/disable-company",disableCompany);
