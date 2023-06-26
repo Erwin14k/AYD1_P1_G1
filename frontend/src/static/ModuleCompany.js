@@ -264,8 +264,6 @@ const ModuleCompany = () => {
 
             }
 
-            console.log(formData)
-
             fetch(`http://localhost:4200/${url}`, {
                 method: "POST",
                 headers: {
