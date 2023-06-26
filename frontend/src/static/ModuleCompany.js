@@ -11,7 +11,7 @@ const ModuleCompany = () => {
     const [combos, setCombos] = useState([]);
 
     const [productInfo, setProductInfo] = useState([]);
-    const [comboInfo, setComboInfo] = useState([]); 
+    const [comboInfo, setComboInfo] = useState([]);
 
     const verInfoProduct = (value) => {
         products.map((fila) => {
@@ -29,7 +29,7 @@ const ModuleCompany = () => {
             }
             return null; // Agrega esta línea si no hay un valor de retorno requerido
         });
-    }; 
+    };
 
     const actualizar = () => {
         console.log("actualizar")
@@ -57,7 +57,7 @@ const ModuleCompany = () => {
 
     }
 
-    const handleDelete = async(url, productId) => {
+    const handleDelete = async (url, productId) => {
         const body = {
             productId: productId
         }
@@ -67,47 +67,8 @@ const ModuleCompany = () => {
             icon: "warning",
             dangerMode: true,
         })
-    
-        console.log("RESULRS",willDelete)
-        if (willDelete) {
-            fetch(`http://localhost:4200/company/${url}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
-                },
-                body: JSON.stringify(body)
-            })
-            .then((response) => response.json())
-            .then(async(data) => {
-                await swal({
-                    title: `Querido Usuario: ${crr_user.data[0].companyName}`,
-                    text: data.message,
-                    icon: data.status===200 ? "success":"error",
-                    button: true,
-                })
-                actualizar();
-            })
-            .catch((error) => {
-                // Handle any errors that occur during the request
-                console.error('Error:', error)
-            });
-        }
 
-    };
-
-    const handleDeleteCombo = async(url, productId) => {
-        const body = {
-            comboId: productId
-        }
-        const willDelete = await swal({
-            title: "¿Estás seguro?",
-            text: "¿Estás seguro de que deseas eliminar el combo?",
-            icon: "warning",
-            dangerMode: true,
-        })
-
-        console.log("RESULRS",willDelete)
+        //console.log("RESULRS", willDelete)
         if (willDelete) {
             fetch(`http://localhost:4200/company/${url}`, {
                 method: "POST",
@@ -118,12 +79,51 @@ const ModuleCompany = () => {
                 body: JSON.stringify(body)
             })
                 .then((response) => response.json())
-                .then(async(data) => {
-                    
+                .then(async (data) => {
                     await swal({
                         title: `Querido Usuario: ${crr_user.data[0].companyName}`,
                         text: data.message,
-                        icon: data.status===200 ? "success":"error",
+                        icon: data.status === 200 ? "success" : "error",
+                        button: true,
+                    })
+                    actualizar();
+                })
+                .catch((error) => {
+                    // Handle any errors that occur during the request
+                    console.error('Error:', error)
+                });
+        }
+
+    };
+
+    const handleDeleteCombo = async (url, productId) => {
+        const body = {
+            comboId: productId
+        }
+        const willDelete = await swal({
+            title: "¿Estás seguro?",
+            text: "¿Estás seguro de que deseas eliminar el combo?",
+            icon: "warning",
+            dangerMode: true,
+        })
+
+        console.log("RESULRS", willDelete)
+        if (willDelete) {
+            fetch(`http://localhost:4200/company/${url}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+                },
+                body: JSON.stringify(body)
+            })
+                .then((response) => response.json())
+                .then(async (data) => {
+
+                    await swal({
+                        title: `Querido Usuario: ${crr_user.data[0].companyName}`,
+                        text: data.message,
+                        icon: data.status === 200 ? "success" : "error",
                         button: true,
                     })
                     actualizar();
@@ -140,65 +140,65 @@ const ModuleCompany = () => {
         const [stock, setStock] = useState(0);
         const [price, setPrice] = useState(0.01);
 
-        const handleStockChange = async(event) => {
+        const handleStockChange = async (event) => {
             const value = event.target.value;
             const intValue = parseInt(value);
 
             if (intValue >= 0) {
                 setStock(intValue.toString());
-            }else{
+            } else {
                 setStock(0)
                 event.target.value = 0
                 await swal({
                     title: "Error en el stock",
                     text: "El stock debe ser un 0 o positivo",
-                    icon:  "error",
+                    icon: "error",
                     button: true,
-                 });  
+                });
             }
         };
-        const handleStockPrice = async(event) => {
+        const handleStockPrice = async (event) => {
             const value = event.target.value;
 
             // Validar el formato utilizando una expresión regular
             if (event.target.value > 0) {
                 setPrice(value);
-            }else{
+            } else {
                 setStock(1)
                 event.target.value = 1
                 await swal({
                     title: "Error en el precio",
                     text: "El precio debe ser mayor a 0",
-                    icon:  "error",
+                    icon: "error",
                     button: true,
-                 });  
+                });
             }
         };
-        const handleFileSelect = async(event) => {
+        const handleFileSelect = async (event) => {
             const files = event.target.files;
             if (files.length > 1) {
                 await swal({
                     title: "Error en las imagenes",
                     text: "Solo se permiten un máximo de 1 archivo.",
-                    icon:  "error",
+                    icon: "error",
                     button: true,
-                 });
+                });
                 event.target.value = null; // Limpiar los archivos seleccionados si se excede el límite
             }
         };
 
-        const handelSubmit = async(e) => {
+        const handelSubmit = async (e) => {
             e.preventDefault();
 
-            if(e.target[0].value === "") 
+            if (e.target[0].value === "")
                 return await swal({
                     title: `Querido Usuario ${crr_user.data[0].companyName}`,
                     text: "Nombre Inválido",
                     icon: "warning",
                     button: true,
                 });
-           
-            if(e.target[2].value === "") 
+
+            if (e.target[2].value === "")
                 return await swal({
                     title: `Querido Usuario ${crr_user.data[0].companyName}`,
                     text: "Descripción Inválida",
@@ -207,7 +207,7 @@ const ModuleCompany = () => {
                 });
 
             if (props.edit !== 1) {
-                if (!e.target[1].value) 
+                if (!e.target[1].value)
                     return await swal({
                         title: `Querido Usuario ${crr_user.data[0].companyName}`,
                         text: "Ingrese una imagen.",
@@ -243,7 +243,7 @@ const ModuleCompany = () => {
                 formData.append("comboPrice", e.target[3].value)
                 formData.append("comboStock", e.target[4].value)
                 formData.append("comboNumberOfSales", props.edit === 1 ? comboInfo.comboNumberOfSales : 0)
-                
+
                 console.log("DATA")
                 console.log(props)
 
@@ -273,13 +273,13 @@ const ModuleCompany = () => {
                 body: formData,
             })
                 .then((response) => response.json())
-                .then(async(data) => {
+                .then(async (data) => {
                     await swal({
                         title: `Querido Usuario: ${crr_user.data[0].companyName}`,
                         text: data.message,
-                        icon: data.status===200 ? "success":"error",
+                        icon: data.status === 200 ? "success" : "error",
                         button: true,
-                     })
+                    })
                     actualizar();
                 })
                 .catch((error) => {
@@ -384,7 +384,7 @@ const ModuleCompany = () => {
         <div style={{ width: "80%", margin: "auto", marginTop: "8%" }}>
             <h1>Bienvenido Empresa,</h1>
             <button type="button" onClick={() => actualizar()} className="btn" style={{ marginTop: "2%", backgroundColor: "#DB4F23", color: "white" }}>Actualizar</button>
-            <ul className="nav nav-tabs" id="myTab" role="tablist" style={{ marginTop: "5%" }}>
+            <ul className="nav nav-tabs" id="myTab" role="tablist" style={{ marginTop: "3%" }}>
                 <li className="nav-item" role="presentation">
                     <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
                         Catálogo de productos
@@ -413,11 +413,15 @@ const ModuleCompany = () => {
                         {products.map((product) => (
                             <div className="col-md-4 mb-4" key={product.product_id} >
                                 <div className="card">
-                                    <img src={product.product_img} className="card-img-top" alt={product.product_name} style={{height:"30vh"}}/>
+                                    <img src={product.product_img} className="card-img-top" alt={product.product_name} style={{ height: "30vh" }} />
                                     <div className="card-body">
+                                        <h5 className="card-type">Categoría: {product.product_type}</h5>
                                         <h5 className="card-title">{product.product_name}</h5>
-                                        <p className="card-text">Precio: Q.{product.product_price}</p>
                                         <p className="card-text">{product.product_description}</p>
+                                        <div className="details-container">
+                                            <p className="price">Precio: Q.{product.product_price}</p>
+                                            <p className="sales">No. Ventas: {product.product_number_of_sales}</p>
+                                        </div>
                                         <button className="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#editProductModal" onClick={() => verInfoProduct(product.product_id)}>
                                             Editar
                                         </button>
@@ -431,7 +435,7 @@ const ModuleCompany = () => {
                         {combos.map((product) => (
                             <div className="col-md-4 mb-4" key={product.combo_id}>
                                 <div className="card">
-                                    <img src={product.combo_img} className="card-img-top" alt={product.combo_name} style={{height:"30vh"}} />
+                                    <img src={product.combo_img} className="card-img-top" alt={product.combo_name} style={{ height: "30vh" }} />
                                     <div className="card-body">
                                         <h5 className="card-title">{product.combo_name}</h5>
                                         <p className="card-text">Precio: Q.{product.combo_price}</p>

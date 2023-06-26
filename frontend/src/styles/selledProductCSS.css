@@ -3,7 +3,6 @@
 }
 
 .card {
-    width: 450px;
     border: none;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
@@ -52,3 +51,13 @@
     color: #F2890D;
     margin-bottom: 5px;
 }
+
+.error-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+    background-color: #F9F4EF;
+    color: #DB4F23;
+    font-size: 24px;
+  }
