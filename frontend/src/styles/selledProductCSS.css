@@ -60,4 +60,11 @@
     background-color: #F9F4EF;
     color: #DB4F23;
     font-size: 24px;
-  }
+}
+
+.no-orders-message {
+    text-align: center;
+    color: #DB4F23;
+    font-size: 18px;
+    margin-top: 50px;
+}

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import MostSelledProduct from "./companyReports/MostSelledProduct";
+import OrdersHistory from './companyReports/OrdersHistory';
 
 import Cookie from "cookie-universal";
 const cookies = Cookie();
@@ -9,7 +10,7 @@ const ReportesEmpresa = () => {
 
     const [product, setProduct] = useState({});
 
-    const getMostSelledProduct = () => {
+    const getMostSelledProduct = useCallback(() => {
         fetch(`http://localhost:4200/company/get-most-selled-products`, {
             method: 'GET',
             headers: {
@@ -29,11 +30,11 @@ const ReportesEmpresa = () => {
                 }
                 console.log(product)
             })
-    }
+    }, [product]);
 
     useEffect(() => {
         getMostSelledProduct();
-    }, []);
+    }, [getMostSelledProduct]);
 
     return (
         <div>
@@ -58,6 +59,7 @@ const ReportesEmpresa = () => {
                 </div>
                 <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>HISTORIAL DE PEDIDOS</h3></center>
+                    <OrdersHistory />
                 </div>
             </div>
         </div>
