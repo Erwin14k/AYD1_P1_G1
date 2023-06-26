@@ -12,7 +12,7 @@ module.exports.deliveryManInfo = async (req, res, next) => {
   return res
     .status(200)
     .json({
-      messsage: "Información del repartidor recuperada con éxito!",
+      message: "Información del repartidor recuperada con éxito!",
       deliveryManData:result,
   });
 };
@@ -32,7 +32,7 @@ module.exports.changeAddress = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Solicitud de cambio de dirección guardada con éxito, un administrador le dará seguimiento!",
+      message: "Solicitud de cambio de dirección guardada con éxito, un administrador le dará seguimiento!",
   });
 };
 
@@ -49,7 +49,7 @@ module.exports.getAllDeliveryManOrders = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Historial de pedidos gestionados por este repartidor recuperados con éxito!!",
+      message: "Historial de pedidos gestionados por este repartidor recuperados con éxito!!",
       companyData:result,
   });
 };
