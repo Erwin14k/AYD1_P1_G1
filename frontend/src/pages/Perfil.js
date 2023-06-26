@@ -4,6 +4,8 @@ import NavBarModule from "../static/NavBarModule";
 import departmentsGuatemala from "../static/departmentsGuatemala";
 import DataDeliveryMan from "../static/DataDeliveryMan";
 import Cookie from 'cookie-universal'
+import swal from 'sweetalert';
+
 const cookies = Cookie()
 const crr_user = cookies.get("crr_user")
 
@@ -30,7 +32,7 @@ function Perfil({ noUrl }) {
                 setDeliveryInfo(response.deliveryManData[0])
                 // setDeliveryInfo(response.)
             })
-    });
+    },[]);
 
 
 
@@ -38,10 +40,51 @@ function Perfil({ noUrl }) {
         e.preventDefault();
         console.log("Formulario enviado");
 
-        if (e.target[1].value === deliveryInfo.deliveryManDepartment && e.target[2].value === deliveryInfo.deliveryManMunicipality) { return alert("No se ha podido hacer la solicitud ya que es el mismo departamento y municipio que ya se posee") }
-        console.log("0. - ", e.target[0].value)
-        console.log("1. - ", e.target[1].value)
-        console.log("2. - ", e.target[2].value)
+        if (e.target[0].value === "") {
+            return swal({
+                title: "Querido Usuario Repartidor",
+                text: "Para solicitar un cambio de zona departamental debe de enviar una razón.",
+                icon: "error",
+                button: true,
+            })
+        }
+
+        if (e.target[1].value === deliveryInfo.deliveryManDepartment && e.target[2].value === deliveryInfo.deliveryManMunicipality) {
+            return swal({
+                title: "Querido Usuario Repartidor",
+                text: "No se ha podido hacer la solicitud ya que es el mismo departamento y municipio que ya se posee.",
+                icon: "error",
+                button: true,
+            })
+        }
+
+        const body = {
+            changeDescription: e.target[0].value,
+            newDepartment: e.target[1].value,
+            newMunicipality: e.target[2].value
+        }
+
+        fetch(`http://localhost:4200/delivery-man/change-address`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+            },
+            body: JSON.stringify(body)
+        })
+            .then(res => res.json())
+            .catch(err => {
+                console.error('Error:', err)
+            })
+            .then(async response => {
+                console.log(response)
+                await swal({
+                    title: "Querido Usuario Repartidor",
+                    text: response.message,
+                    icon: response.status === 200 ? "success" : "error",
+                    button: true,
+                })
+            });
     };
 
     useEffect(() => {

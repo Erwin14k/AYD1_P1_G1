@@ -205,7 +205,7 @@ module.exports.getMostSelledProducts = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Top 5 de los productos más vendidos obtenido con éxito",
+      message: "Top 5 de los productos más vendidos obtenido con éxito",
       companyData:result,
   });
 };
@@ -222,7 +222,7 @@ module.exports.getAllCompanyOrders = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Pedidos gestionados por esta empresa recuperados con éxito!!",
+      message: "Pedidos gestionados por esta empresa recuperados con éxito!!",
       companyData:result,
   });
 };
@@ -256,7 +256,7 @@ module.exports.getAllWaitingCompanyOrders = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Pedidos en espera de aprobación por esta empresa recuperados con éxito!!",
+      message: "Pedidos en espera de aprobación por esta empresa recuperados con éxito!!",
       companyData:result,
   });
 };
