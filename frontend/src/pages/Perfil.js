@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import NavBar from "../components/NavBar";
 import NavBarModule from "../static/NavBarModule";
 import departmentsGuatemala from "../static/departmentsGuatemala";
@@ -12,42 +12,41 @@ function Perfil({ noUrl }) {
     const [selectedMunicipio, setSelectedMunicipio] = useState("");
     const [deliveryInfo, setDeliveryInfo] = useState({})
 
-    const peticion = () => {
+    const peticion = useCallback(() => {
         fetch(`http://localhost:4200/delivery-man/info`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
-             }
-          
+            }
+
         })
             .then(res => res.json())
             .catch(err => {
                 console.error('Error:', err)
             })
             .then(response => {
-                console.log("REPONSE///",response)
+                console.log("REPONSE///", response)
                 setDeliveryInfo(response.deliveryManData[0])
                 // setDeliveryInfo(response.)
             })
-    }
+    });
 
 
 
     const handelSubmit = (e) => {
         e.preventDefault();
         console.log("Formulario enviado");
-        
-        if(e.target[1].value === deliveryInfo.deliveryManDepartment && e.target[2].value === deliveryInfo.deliveryManMunicipality )
-        { return alert("No se ha podido hacer la solicitud ya que es el mismo departamento y municipio que ya se posee")  }
-        console.log("0. - ",e.target[0].value)
-        console.log("1. - ",e.target[1].value)
-        console.log("2. - ",e.target[2].value)
+
+        if (e.target[1].value === deliveryInfo.deliveryManDepartment && e.target[2].value === deliveryInfo.deliveryManMunicipality) { return alert("No se ha podido hacer la solicitud ya que es el mismo departamento y municipio que ya se posee") }
+        console.log("0. - ", e.target[0].value)
+        console.log("1. - ", e.target[1].value)
+        console.log("2. - ", e.target[2].value)
     };
 
     useEffect(() => {
         peticion();
-    }, []);
+    }, [peticion]);
 
     return (
         <div>
@@ -60,18 +59,18 @@ function Perfil({ noUrl }) {
                         </button>
                     </h2>
                     <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                        <center><h2 style={{marginTop:"2%"}}>Datos</h2></center>
-                       
-                        <DataDeliveryMan 
-                            delivery_man_name = {deliveryInfo.deliveryManName}
-                            delivery_man_surname = {deliveryInfo.deliveryManSurname}
-                            delivery_man_department= {deliveryInfo.deliveryManDepartment}
-                            delivery_man_municipality= {deliveryInfo.deliveryManMunicipality}
-                            delivery_man_transport= {deliveryInfo.deliveryManTransport}
-                            delivery_man_email= {deliveryInfo.deliveryManEmail}
-                            delivery_man_phone= {deliveryInfo.deliveryManPhone}
-                            delivery_man_license_type= {deliveryInfo.deliveryManLicenseType}
-                            delivery_man_resume= {deliveryInfo.deliveryManResume}
+                        <center><h2 style={{ marginTop: "2%" }}>Datos</h2></center>
+
+                        <DataDeliveryMan
+                            delivery_man_name={deliveryInfo.deliveryManName}
+                            delivery_man_surname={deliveryInfo.deliveryManSurname}
+                            delivery_man_department={deliveryInfo.deliveryManDepartment}
+                            delivery_man_municipality={deliveryInfo.deliveryManMunicipality}
+                            delivery_man_transport={deliveryInfo.deliveryManTransport}
+                            delivery_man_email={deliveryInfo.deliveryManEmail}
+                            delivery_man_phone={deliveryInfo.deliveryManPhone}
+                            delivery_man_license_type={deliveryInfo.deliveryManLicenseType}
+                            delivery_man_resume={deliveryInfo.deliveryManResume}
                         />
                     </div>
                 </div>
@@ -82,7 +81,7 @@ function Perfil({ noUrl }) {
                         </button>
                     </h2>
                     <div id="flush-collapseTwo" className="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                        <center><h2 style={{marginTop:"2%"}}>Su calificación es: {deliveryInfo.deliveryManRating}</h2></center>
+                        <center><h2 style={{ marginTop: "2%" }}>Su calificación es: {deliveryInfo.deliveryManRating}</h2></center>
                     </div>
                 </div>
                 <div className="accordion-item">
@@ -92,7 +91,7 @@ function Perfil({ noUrl }) {
                         </button>
                     </h2>
                     <div id="flush-collapseThree" className="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                        <center><h2 style={{marginTop:"2%"}}>Solicitud de cambio de zona departamental</h2></center>
+                        <center><h2 style={{ marginTop: "2%" }}>Solicitud de cambio de zona departamental</h2></center>
                         <br></br>
                         <form onSubmit={handelSubmit}>
                             <div className="form-outline mb-4">
