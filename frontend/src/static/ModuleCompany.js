@@ -422,12 +422,14 @@ const ModuleCompany = () => {
                                             <p className="price">Precio: Q.{product.product_price}</p>
                                             <p className="sales">No. Ventas: {product.product_number_of_sales}</p>
                                         </div>
-                                        <button className="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#editProductModal" onClick={() => verInfoProduct(product.product_id)}>
-                                            Editar
-                                        </button>
-                                        <button className="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => handleDelete("delete-product", product.product_id)}>
-                                            Eliminar
-                                        </button>
+                                        <center>
+                                            <button className="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#editProductModal" onClick={() => verInfoProduct(product.product_id)}>
+                                                Editar
+                                            </button>
+                                            <button className="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => handleDelete("delete-product", product.product_id)}>
+                                                Eliminar
+                                            </button>
+                                        </center>
                                     </div>
                                 </div>
                             </div>
@@ -440,12 +442,14 @@ const ModuleCompany = () => {
                                         <h5 className="card-title">{product.combo_name}</h5>
                                         <p className="card-text">Precio: Q.{product.combo_price}</p>
                                         <p className="card-text">{product.combo_description}</p>
-                                        <button className="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#editComboModal" onClick={() => verInfoCombo(product.combo_id)}>
-                                            Editar
-                                        </button>
-                                        <button className="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => handleDeleteCombo("delete-combo", product.combo_id)}>
-                                            Eliminar
-                                        </button>
+                                        <center>
+                                            <button className="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#editComboModal" onClick={() => verInfoCombo(product.combo_id)}>
+                                                Editar
+                                            </button>
+                                            <button className="btn btn-danger" style={{ marginLeft: "2%" }} onClick={() => handleDeleteCombo("delete-combo", product.combo_id)}>
+                                                Eliminar
+                                            </button>
+                                        </center>
                                     </div>
                                 </div>
                             </div>

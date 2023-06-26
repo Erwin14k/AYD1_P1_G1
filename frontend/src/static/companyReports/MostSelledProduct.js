@@ -4,10 +4,8 @@ const MostSelledProduct = ({ product }) => {
 
     if (product === null) {
         return (
-            <div className="report-container">
-                <div className="error-message">
-                    <p>No se encontró el producto más vendido.</p>
-                </div>
+            <div className="col">
+                <div className="no-orders-message">No se encontro el producto más vendido.</div>
             </div>
         );
     } else {

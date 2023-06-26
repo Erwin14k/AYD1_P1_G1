@@ -9,6 +9,7 @@ const crr_user = cookies.get("crr_user");
 const ReportesEmpresa = () => {
 
     const [product, setProduct] = useState({});
+    const [orders, setOrders] = useState([]);
 
     const getMostSelledProduct = useCallback(() => {
         fetch(`http://localhost:4200/company/get-most-selled-products`, {
@@ -23,18 +24,35 @@ const ReportesEmpresa = () => {
                 console.error('Error:', err)
             })
             .then(response => {
-                if(response.companyData[0].products.length > 0){
+                if (response.companyData[0].products.length > 0) {
                     setProduct(response.companyData[0].products[0])
-                }else{
+                } else {
                     setProduct(null)
                 }
-                console.log(product)
             })
-    }, [product]);
+    }, []);
+
+    const getAllOrders = useCallback(() => {
+        fetch(`http://localhost:4200/company/get-all-orders`, {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+            }
+        })
+            .then(res => res.json())
+            .catch(err => {
+                console.error('Error:', err)
+            })
+            .then(response => {
+                setOrders(response.companyData[0].orders);
+            })
+    }, []);
 
     useEffect(() => {
         getMostSelledProduct();
-    }, [getMostSelledProduct]);
+        getAllOrders();
+    }, [getMostSelledProduct, getAllOrders]);
 
     return (
         <div>
@@ -55,11 +73,11 @@ const ReportesEmpresa = () => {
             <div className="tab-content" id="myTabContent">
                 <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" style={{ padding: "2%" }}>
                     <center><h3>PRODUCTO MÁS VENDIDO</h3></center>
-                    <MostSelledProduct product={product}/>
+                    <MostSelledProduct product={product} />
                 </div>
                 <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>HISTORIAL DE PEDIDOS</h3></center>
-                    <OrdersHistory />
+                    <OrdersHistory orders={orders}/>
                 </div>
             </div>
         </div>

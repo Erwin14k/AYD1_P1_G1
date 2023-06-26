@@ -52,16 +52,6 @@
     margin-bottom: 5px;
 }
 
-.error-message {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 20vh;
-    background-color: #F9F4EF;
-    color: #DB4F23;
-    font-size: 24px;
-}
-
 .no-orders-message {
     text-align: center;
     color: #DB4F23;

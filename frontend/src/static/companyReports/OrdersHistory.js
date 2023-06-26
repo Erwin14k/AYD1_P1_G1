@@ -1,28 +1,8 @@
 import React, { useState } from 'react';
 
-const OrdersHistory = () => {
+const OrdersHistory = ({orders}) => {
     const [searchName, setSearchName] = useState('');
     const [searchDate, setSearchDate] = useState('');
-
-    const orders = [
-        {
-            id: 1,
-            order_number: "2023-123",
-            customer_name: "John Doe",
-            order_date: "2023-06-20",
-            total_amount: 50.99,
-            status: "Delivered"
-        },
-        {
-            id: 2,
-            order_number: "2023-456",
-            customer_name: "Jane Smith",
-            order_date: "2023-06-22",
-            total_amount: 75.5,
-            status: "Pending"
-        },
-        // Agregar más pedidos aquí
-    ];
 
     const handleNameFilter = (event) => {
         setSearchName(event.target.value);
@@ -34,7 +14,7 @@ const OrdersHistory = () => {
 
     // Filtrar pedidos según el nombre y la fecha
     const filteredOrders = orders.filter((order) => {
-        const orderName = order.customer_name.toLowerCase();
+        const orderName = order.user_name.toLowerCase();
         const orderDate = order.order_date;
 
         return (
@@ -76,11 +56,11 @@ const OrdersHistory = () => {
                         <div key={order.id} className="col-md-4">
                             <div className="card" style={{ marginBottom: "20px" }}>
                                 <div className="card-body">
-                                    <h5 className="card-title">Orden #{order.order_number}</h5>
-                                    <p className="card-text">Cliente: {order.customer_name}</p>
+                                    <h5 className="card-title">Orden #{order.order_id}</h5>
+                                    <p className="card-text">Cliente: {order.user_name}</p>
                                     <p className="card-text">Fecha: {order.order_date}</p>
-                                    <p className="card-text">Monto total: ${order.total_amount}</p>
-                                    <p className="card-text">Estado: {order.status}</p>
+                                    <p className="card-text">Monto total: Q.{order.order_total}</p>
+                                    <p className="card-text">Estado: {order.order_status}</p>
                                 </div>
                             </div>
                         </div>
