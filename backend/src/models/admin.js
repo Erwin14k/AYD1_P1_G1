@@ -298,14 +298,3 @@ module.exports.getTop5CompaniesOrdersGenerated = async () => {
   dataCollected.push({ companies: results });
   return dataCollected;
 };
-
-//Get all orders with details
-
-// Users counters by status
-module.exports.getOrders = async () => {
-  const statement = `
-    SELECT
-    select o.order_id, dm.delivery_man_name, u.user_name, c.company_name, ua.address, 0.order_status, o.order_date , o.order_total, o.order_commission   from _order o inner join delivery_man dm on o.delivery_man_id = dm.delivery_man_id 
-inner join user u on o.user_id =u.user_id inner join company c on o.company_id = c.company_id inner join user_address ua on o.user_address_id =ua.user_address_id `;
-  return await db.pool(statement);
-};

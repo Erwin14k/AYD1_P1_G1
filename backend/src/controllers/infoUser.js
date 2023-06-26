@@ -40,3 +40,17 @@ module.exports.getAllCombos = async (req, res, next) => {
       userData:result,
   });
 };
+
+
+module.exports.getAllOrders= async (req, res, next) => {
+  // Operations on db
+  const result=await User.getAllOrders();
+  // response
+  return res
+    .status(200)
+    .json({
+      messsage: "Información de las ordenes recuperada con éxito!",
+      userData:result,
+  });
+};
+

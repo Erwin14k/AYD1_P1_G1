@@ -1,37 +1,42 @@
-const db = require('../utils/db');
+const db = require("../utils/db");
 
 module.exports.hashPassword = ({ userEmail }) => {
   const SQL_HASH_PASSWORD = `SELECT user_password FROM user WHERE user_email = ?`;
-	const binds = [userEmail];
+  const binds = [userEmail];
   return db.pool(SQL_HASH_PASSWORD, binds);
 };
 
 // Registering a new user on the db
-module.exports.register = async (userEmail, userPassword, userName, userSurname) => {
+module.exports.register = async (
+  userEmail,
+  userPassword,
+  userName,
+  userSurname
+) => {
   const statement = `INSERT INTO user (user_email, user_password, user_name, user_surname,user_status,admin_id) 
 										VALUES (?, ?, ?, ?, ?, ?)`;
-  const binds = [userEmail,userPassword,userName,userSurname,"Active",-1];
-  return(await db.pool(statement, binds));
+  const binds = [userEmail, userPassword, userName, userSurname, "Active", -1];
+  return await db.pool(statement, binds);
 };
 
 // Verify email existence
-module.exports.existEmail = async ( userEmail ) => {
+module.exports.existEmail = async (userEmail) => {
   const bindings = [userEmail];
   const SQL_SELECT_CATEGORY = `SELECT 
                                     user_id AS "userId"
                                     FROM user
                                     WHERE user_email = ?`;
-  return (await db.pool(SQL_SELECT_CATEGORY, bindings));
+  return await db.pool(SQL_SELECT_CATEGORY, bindings);
 };
 
 // Verify user status
-module.exports.verifyStatus = async ( userEmail ) => {
+module.exports.verifyStatus = async (userEmail) => {
   const bindings = [userEmail];
   const SQL_SELECT_CATEGORY = `SELECT 
                                 user_status AS "userStatus"
                                 FROM user
                                 WHERE user_email = ?`;
-  return (await db.pool(SQL_SELECT_CATEGORY, bindings));
+  return await db.pool(SQL_SELECT_CATEGORY, bindings);
 };
 
 // Login as a User
@@ -41,92 +46,116 @@ module.exports.login = ({ userEmail, userPassword }) => {
                           WHERE user_email = ?`;
   const selectUserDataStatement = `SELECT user_token,user_name,user_surname,user_email,user_id FROM user WHERE user_email = ?`;
   const binds = [userPassword, userEmail];
-  return db.pool(updateUserDataStatement, binds)
+  return db
+    .pool(updateUserDataStatement, binds)
     .then(() => db.pool(selectUserDataStatement, [userEmail]))
-    .then(results => {
-			// Login token for users
+    .then((results) => {
+      // Login token for users
       const userToken = results[0].user_token;
-			const userName=results[0].user_name;
-			const userSurname=results[0].user_surname;
-			const userEmail=results[0].user_email;
-			const userId=results[0].user_id;
-      return [userToken,userName,userSurname,userEmail,userId];
+      const userName = results[0].user_name;
+      const userSurname = results[0].user_surname;
+      const userEmail = results[0].user_email;
+      const userId = results[0].user_id;
+      return [userToken, userName, userSurname, userEmail, userId];
     });
 };
 
 // User info
 module.exports.info = ({ userId }) => {
-	// db querys
+  // db querys
   console.log(userId);
   const selectUserDataStatement = `SELECT user_token,user_name,user_surname,user_email,user_id,user_status FROM user WHERE user_id = ?`;
-	const selectUserPaymentMethodsStatement = `SELECT user_payment_method_id,card_type,card_number FROM user_payment_method WHERE user_id = ?`;
-	const selectUserAddressStatement = `SELECT user_address_id,department,municipality,address FROM user_address WHERE user_id = ?`;
+  const selectUserPaymentMethodsStatement = `SELECT user_payment_method_id,card_type,card_number FROM user_payment_method WHERE user_id = ?`;
+  const selectUserAddressStatement = `SELECT user_address_id,department,municipality,address FROM user_address WHERE user_id = ?`;
   const binds = [userId];
-	let dataCollected=[];
-  return db.pool(selectUserDataStatement, binds)
-		// User principal data
-		.then(results=>{
-			const userToken = results[0].user_token;
-			const userName=results[0].user_name;
-			const userSurname=results[0].user_surname;
-			const userEmail=results[0].user_email;
-			const userId=results[0].user_id;
-			const userStatus=results[0].user_status;
-			
-      dataCollected= [{
-				userId:userId,
-				userEmail: userEmail,
-				userName:userName,
-				userSurname:userSurname,
-				authToken: userToken,
-				userStatus:userStatus,
-			}];
-		})
-    .then(() => db.pool(selectUserPaymentMethodsStatement, binds))
-		// User payment methods data
-		.then(results=>{
-			dataCollected.push({"paymentMethods":results});
-		})
-		.then(() => db.pool(selectUserAddressStatement, binds))
-		// User addresses data
-    .then(results => {
-			dataCollected.push({"userAddresses":results});
-      return dataCollected;
-    });
-};
+  let dataCollected = [];
+  return (
+    db
+      .pool(selectUserDataStatement, binds)
+      // User principal data
+      .then((results) => {
+        const userToken = results[0].user_token;
+        const userName = results[0].user_name;
+        const userSurname = results[0].user_surname;
+        const userEmail = results[0].user_email;
+        const userId = results[0].user_id;
+        const userStatus = results[0].user_status;
 
+        dataCollected = [
+          {
+            userId: userId,
+            userEmail: userEmail,
+            userName: userName,
+            userSurname: userSurname,
+            authToken: userToken,
+            userStatus: userStatus,
+          },
+        ];
+      })
+      .then(() => db.pool(selectUserPaymentMethodsStatement, binds))
+      // User payment methods data
+      .then((results) => {
+        dataCollected.push({ paymentMethods: results });
+      })
+      .then(() => db.pool(selectUserAddressStatement, binds))
+      // User addresses data
+      .then((results) => {
+        dataCollected.push({ userAddresses: results });
+        return dataCollected;
+      })
+  );
+};
 
 // Get all products
 module.exports.getAllProducts = async () => {
-	// db querys
+  // db querys
   // Collecting all products
-	const selectAllProducts = `SELECT product_id,product_type,product_name,
+  const selectAllProducts = `SELECT product_id,product_type,product_name,
   product_price,product_description,product_img,product_number_of_sales,product_stock,
   getCompanyName(company_id) AS company_name
   FROM product`;
   // bindings
   const binds = [];
   // Info collected
-	let dataCollected=[];
+  let dataCollected = [];
   const results = await db.pool(selectAllProducts, binds);
-  dataCollected.push({ "products": results });
+  dataCollected.push({ products: results });
   return dataCollected;
 };
 
-
 // Get all combos
 module.exports.getAllCombos = async () => {
-	// db querys
+  // db querys
   // Collecting all combos
-	const selectAllCombos = `SELECT combo_id,combo_name,combo_price,
+  const selectAllCombos = `SELECT combo_id,combo_name,combo_price,
   combo_description,combo_img,combo_number_of_sales,combo_stock,
   getCompanyName(company_id) AS company_name
   FROM combo`;
   // bindings
   const binds = [];
   // Info collected
-	let dataCollected=[];
+  let dataCollected = [];
   const results = await db.pool(selectAllCombos, binds);
-  dataCollected.push({ "products": results });
+  dataCollected.push({ products: results });
+  return dataCollected;
+};
+
+//Get all orders with details
+
+module.exports.getAllOrders = ({ userId })  => {
+  const selectAllOrders = `
+    SELECT 
+      select o.order_id, dm.delivery_man_name, u.user_name, c.company_name, ua.address, 0.order_status, o.order_date , o.order_total, o.order_commission   
+      from _order o inner join delivery_man dm on o.delivery_man_id = dm.delivery_man_id 
+      inner join user u on o.user_id =u.user_id 
+      inner join company c on o.company_id = c.company_id 
+      inner join user_address ua on o.user_address_id =ua.user_address_id  where o.user_id = ${userId}`;
+ 
+  // bindings
+  const binds = [];
+  // Info collected
+  let dataCollected = [];
+  const results =  db.pool(selectAllOrders, binds);
+  dataCollected.push({ orders: results });
   return dataCollected;
 };
