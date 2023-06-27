@@ -40,3 +40,19 @@ module.exports.getAllCombos = async (req, res, next) => {
       userData:result,
   });
 };
+
+
+
+// Get all companies
+module.exports.getAllCompanies = async (req, res, next) => {
+  // Operations on db
+  const result=await User.getAllCompanies();
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      messsage: "Empresas obtenidas con éxito!!",
+      adminData:result,
+  });
+};
