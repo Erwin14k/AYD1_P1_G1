@@ -142,7 +142,6 @@ module.exports.getAllCombos = async () => {
 
 // Get all orders associated to the company
 module.exports.getAllUserOrders = async ({ userId }) => {
-  console.log(userId);
   // db querys
   // Collecting the orders
   const selectUserOrdersStatement = `SELECT order_id,delivery_man_id,user_id,
@@ -151,6 +150,8 @@ module.exports.getAllUserOrders = async ({ userId }) => {
   getClientName(user_id) AS user_name
   FROM _order WHERE user_id = ?`;
   // bindings
+
+  // console.log(userid);
   const binds = [userId];
   // Info collected
   let dataCollected = [];

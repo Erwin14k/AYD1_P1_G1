@@ -35,17 +35,22 @@ module.exports.getAllCombos = async (req, res, next) => {
 
 // Get all orders associated to customer
 module.exports.getAllUserOrders = async (req, res, next) => {
-  let args = {
-    userId: req.body.userId,
-  };
+  try {
+    let args = {
+      userId: req.body.userId,
+    };
 
-  console.log(userId);
-  // Operations on db
-  const result = await User.getAllUserOrders(args);
-  // response
-  return res.status(200).json({
-    status: 200,
-    messsage: "Pedidos gestionados por el usuario, completo!",
-    UserData: result,
-  });
+    console.log(args);
+    // Operations on db
+    const result = await User.getAllUserOrders(args);
+    // response
+    return res.status(200).json({
+      status: 200,
+      messsage: "Pedidos gestionados por el usuario, completo!",
+      UserData: result,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Falta error", error: error });
+  }
 };

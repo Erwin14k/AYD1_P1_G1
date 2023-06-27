@@ -5,8 +5,8 @@ const {
   userInfo,
   getAllProducts,
   getAllCombos,
+  getAllUserOrders,
 } = require("../controllers/infoUser");
-const { getAllUserOrders } = require("../models/user");
 
 router.get("/user/info", userInfo);
 router.get("/user/get-all-products", getAllProducts);
