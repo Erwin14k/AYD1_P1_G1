@@ -140,22 +140,21 @@ module.exports.getAllCombos = async () => {
   return dataCollected;
 };
 
-//Get all orders with details
-
-module.exports.getAllOrders = ({ userId })  => {
-  const selectAllOrders = `
-    SELECT 
-      select o.order_id, dm.delivery_man_name, u.user_name, c.company_name, ua.address, 0.order_status, o.order_date , o.order_total, o.order_commission   
-      from _order o inner join delivery_man dm on o.delivery_man_id = dm.delivery_man_id 
-      inner join user u on o.user_id =u.user_id 
-      inner join company c on o.company_id = c.company_id 
-      inner join user_address ua on o.user_address_id =ua.user_address_id  where o.user_id = ${userId}`;
- 
+// Get all orders associated to the company
+module.exports.getAllUserOrders = async ({ userId }) => {
+  console.log(userId);
+  // db querys
+  // Collecting the orders
+  const selectUserOrdersStatement = `SELECT order_id,delivery_man_id,user_id,
+  company_id,order_status,order_date,order_total,order_commission,
+  getCompanyName(company_id) AS company_name,getDeliveryManName(delivery_man_id) AS delivery_man_name,
+  getClientName(user_id) AS user_name
+  FROM _order WHERE user_id = ?`;
   // bindings
-  const binds = [];
+  const binds = [userId];
   // Info collected
   let dataCollected = [];
-  const results =  db.pool(selectAllOrders, binds);
+  const results = await db.pool(selectUserOrdersStatement, binds);
   dataCollected.push({ orders: results });
   return dataCollected;
 };
