@@ -33,20 +33,17 @@ module.exports.getAllCombos = async (req, res, next) => {
   });
 };
 
-
-
 // Get all companies
 module.exports.getAllCompanies = async (req, res, next) => {
   // Operations on db
-  const result=await User.getAllCompanies();
+  const result = await User.getAllCompanies();
   // response
-  return res
-    .status(200)
-    .json({
-      status:200,
-      messsage: "Empresas obtenidas con éxito!!",
-      adminData:result,
+  return res.status(200).json({
+    status: 200,
+    messsage: "Empresas obtenidas con éxito!!",
+    adminData: result,
   });
+};
 // Get all orders associated to customer
 module.exports.getAllUserOrders = async (req, res, next) => {
   try {
