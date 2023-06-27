@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import NavBar from "../components/NavBar";
-import NavBarLanding from '../static/NavBarLanding';
+import NavBarLanding from '../static/NavBar/NavBarLanding';
 import MiLogo from '../assets/AlChilazoLogo.png'
 import f1 from '../assets/f1.jpg'
 import r1 from '../assets/r1.png'
@@ -31,12 +31,12 @@ function LandingPage() {
                 <div className="box">
                     <center><img src={r2} className="rimg" alt="R2"></img></center>
                     <h2>Tu restaurante, a domicilio</h2>
-                    <Link to="/SingUp-Empresa" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style={{ color: "black" }}>Agrega tu restaurante.</Link>
+                    <Link to="/SingUp-Empresa" className="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style={{ color: "black" }}>Agrega tu restaurante.</Link>
                 </div>
                 <div className="box">
                     <center><img src={r3} className="rimg" alt="R3"></img></center>
                     <h2>Haz entregas con la app AlChilazo</h2>
-                    <Link to="/SingUp-Repartidor" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style={{ color: "black" }}>Regístrate para realizar entregas.</Link>
+                    <Link to="/SingUp-Repartidor" className="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style={{ color: "black" }}>Regístrate para realizar entregas.</Link>
                 </div>
             </div>
             <div className="somos" id="somos">

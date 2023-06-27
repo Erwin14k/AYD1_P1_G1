@@ -81,6 +81,7 @@ const MaintenaceCompanyDelivery = ({ refresh, url, noUrl }) => {
 
     useEffect(() => {
         llenarTabla();
+        // eslint-disable-next-line
     }, [refresh]);
 
     return (

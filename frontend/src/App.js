@@ -11,9 +11,9 @@ import Module from './components/Module';
 import Perfil from './pages/Perfil';
 import Reportes from './pages/Reportes';
 
-import SingUpClient from './static/SingUpClient';
-import SingUpDeliveryMan from './static/SingUpDeliveryMan';
-import SingUpCompany from './static/SingUpCompany';
+import SingUpClient from './static/SingUp/SingUpClient';
+import SingUpDeliveryMan from './static/SingUp/SingUpDeliveryMan';
+import SingUpCompany from './static/SingUp/SingUpCompany';
 
 import { ProtectedRouteLogin } from './security/ProtectedRouteLogin';
 import { ProtectedRouteUsers } from './security/ProtectedRouteUsers';

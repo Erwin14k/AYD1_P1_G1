@@ -1,6 +1,6 @@
 import React from "react";
 import NavBar from "../components/NavBar";
-import NavBarLanding from "../static/NavBarLanding";
+import NavBarLanding from "../static/NavBar/NavBarLanding";
 
 function SingUp({ noUrl, customContent }) {
    return (

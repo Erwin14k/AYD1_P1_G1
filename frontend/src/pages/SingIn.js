@@ -1,6 +1,6 @@
 import React from "react";
 import NavBar from "../components/NavBar";
-import NavBarLanding from "../static/NavBarLanding";
+import NavBarLanding from "../static/NavBar/NavBarLanding";
 import Cookie from 'cookie-universal'
 import { isEmail } from "validator";
 import swal from 'sweetalert';

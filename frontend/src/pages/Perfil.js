@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import NavBar from "../components/NavBar";
-import NavBarModule from "../static/NavBarModule";
-import departmentsGuatemala from "../static/departmentsGuatemala";
-import DataDeliveryMan from "../static/DataDeliveryMan";
+import NavBarModule from "../static/NavBar/NavBarModule";
+import departmentsGuatemala from "../static/data/departmentsGuatemala";
+import DataDeliveryMan from "../static/data/DataDeliveryMan";
 import Cookie from 'cookie-universal'
 import swal from 'sweetalert';
 

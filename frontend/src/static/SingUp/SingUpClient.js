@@ -1,5 +1,5 @@
 import React from "react";
-import {validateName,validatePassword} from "../func/validations";
+import {validateName,validatePassword} from "../../func/validations";
 import { isEmail } from 'validator';
 import swal from 'sweetalert';
 
