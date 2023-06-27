@@ -37,6 +37,7 @@ const ModuleClient = () => {
                </li>
             </ul>
          </div>
+         <hr class="divider"/>
       </div>
    );
 };
