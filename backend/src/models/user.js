@@ -130,3 +130,19 @@ module.exports.getAllCombos = async () => {
   dataCollected.push({ "products": results });
   return dataCollected;
 };
+
+// Get All companies
+module.exports.getAllCompanies = async () => {
+	// db querys
+  // Collecting all companies
+	const selectCompaniesStatement = `SELECT company_id,company_name,company_description,company_category,
+  company_email,company_department,company_municipality,company_address,company_status,company_file
+  FROM company WHERE admin_id = ? AND company_status = ?`;
+  // bindings
+  const binds = [-1,"Active"];
+  // Info collected
+	let dataCollected=[];
+  const results = await db.pool(selectCompaniesStatement, binds);
+  dataCollected.push({ "companies": results });
+  return dataCollected;
+};

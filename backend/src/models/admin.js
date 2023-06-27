@@ -169,6 +169,11 @@ module.exports.disableCompany = async ({ companyId }) => {
   // bindings
   const binds = ['Disabled', companyId];
   await db.pool(updateCompanyStatusStatemnet, binds);
+  // Delete all products of the disabled company
+  const deleteProductsStatement= `DELETE FROM product WHERE company_id = ?`;
+  const productsBinds = [companyId];
+  await db.pool(deleteProductsStatement, productsBinds);
+
   return "Disabled";
 };
 
@@ -206,7 +211,7 @@ module.exports.getAllDevliveryMen = async () => {
 };
 
 
-// Get All delivery_men
+// Get All companies
 module.exports.getAllCompanies = async () => {
 	// db querys
   // Collecting all companies
