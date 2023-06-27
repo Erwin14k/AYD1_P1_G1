@@ -1,0 +1,13 @@
+.container-center {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+
+ }
+
+ .list-inline-item{
+   margin: 0 60px;
+  
+ }
+
+

@@ -1,5 +1,6 @@
 import './styles/LandingCSS.css'
 import './styles/selledProductCSS.css'
+import './styles/ModuleCliente.css'
 import React from 'react';
 import LandingPage from './pages/LandingPage';
 import Politicas from './pages/Politicas';
