@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import LoginIMG from '../assets/login.png'
-import regimg from '../assets/registro.png'
+import LoginIMG from '../../assets/login.png'
+import regimg from '../../assets/registro.png'
 
 const NavBarLanding = () => { 
 

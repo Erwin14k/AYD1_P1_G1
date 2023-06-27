@@ -1,7 +1,7 @@
 import NavBar from "../components/NavBar";
-import NavBarModule from "../static/NavBarModule";
-import ReportesAdmin from "../static/ReportesAdmin";
-import ReportesEmpresa from "../static/ReportesEmpresa";
+import NavBarModule from "../static/NavBar/NavBarModule";
+import ReportesAdmin from "../static/AdminStatic/ReportesAdmin";
+import ReportesEmpresa from "../static/AdminStatic/ReportesEmpresa";
 
 function Reportes({noUrl}) {
     return (

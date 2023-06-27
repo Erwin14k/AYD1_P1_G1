@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import DataCompany from './DataCompany';
-import DataDeliveryMan from './DataDeliveryMan';
-import UsersTable from './UsersTable';
-import MaintenaceCompanyDelivery from './MaintenanceCompanyDelivery';
+import DataCompany from '../data/DataCompany';
+import DataDeliveryMan from '../data/DataDeliveryMan';
+import UsersTable from '../AdminStatic/UsersTable';
+import MaintenaceCompanyDelivery from '../AdminStatic/MaintenanceCompanyDelivery';
 import swal from 'sweetalert';
 import Cookie from "cookie-universal";
 const cookies = Cookie();
@@ -112,6 +112,7 @@ const ModuleAdmin = () => {
 
     useEffect(() => {
         peticion();
+        // eslint-disable-next-line
     }, []);
 
     const verInfoDelivery = (value) => {

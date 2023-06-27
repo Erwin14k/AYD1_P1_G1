@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import NavBar from "../components/NavBar";
-import NavBarLanding from '../static/NavBarLanding';
+import NavBarLanding from '../static/NavBar/NavBarLanding';
 import MiLogo from '../assets/AlChilazoLogo.png'
 import f1 from '../assets/f1.jpg'
 import r1 from '../assets/r1.png'

@@ -1,9 +1,9 @@
 import React, {updateState} from 'react';
 import { Link } from 'react-router-dom';
 
-import OnOff from '../assets/OnOff.png'
-import LoginIMG from '../assets/login.png'
-import Home from '../assets/home.png'
+import OnOff from '../../assets/OnOff.png'
+import LoginIMG from '../../assets/login.png'
+import Home from '../../assets/home.png'
 import Cookie from 'cookie-universal'
 const cookies = Cookie()
 
