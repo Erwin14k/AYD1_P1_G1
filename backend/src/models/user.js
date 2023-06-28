@@ -142,7 +142,7 @@ module.exports.getAllProducts = async () => {
   // Collecting all products
   const selectAllProducts = `SELECT product_id,product_type,product_name,
   product_price,product_description,product_img,product_number_of_sales,product_stock,
-  getCompanyName(company_id) AS company_name
+  getCompanyName(company_id) AS company_name, company_id
   FROM product`;
   // bindings
   const binds = [];
@@ -159,7 +159,7 @@ module.exports.getAllCombos = async () => {
   // Collecting all combos
   const selectAllCombos = `SELECT combo_id,combo_name,combo_price,
   combo_description,combo_img,combo_number_of_sales,combo_stock,
-  getCompanyName(company_id) AS company_name
+  getCompanyName(company_id) AS company_name,company_id
   FROM combo`;
   // bindings
   const binds = [];

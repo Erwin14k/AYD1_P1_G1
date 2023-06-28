@@ -4,7 +4,7 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 
 
-const ModalProduct = ({ id, img, name, category, description, price }) => {
+const ModalProduct = ({ id, img, name, category, description, price,company }) => {
    // eslint-disable-next-line 
    const seeInfo = () => {
       console.log("=============");
@@ -63,6 +63,7 @@ const ModalProduct = ({ id, img, name, category, description, price }) => {
                                  Categoría: {category}
                               </h5>
                            )}
+                           <h5 className="card-type"> Por: {company}</h5>
                            <h5 className="card-title">{name}</h5>
                            <p className="card-text">{description}</p>
                            <div className="details-container">

@@ -11,7 +11,7 @@ const SearchCustom = ({ productos, combos, value, name }) => {
   
 
    const handleChangeCategory = (categorySearch) => {
-      console.log(categorySearch);
+      // console.log(categorySearch);
       setCategory(categorySearch);
    };
 
@@ -93,6 +93,7 @@ const SearchCustom = ({ productos, combos, value, name }) => {
                           <CardProduct
                              key={`PS${index}`}
                              id={product.product_id}
+                             company={product.company_name}
                              description={product.product_description}
                              category={product.product_type}
                              img={product.product_img}
@@ -110,6 +111,7 @@ const SearchCustom = ({ productos, combos, value, name }) => {
                           <CardProduct
                              key={`CS${index}`}
                              id={combo.combo_id}
+                             company={combo.company_name}
                              description={combo.combo_description}
                              img={combo.combo_img}
                              nombre={combo.combo_name}
