@@ -69,7 +69,7 @@ const ExploreByCategories = ({handleChangeCategory,category}) => {
                      display: "inline-block",
                      margin: "0 8px",
                      width: "150px",
-                     backgroundColor: category === card.valor  ? "#f50057" : "#fff",
+                     backgroundColor: category === card.valor  ? "#F58600" : "#fff",
                   }}
                   onClick={() => handleChangeCategory(card.valor)}
                >
