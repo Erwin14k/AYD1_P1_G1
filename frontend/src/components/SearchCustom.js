@@ -6,9 +6,23 @@ import Button from "@mui/material/Button";
 import ExploreByCategories from "./ExploreByCategories";
 import CardProduct from "./CardProduct";
 
-const SearchCustom = ({ productos, combos, value, name }) => {
+const SearchCustom = ({ productos, combos, value, name}) => {
+   const [category, setCategory] = useState("");
 
-   const productosMostrar = value === "3" ? productos.filter((product) => ( product.product_name.toLowerCase().includes(name.toLowerCase()) )) : productos;
+   const handleChangeCategory = (categorySearch) => {
+      console.log(categorySearch);
+      setCategory(categorySearch);
+   };
+
+   useEffect(() => {
+      console.log("useEffect category");
+     
+   }, [category]);
+   
+
+   var productosMostrar =  value === "3" ? productos.filter((product) => ( product.product_name.toLowerCase().includes(name.toLowerCase()) )) : productos;
+   productosMostrar = category !== "" ? productosMostrar.filter((product) => ( product.product_type.toLowerCase() === category.toLowerCase() )) : productosMostrar;
+
    const combosMostrar = value === "4" ?  combos.filter((combo) =>combo.combo_name.toLowerCase().includes(name.toLowerCase())) : combos;
    const val = value === "1" || value === "3" ? productosMostrar.length : combosMostrar.length;
    const [amountStart, setAmountStart] = useState(0);
@@ -33,7 +47,7 @@ const SearchCustom = ({ productos, combos, value, name }) => {
 
    return (
       <>
-         <ExploreByCategories/>
+         {value === "1" || value === "3"? <ExploreByCategories handleChangeCategory={handleChangeCategory} category={category}/> : <></> }
 
          <Typography
             variant="h6"

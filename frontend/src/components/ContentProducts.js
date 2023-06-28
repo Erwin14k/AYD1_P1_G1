@@ -73,7 +73,7 @@ const ContentProducts = ({ productos, combos }) => {
             ))}
          </div>
 
-         <ExploreByCategories/>
+         {/* <ExploreByCategories setCategoryFilter={setCategoryFilter}/> */}
 
          <Typography
             variant="h6"
