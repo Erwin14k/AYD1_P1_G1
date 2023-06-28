@@ -4,8 +4,8 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-
 import CardProduct from "../../components/CardProduct";
+
 const SearchCompany = ({ companys, company, products, combos }) => {
    const [crrCompany, setCrrCompany] = useState(undefined);
    const [productosMostrar, setProductosMostrar] = useState(products);
@@ -46,7 +46,6 @@ const SearchCompany = ({ companys, company, products, combos }) => {
    };
 
    const handleChangeCompany = (companySearch) => {
-      // console.log(companySearch);
       setCrrCompany(companySearch);
       setProductosMostrar(
          companySearch === undefined
@@ -72,7 +71,6 @@ const SearchCompany = ({ companys, company, products, combos }) => {
       setCrrCompany(undefined);
    }, [company]);
 
-   // var productosMostrar = products.filter((product) => product.company_id === crrCompany.company_id);
 
    return (
       <>
