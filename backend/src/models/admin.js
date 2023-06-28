@@ -309,35 +309,36 @@ module.exports.deliveryManChangeAddressRequest = async ({
   deliveryManId,
   status,
   newDepartment,
-  newMunicipality
+  newMunicipality,
+  changeAddressId
 }) => {
   // verify the status of the request
   const petitionStatus = status === "Approved" ? "Approved" : "Declined";
   const updateChangeAddressStatemnet = `UPDATE delivery_man_change_address
                           SET status = ?
-                          WHERE delivery_man_id = ?`;
+                          WHERE delivery_man_change_address_id = ?`;
   // bindings
-  const binds = [status, deliveryManId];
+  const binds = [status, changeAddressId];
   await db.pool(updateChangeAddressStatemnet, binds);
   // If the request is approved, the delivery man address data need an update
   if (petitionStatus === "Approved") {
     // update the delivery man information
     const updateDeliveryManAddressStatemnet = `UPDATE delivery_man
-    SET delivery_man_department = ?,SET delivery_man_municipality = ?
+    SET delivery_man_department = ?, delivery_man_municipality = ?
     WHERE delivery_man_id = ?`;
     // update bindings
     const updateBindings = [newDepartment, newMunicipality,deliveryManId];
     await db.pool(updateDeliveryManAddressStatemnet, updateBindings);
 
     // Delete the delivery man change address request
-    const deleteChangeAddressRequestStatement = `DELETE FROM delivery_man_change_address WHERE delivery_man_id = ?`;
-    const deleteBinds = [deliveryManId];
+    const deleteChangeAddressRequestStatement = `DELETE FROM delivery_man_change_address WHERE delivery_man_change_address_id = ?`;
+    const deleteBinds = [changeAddressId];
     await db.pool(deleteChangeAddressRequestStatement, deleteBinds);
     return "Data updated"
   }
   // Delete the delivery man change address request
-  const deleteChangeAddressRequestStatement = `DELETE FROM delivery_man_change_address WHERE delivery_man_id = ?`;
-  const deleteBinds = [deliveryManId];
+  const deleteChangeAddressRequestStatement = `DELETE FROM delivery_man_change_address WHERE delivery_man_change_address_id = ?`;
+  const deleteBinds = [changeAddressId];
   await db.pool(deleteChangeAddressRequestStatement, deleteBinds);
   return "No changes on delivery man";
 };

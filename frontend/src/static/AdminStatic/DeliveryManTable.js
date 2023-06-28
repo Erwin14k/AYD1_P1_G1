@@ -4,7 +4,7 @@ import swal from 'sweetalert';
 const cookies = Cookie();
 const crr_user = cookies.get("crr_user");
 
-const DeliveryManTable = ({ refresh, peticion }) => {
+const DeliveryManTable = ({ refresh }) => {
 
     const [deliveryInfo, setDeliveryInfo] = useState([])
 
@@ -27,13 +27,14 @@ const DeliveryManTable = ({ refresh, peticion }) => {
             })
     }
 
-    const handleReqChangeZone = (e, id, ndep, nmun) => {
+    const handleReqChangeZone = (e, id, ndep, nmun, idSolicitud) => {
         e.preventDefault();
         const body = {
             deliveryManId: id,
             status: e.target.value,
-            new_department : ndep,
-            new_municipality : nmun
+            newDepartment : ndep,
+            newMunicipality : nmun,
+            changeAddressId: idSolicitud
         }
         console.log("botton", body)
         fetch(`http://localhost:4200/admin/delivery-man-change-address-request`, {
@@ -55,7 +56,7 @@ const DeliveryManTable = ({ refresh, peticion }) => {
                     icon: response.status === 200 ? "success" : "error",
                     button: true,
                 })
-                peticion();
+                actualizar();
             })
     }
 
@@ -85,8 +86,8 @@ const DeliveryManTable = ({ refresh, peticion }) => {
                             <td>{user.new_municipality}</td>
                             <td>{user.change_description}</td>
                             <td>
-                                <button type="button" className="btn btn-success" value='Approved' onClick={(e) => handleReqChangeZone(e, user.delivery_man_id, user.new_department, user.new_municipality)} >Aceptar</button>
-                                <button type="button" className="btn btn-danger" value='Declined' onClick={(e) => handleReqChangeZone(e, user.delivery_man_id, "" , "")} style={{ marginLeft: "2%" }}>Rechazar</button>
+                                <button type="button" className="btn btn-success" value='Approved' onClick={(e) => handleReqChangeZone(e, user.delivery_man_id, user.new_department, user.new_municipality, user.delivery_man_change_address_id)} >Aceptar</button>
+                                <button type="button" className="btn btn-danger" value='Declined' onClick={(e) => handleReqChangeZone(e, user.delivery_man_id, "" , "", user.delivery_man_change_address_id)} style={{ marginLeft: "2%" }}>Rechazar</button>
                             </td>
                         </tr>
                     );
