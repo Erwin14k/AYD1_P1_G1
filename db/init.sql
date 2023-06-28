@@ -91,7 +91,9 @@ CREATE TABLE IF NOT EXISTS delivery_man_change_address(
 CREATE TABLE IF NOT EXISTS coupon(
   coupon_id BIGINT PRIMARY KEY AUTO_INCREMENT,
   coupon_code VARCHAR(150) NOT NULL,
-  coupon_status VARCHAR(150) NOT NULL
+  coupon_status VARCHAR(150) NOT NULL,
+  user_id BIGINT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE
 );
 
 -- company Table
@@ -233,5 +235,17 @@ BEGIN
   FROM user
   WHERE user_id = UserIdParam;
   RETURN clientName;
+END //
+DELIMITER ;
+
+-- Function to generate a new coupon
+DELIMITER //
+CREATE FUNCTION generateCoupon()
+RETURNS VARCHAR(36)
+DETERMINISTIC
+BEGIN
+    DECLARE code VARCHAR(36);
+    SET code = UUID();
+    RETURN code;
 END //
 DELIMITER ;

@@ -16,7 +16,14 @@ module.exports.register = async (
   const statement = `INSERT INTO user (user_email, user_password, user_name, user_surname,user_status,admin_id) 
 										VALUES (?, ?, ?, ?, ?, ?)`;
   const binds = [userEmail, userPassword, userName, userSurname, "Active", -1];
-  return await db.pool(statement, binds);
+  await db.pool(statement, binds);
+  const userId = await db.pool("SELECT LAST_INSERT_ID() as user_id");
+  userId=userId[0].user_id;
+  const couponStatement = `INSERT INTO coupon (coupon_code, coupon_status, user_id) 
+										VALUES (generateCoupon(), ?, ?)`;
+  const couponBinds = [ "Active",userId ];
+  await db.pool(couponStatement, couponBinds);
+  return "Registered";
 };
 
 // Verify email existence
@@ -61,13 +68,21 @@ module.exports.login = ({ userEmail, userPassword }) => {
 };
 
 // User info
-module.exports.info = ({ userId }) => {
+module.exports.info = async ({ userId }) => {
   // db querys
-  console.log(userId);
   const selectUserDataStatement = `SELECT user_token,user_name,user_surname,user_email,user_id,user_status FROM user WHERE user_id = ?`;
   const selectUserPaymentMethodsStatement = `SELECT user_payment_method_id,card_type,card_number FROM user_payment_method WHERE user_id = ?`;
   const selectUserAddressStatement = `SELECT user_address_id,department,municipality,address FROM user_address WHERE user_id = ?`;
+  const selectUserCoupon = `SELECT coupon_id,coupon_code FROM coupon WHERE user_id = ? AND coupon_status = 'Active'`;
   const binds = [userId];
+  // Verify if the user has an active coupon
+  const couponData=await db.pool(selectUserCoupon, binds);
+  var couponCode='';
+  var couponId=-1;
+  if (couponData[0]){
+    couponCode=couponData[0].coupon_code;
+    couponId=couponData[0].coupon_id;
+  }
   let dataCollected = [];
   return (
     db
@@ -80,17 +95,32 @@ module.exports.info = ({ userId }) => {
         const userEmail = results[0].user_email;
         const userId = results[0].user_id;
         const userStatus = results[0].user_status;
-
-        dataCollected = [
-          {
-            userId: userId,
-            userEmail: userEmail,
-            userName: userName,
-            userSurname: userSurname,
-            authToken: userToken,
-            userStatus: userStatus,
-          },
-        ];
+        if (couponCode!=='' && couponId!=-1){
+          dataCollected = [
+            {
+              userId: userId,
+              userEmail: userEmail,
+              userName: userName,
+              userSurname: userSurname,
+              authToken: userToken,
+              userStatus: userStatus,
+              couponCode:couponCode,
+              couponId:couponId,
+            },
+          ];
+        }else{
+          dataCollected = [
+            {
+              userId: userId,
+              userEmail: userEmail,
+              userName: userName,
+              userSurname: userSurname,
+              authToken: userToken,
+              userStatus: userStatus,
+            },
+          ];
+        }
+        
       })
       .then(() => db.pool(selectUserPaymentMethodsStatement, binds))
       // User payment methods data
