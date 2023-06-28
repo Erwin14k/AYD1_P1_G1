@@ -148,27 +148,27 @@ const ModuleAdmin = () => {
             {/* FILA DE BOTONES */}
             <ul className="nav nav-tabs" id="myTab" role="tablist" style={{ marginTop: "2%" }}>
                 <li className="nav-item" role="presentation">
-                    <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
+                    <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true" style={{color: "#DB4F23"}}>
                         Solicitud de Repartidores
                     </button>
                 </li>
                 <li className="nav-item" role="presentation">
-                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" style={{color: "#DB4F23"}}>
                         Solicitud de Empresas
                     </button>
                 </li>
                 <li className="nav-item" role="presentation">
-                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="profile" aria-selected="false" style={{color: "#DB4F23"}}>
                         Deshabilitar usuarios
                     </button>
                 </li>
                 <li className="nav-item" role="presentation">
-                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#mantenimientoR" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#mantenimientoR" type="button" role="tab" aria-controls="profile" aria-selected="false" style={{color: "#DB4F23"}}>
                         Mantenimiento de repartidores
                     </button>
                 </li>
                 <li className="nav-item" role="presentation">
-                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#mantenimientoP" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#mantenimientoP" type="button" role="tab" aria-controls="profile" aria-selected="false" style={{color: "#DB4F23"}}>
                         Mantenimiento de empresas
                     </button>
                 </li>
@@ -253,11 +253,12 @@ const ModuleAdmin = () => {
                     <div className="container" style={{ width: "95%", margin: "auto", marginTop: "3%" }}>
                         <div className="row">
                             <div className="col-3">
-                                <ul className="nav flex-column nav-pills">
+                                <ul className="nav flex-column nav-underline">
                                     <li className="nav-item">
                                         <button
                                             className={`nav-link ${activeTab === 'table1' ? 'active' : ''}`}
                                             onClick={() => handleTabSelect('table1')}
+                                            style={{color: "#A89D8F"}}
                                         >
                                             Deshabilitar usuarios
                                         </button>
@@ -266,6 +267,7 @@ const ModuleAdmin = () => {
                                         <button
                                             className={`nav-link ${activeTab === 'table2' ? 'active' : ''}`}
                                             onClick={() => handleTabSelect('table2')}
+                                            style={{color: "#A89D8F"}}
                                         >
                                             Solicitudes de cambio
                                         </button>

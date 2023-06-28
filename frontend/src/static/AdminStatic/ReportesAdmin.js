@@ -162,6 +162,7 @@ const ReportesAdmin = () => {
                   aria-controls="home"
                   aria-selected="true"
                   onClick={() => topCompanie()}
+                  style={{color: "#DB4F23"}}
                >
                   Informe de ventas
                </button>
@@ -176,6 +177,7 @@ const ReportesAdmin = () => {
                   role="tab"
                   aria-controls="profile"
                   aria-selected="false"
+                  style={{color: "#DB4F23"}}
                >
                   Informe de usuarios
                </button>
@@ -191,6 +193,7 @@ const ReportesAdmin = () => {
                   aria-controls="profile"
                   aria-selected="false"
                   onClick={() => topDelivery()}
+                  style={{color: "#DB4F23"}}
                >
                   Informe de repartidores
                </button>
