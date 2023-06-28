@@ -12,14 +12,14 @@ const SearchCompany = ({ companys, company, products, combos }) => {
    const [combosMostrar, setCombosMostrar] = useState(combos);
 
    const [amountStartP, setAmountStartP] = useState(0);
-   const [amountEndP, setAmountEndP] = useState(4);
+   const [amountEndP, setAmountEndP] = useState(6);
 
    const [amountStartC, setAmountStartC] = useState(0);
-   const [amountEndC, setAmountEndC] = useState(2);
+   const [amountEndC, setAmountEndC] = useState(6);
 
    const getArrP = () => {
       const arr = [];
-      for (let i = 1; i <= Math.ceil(productosMostrar.length / 4); i++) {
+      for (let i = 1; i <= Math.ceil(productosMostrar.length / 6); i++) {
          arr.push(i);
       }
       return arr;
@@ -27,19 +27,19 @@ const SearchCompany = ({ companys, company, products, combos }) => {
 
    const handleChangePageP = (event) => {
       event.preventDefault();
-      setAmountEndP(event.target.value * 4 + 4);
-      setAmountStartP(event.target.value * 4);
+      setAmountEndP(event.target.value * 6 + 6);
+      setAmountStartP(event.target.value * 6);
    };
 
    const handleChangePageC = (event) => {
       event.preventDefault();
-      setAmountEndC(event.target.value * 2 + 2);
-      setAmountStartC(event.target.value * 2);
+      setAmountEndC(event.target.value * 6 + 6);
+      setAmountStartC(event.target.value * 6);
    };
 
    const getArrC = () => {
       const arr = [];
-      for (let i = 1; i <= Math.ceil(combosMostrar.length / 2); i++) {
+      for (let i = 1; i <= Math.ceil(combosMostrar.length / 6); i++) {
          arr.push(i);
       }
       return arr;
@@ -70,7 +70,6 @@ const SearchCompany = ({ companys, company, products, combos }) => {
    useEffect(() => {
       setCrrCompany(undefined);
    }, [company]);
-
 
    return (
       <>
@@ -132,38 +131,56 @@ const SearchCompany = ({ companys, company, products, combos }) => {
                   </Button>
                </Typography>
 
-               <Typography
-                  variant="h8"
-                  component="div"
-                  style={{ fontWeight: "bold", fontSize: "1rem" }}
+               <Card
+                  sx={{
+                     width: "100%",
+                     display: "inline-block",
+                     marginTop: "15px",
+                  }}
                >
-                  {crrCompany.company_category}
-               </Typography>
+                  <CardContent>
+                     <Typography
+                        variant="h8"
+                        component="div"
+                        style={{ fontWeight: "bold", fontSize: "1rem" }}
+                     >
+                        {crrCompany.company_category}
+                     </Typography>
 
-               <Typography
-                  variant="h8"
-                  component="div"
-                  style={{ fontWeight: "bold", fontSize: "1rem" }}
-               >
-                  {crrCompany.company_description}
-               </Typography>
+                     <Typography
+                        variant="h8"
+                        component="div"
+                        style={{ fontWeight: "bold", fontSize: "1rem" }}
+                     >
+                        {crrCompany.company_description}
+                     </Typography>
 
-               <Typography
-                  variant="h8"
-                  component="div"
-                  style={{ fontWeight: "bold", fontSize: "1rem" }}
-               >
-                  {crrCompany.company_department} ||{" "}
-                  {crrCompany.company_municipality}
-               </Typography>
+                     <Typography
+                        variant="h8"
+                        component="div"
+                        style={{ fontWeight: "bold", fontSize: "1rem" }}
+                     >
+                        {crrCompany.company_department} ||{" "}
+                        {crrCompany.company_municipality}
+                     </Typography>
 
-               <Typography
-                  variant="h8"
-                  component="div"
-                  style={{ fontWeight: "bold", fontSize: "1rem" }}
-               >
-                  {crrCompany.company_address}
-               </Typography>
+                     <Typography
+                        variant="h8"
+                        component="div"
+                        style={{ fontWeight: "bold", fontSize: "1rem" }}
+                     >
+                        {crrCompany.company_address}
+                     </Typography>
+                  </CardContent>
+                  {/*<CardActions>
+                      <Button
+                        size="small"
+                        onClick={() => handleChangeCompany(company)}
+                     >
+                        Ver Productos
+                     </Button> 
+                  </CardActions>*/}
+               </Card>
 
                <Typography
                   variant="h8"

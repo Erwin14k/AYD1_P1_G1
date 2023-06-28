@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Filter from "../../components/Filter";
-import ContentProducts from "../../components/ContentProducts";
+import ContentProducts from "../ClientsNavigation/ContentProducts";
 import SearchCustom from "../../components/SearchCustom";
 import restaurant from "../../assets/restaurant.png";
 import all from "../../assets/all.png";

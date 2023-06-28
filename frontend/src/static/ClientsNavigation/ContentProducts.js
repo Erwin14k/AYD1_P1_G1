@@ -3,7 +3,7 @@ import {
    Typography
 } from "@mui/material";
 
-import CardProduct from "./CardProduct";
+import CardProduct from "../../components/CardProduct";
 
 const ContentProducts = ({ productos, combos }) => {
    function shuffleArray(array) {
