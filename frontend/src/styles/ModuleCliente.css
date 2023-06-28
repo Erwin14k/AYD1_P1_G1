@@ -2,19 +2,15 @@
    display: flex;
    justify-content: center;
    align-items: center;
-
  }
 
  .list-inline-item{
    margin: 0 60px;
-  
  }
-
 
  .containerContent {
   display: flex;
 }
-
 
 .sidebar {
   position: sticky;
@@ -27,6 +23,13 @@
 
 .main {
   width: calc(100% - 250px);
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.main2 {
+  margin: auto;
+  width: calc(100% - 100px);
   padding: 20px;
   background-color: #f0f0f0;
 }

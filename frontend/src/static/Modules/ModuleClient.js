@@ -167,9 +167,8 @@ const ModuleClient = () => {
                </div>
             </div>
          ) : (
-            <div className="containerContent">
-               <div className="sidebar"></div>
-               <div className="main">
+           
+               <div className="main2">
                   <div
                      style={{
                         overflowX: "scroll",
@@ -180,7 +179,7 @@ const ModuleClient = () => {
                      <SearchCompany companys={companys} company={company} products={productos} combos={combos}/>
                   </div>
                </div>
-            </div>
+    
          )}
       </div>
    );
