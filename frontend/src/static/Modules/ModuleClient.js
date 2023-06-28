@@ -1,15 +1,64 @@
-import React, {useState,useEffect} from 'react';
-import Filter from '../../components/Filter';
-import ContentProducts from '../../components/ContentProducts';
+import React, { useState, useEffect } from "react";
+import Filter from "../../components/Filter";
+import ContentProducts from "../../components/ContentProducts";
+import SearchCustom from "../../components/SearchCustom";
+import Cookie from "cookie-universal";
+const cookies = Cookie();
+const crr_user = cookies.get("crr_user");
 
 const ModuleClient = () => {
-   const [publicaciones, setPublicaciones] = useState([]);
-   const [value, setValue] = useState('5');
-   const [name, setName] = useState('');
+   const [productos, setProductos] = useState([]);
+   const [combos, setCombos] = useState([]);
 
-   useEffect(() => {           
-     console.log("useEffect");
-      
+   const [value, setValue] = useState("5");
+   const [name, setName] = useState("");
+
+   const getProducts = () => {
+      console.log("====Productos=====");
+      fetch(`http://localhost:4200/user/get-all-products`, {
+         method: "GET",
+         headers: {
+            /* "Content-Type": "application/json", */
+            Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+         },
+      })
+         .then((response) => response.json())
+         .then((data) => {
+            //console.log('===Productos===',data);
+            console.log("Datos Productos", data.userData[0].products);
+            setProductos(data.userData[0].products);
+         })
+         .catch((error) => {
+            // Handle any errors that occur during the request
+            console.error("Error:", error);
+         });
+   };
+
+   const getCombos = () => {
+      console.log("====Combos====");
+      fetch(`http://localhost:4200/user/get-all-combos`, {
+         method: "GET",
+         headers: {
+            /* "Content-Type": "application/json", */
+            Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+         },
+      })
+         .then((response) => response.json())
+         .then((data) => {
+            //console.log('===Combos===',data);
+            console.log("Datos Combos", data.userData[0].products);
+            setCombos(data.userData[0].products);
+         })
+         .catch((error) => {
+            // Handle any errors that occur during the request
+            console.error("Error:", error);
+         });
+   };
+
+   useEffect(() => {
+      console.log("useEffect");
+      getProducts();
+      getCombos();
    }, []);
 
    return (
@@ -55,12 +104,11 @@ const ModuleClient = () => {
          </div>
          <div className="containerContent">
             <div className="sidebar">
-          
-               <Filter value={value} setValue={setValue} setName={setName}/>
+               <Filter value={value} setValue={setValue} setName={setName} />
             </div>
             <div className="main">
-            
-               <ContentProducts/>
+               {value === "5" ?  <ContentProducts productos={productos} combos={combos} /> : <SearchCustom productos={productos} combos={combos} value={value} name={name} />}
+              
             </div>
          </div>
       </div>
