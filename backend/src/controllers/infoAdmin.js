@@ -254,3 +254,17 @@ module.exports.deliveryManChangeAddressRequest = async (req, res, next) => {
       message: `El repartidor con el id: ${args.deliveryManId}, Su solicitud de cambio de dirección ha cambiado a: ${args.status}`,
   });
 };
+
+// Get all pending change address requests
+module.exports.getAllPendingChangeAddressRequests = async (req, res, next) => {
+  // Operations on db
+  const result=await Admin.getAllPendingChangeAddressRequests();
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      messsage: "Solicitudes de cambio de residencia pendientes de aprobación obtenidas con éxito!!",
+      adminData:result,
+  });
+};
