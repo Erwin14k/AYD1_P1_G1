@@ -11,3 +11,23 @@
  }
 
 
+ .containerContent {
+  display: flex;
+}
+
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 90vh;
+  width: 250px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+.main {
+  width: calc(100% - 250px);
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
