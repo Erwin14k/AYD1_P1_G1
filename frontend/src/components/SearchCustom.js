@@ -1,34 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-   Paper,
-   TextField,
-   Typography,
-   Radio,
-   RadioGroup,
-   FormControlLabel,
-   FormControl,
-   FormLabel,
+   Typography
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import ExploreByCategories from "./ExploreByCategories";
 import CardProduct from "./CardProduct";
 
 const SearchCustom = ({ productos, combos, value, name }) => {
-   console.log(value);
 
+   const productosMostrar = value === "3" ? productos.filter((product) => ( product.product_name.toLowerCase().includes(name.toLowerCase()) )) : productos;
+   const combosMostrar = value === "4" ?  combos.filter((combo) =>combo.combo_name.toLowerCase().includes(name.toLowerCase())) : combos;
+   const val = value === "1" || value === "3" ? productosMostrar.length : combosMostrar.length;
    const [amountStart, setAmountStart] = useState(0);
    const [amountEnd, setAmountEnd] = useState(6);
-   const [amount, setAmount] = useState(
-      value === "1" || value === "3" ? productos.length : combos.length
-   );
-   const headers = [];
-   for (let i = 1; i <= amount / 6; i++) {
-      headers.push(<h1 key={i}>{i}</h1>);
-   }
+
+   const getArr = () => {
+      const arr = [];
+      for (let i = 1; i <=Math.ceil(val / 6); i++) {
+         arr.push(i);
+      }
+      return arr;
+   };
 
    const handleChangePage = (event) => {
       event.preventDefault();
       console.log(event.target.value);
+      console.log(event.target.value* 6);
+      console.log(event.target.value* 6 + 6);
       setAmountEnd(event.target.value * 6 + 6);
       setAmountStart(event.target.value * 6);
    };
@@ -53,11 +51,11 @@ const SearchCustom = ({ productos, combos, value, name }) => {
             }}
          >
             {value === "1" || value === "3"
-               ? productos.map(
+               ? productosMostrar.map(
                     (product, index) =>
-                       index > amountStart &&
-                       index <= amountEnd && (
-                          <CardProduct  key={`P${index}`}
+                       index >= amountStart &&
+                       index < amountEnd && (
+                          <CardProduct  key={`PS${index}`}
                              img={product.product_img}
                              nombre={product.product_name}
                              precio={product.product_price}
@@ -66,11 +64,11 @@ const SearchCustom = ({ productos, combos, value, name }) => {
                           />
                        )
                  )
-               : combos.map(
+               : combosMostrar.map(
                     (combo, index) =>
-                       index > amountStart &&
-                       index <= amountEnd && (
-                          <CardProduct  key={`C${index}`}
+                       index >= amountStart &&
+                       index < amountEnd && (
+                          <CardProduct  key={`CS${index}`}
                              img={combo.combo_img}
                              nombre={combo.combo_name}
                              precio={combo.combo_price}
@@ -83,8 +81,8 @@ const SearchCustom = ({ productos, combos, value, name }) => {
             <br />
             <br />
             <center>
-               {headers.map((header, index) => (
-                  <Button
+               {getArr().map((header, index) => (
+                  <Button key={`Bx${index}`}
                      variant="outlined"
                      style={{ marginLeft: "10px" }}
                      value={index}

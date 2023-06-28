@@ -53,7 +53,7 @@ const ExploreByCategories = () => {
                },
             ].map((card, index) => (
                <Card
-                  key={index}
+                  key={`Ex${index}`}
                   style={{
                      display: "inline-block",
                      margin: "0 8px",
