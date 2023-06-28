@@ -276,7 +276,7 @@ const ModuleAdmin = () => {
                             </div>
                             <div className="col-9">
                                 {activeTab === 'table1' && <MaintenaceCompanyDelivery refresh={refresh} url="get-all-delivery-man" noUrl={2} />}
-                                {activeTab === 'table2' && <DeliveryManTable />}
+                                {activeTab === 'table2' && <DeliveryManTable refresh={refresh} actu={peticion}></DeliveryManTable>}
                             </div>
                         </div>
                     </div>
