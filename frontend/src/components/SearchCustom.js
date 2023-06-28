@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import ExploreByCategories from "./ExploreByCategories";
@@ -75,7 +75,7 @@ const SearchCustom = ({ productos, combos, value, name }) => {
             component="div"
             style={{ fontWeight: "bold", fontSize: "2rem" }}
          >
-            Productos recientes
+           {value === "1" || value === "3" ? "Productos" : "Combos"}  recientes
          </Typography>
 
          <div

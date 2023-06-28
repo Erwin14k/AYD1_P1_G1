@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
-import { Typography } from "@mui/material";
+
 
 const ModalProduct = ({ id, img, name, category, description, price }) => {
+   // eslint-disable-next-line 
    const seeInfo = () => {
       console.log("=============");
       console.log("id", id);
@@ -14,6 +15,7 @@ const ModalProduct = ({ id, img, name, category, description, price }) => {
       console.log("description", description);
       console.log("price", price);
    };
+   
    const [open, setOpen] = useState(false);
 
    const handleOpen = () => {
@@ -29,7 +31,7 @@ const ModalProduct = ({ id, img, name, category, description, price }) => {
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
-      width: 400,
+      width: 500,
       bgcolor: "background.paper",
       border: "2px solid #000",
       boxShadow: 24,
@@ -53,10 +55,10 @@ const ModalProduct = ({ id, img, name, category, description, price }) => {
                            src={img}
                            className="card-img-top"
                            alt={name}
-                           style={{ height: "30vh" }}
+                           style={{ height: "50vh" }}
                         />
                         <div className="card-body">
-                           {category != undefined && (
+                           {category !== undefined && (
                               <h5 className="card-type">
                                  Categoría: {category}
                               </h5>
@@ -67,7 +69,7 @@ const ModalProduct = ({ id, img, name, category, description, price }) => {
                               <p className="price">Precio: Q.{price}</p>
                            </div>
                         </div>
-                        <Button onClick={handleClose}>Cerrar</Button>
+                        <Button ariant="outlined" color="error" onClick={handleClose}>Cerrar</Button>
                      </div>
                   </div>
                </div>
