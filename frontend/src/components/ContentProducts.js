@@ -1,29 +1,19 @@
 import React from "react";
 import {
-   Paper,
-   TextField,
-   Typography,
-   Radio,
-   RadioGroup,
-   FormControlLabel,
-   FormControl,
-   FormLabel,
+   Typography
 } from "@mui/material";
 
-import Card from "@mui/material/Card";
-
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
+import CardProduct from "./CardProduct";
+import ExploreByCategories from "./ExploreByCategories";
 
 const ContentProducts = ({ productos, combos }) => {
    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
+      const _array = [...array]
+      for (let i = _array.length - 1; i > 0; i--) {
          const j = Math.floor(Math.random() * (i + 1));
-         [array[i], array[j]] = [array[j], array[i]];
+         [_array[i], _array[j]] = [_array[j], _array[i]];
       }
-      return array;
+      return _array;
    }
 
    return (
@@ -45,49 +35,13 @@ const ContentProducts = ({ productos, combos }) => {
             }}
          >
             {productos.slice(-5).map((product, index) => (
-               <Card
-                  key={index}
-                  sx={{
-                     maxWidth: 345,
-                     display: "inline-block",
-                     margin: "0 8px",
-                  }}
-               >
-                  <CardMedia
-                     sx={{ height: 140 }}
-                     image={product.product_img}
-                     title="green iguana"
-                  />
-                  <CardContent>
-                     <Typography
-                        gutterBottom
-                        variant="h5"
-                        component="div"
-                        style={{
-                           whiteSpace: "normal",
-                           height: "3.6rem",
-                           overflow: "hidden",
-                        }}
-                     >
-                        {product.product_name}
-                     </Typography>
-                     <Typography
-                        variant="h7"
-                        color="text.secondary"
-                        style={{
-                           whiteSpace: "normal",
-                           // height: "6rem",
-                           overflow: "hidden",
-                        }}
-                     >
-                        Q{product.product_price}
-                     </Typography>
-                  </CardContent>
-                  <CardActions>
-                     <Button size="small">Agrear al carrito</Button>
-                     <Button size="small">Ver</Button>
-                  </CardActions>
-               </Card>
+               <CardProduct  key={`PP${index}`}
+                  img={product.product_img}
+                  nombre={product.product_name}
+                  precio={product.product_price}
+                  tipo={1}
+                  elemento={product}
+               />
             ))}
          </div>
 
@@ -107,110 +61,19 @@ const ContentProducts = ({ productos, combos }) => {
                marginBottom: "15px",
             }}
          >
-            {combos.slice(-5).map((combos, index) => (
-               <Card
-                  key={index}
-                  sx={{
-                     maxWidth: 345,
-                     display: "inline-block",
-                     margin: "0 8px",
-                  }}
-               >
-                  <CardMedia
-                     sx={{ height: 140 }}
-                     image={combos.combo_img}
-                     title="green iguana"
-                  />
-                  <CardContent>
-                     <Typography
-                        gutterBottom
-                        variant="h5"
-                        component="div"
-                        style={{
-                           whiteSpace: "normal",
-                           height: "3.6rem",
-                           overflow: "hidden",
-                        }}
-                     >
-                        {combos.combo_name}
-                     </Typography>
-                     <Typography
-                        variant="h7"
-                        color="text.secondary"
-                        style={{
-                           whiteSpace: "normal",
-                           // height: "6rem",
-                           overflow: "hidden",
-                        }}
-                     >
-                        Q{combos.combo_price}
-                     </Typography>
-                  </CardContent>
-                  <CardActions>
-                     <Button size="small">Agrear al carrito</Button>
-                     <Button size="small">Ver</Button>
-                  </CardActions>
-               </Card>
+            {combos.slice(-5).map((combo, index) => (
+               <CardProduct key={`CC${index}`}
+               img={combo.combo_img}
+               nombre={combo.combo_name}
+               precio={combo.combo_price}
+               tipo={2}
+               elemento = {combo}
+            />
+              
             ))}
          </div>
 
-         <Typography
-            variant="h6"
-            component="div"
-            style={{ fontWeight: "bold", fontSize: "2rem" }}
-         >
-            Explorar por categoría
-         </Typography>
-
-         <div
-            style={{
-               overflowX: "scroll",
-
-               marginTop: "15px",
-               marginBottom: "15px",
-            }}
-         >
-            {[
-               {
-                  tipo: "Entradas",
-                  img: "https://d4p17acsd5wyj.cloudfront.net/shortcuts/cuisines/fastfood.png",
-               },
-               {
-                  tipo: "Platos Fuertes",
-                  img: "https://d4p17acsd5wyj.cloudfront.net/shortcuts/cuisines/pizza.png",
-               },
-               {
-                  tipo: "Postres",
-                  img: "https://d4p17acsd5wyj.cloudfront.net/shortcuts/cuisines/dessert.png",
-               },
-               {
-                  tipo: "Bebidas",
-                  img: "https://d4p17acsd5wyj.cloudfront.net/shortcuts/alcohol.png",
-               },
-               {
-                  tipo: "Medicamento",
-                  img: "https://d4p17acsd5wyj.cloudfront.net/shortcuts/pharmacy-v2.png",
-               },
-               {
-                  tipo: "Producto Básico",
-                  img: "https://d4p17acsd5wyj.cloudfront.net/shortcuts/convenience.png",
-               },
-            ].map((card, index) => (
-               <Card
-                  key={index}
-                  style={{
-                     display: "inline-block",
-                     margin: "0 8px",
-                     width: "150px",
-                  }}
-               >
-                  <div className="d-flex flex-column align-items-center">
-                     <img src={card.img} alt="Logo" width="50" />
-                     <span className="text-center"> {card.tipo}</span>
-                  </div>
-               </Card>
-            ))}
-         </div>
+         <ExploreByCategories/>
 
          <Typography
             variant="h6"
@@ -231,49 +94,14 @@ const ContentProducts = ({ productos, combos }) => {
             {shuffleArray(productos)
                .slice(-5)
                .map((product, index) => (
-                  <Card
-                     key={index}
-                     sx={{
-                        maxWidth: 345,
-                        display: "inline-block",
-                        margin: "0 8px",
-                     }}
-                  >
-                     <CardMedia
-                        sx={{ height: 140 }}
-                        image={product.product_img}
-                        title="green iguana"
-                     />
-                     <CardContent>
-                        <Typography
-                           gutterBottom
-                           variant="h5"
-                           component="div"
-                           style={{
-                              whiteSpace: "normal",
-                              height: "3.6rem",
-                              overflow: "hidden",
-                           }}
-                        >
-                           {product.product_name}
-                        </Typography>
-                        <Typography
-                           variant="h7"
-                           color="text.secondary"
-                           style={{
-                              whiteSpace: "normal",
-                              // height: "6rem",
-                              overflow: "hidden",
-                           }}
-                        >
-                           Q{product.product_price}
-                        </Typography>
-                     </CardContent>
-                     <CardActions>
-                        <Button size="small">Agrear al carrito</Button>
-                        <Button size="small">Ver</Button>
-                     </CardActions>
-                  </Card>
+                  <CardProduct  key={`Pi${index}`}
+                  img={product.product_img}
+                  nombre={product.product_name}
+                  precio={product.product_price}
+                  tipo={1}
+                  elemento={product}
+               />
+                 
                ))}
          </div>
 
@@ -295,51 +123,17 @@ const ContentProducts = ({ productos, combos }) => {
          >
             {shuffleArray(combos)
                .slice(-5)
-               .map((combos, index) => (
-                  <Card
-                     key={index}
-                     sx={{
-                        maxWidth: 345,
-                        display: "inline-block",
-                        margin: "0 8px",
-                     }}
-                  >
-                     <CardMedia
-                        sx={{ height: 140 }}
-                        image={combos.combo_img}
-                        title="green iguana"
-                     />
-                     <CardContent>
-                        <Typography
-                           gutterBottom
-                           variant="h5"
-                           component="div"
-                           style={{
-                              whiteSpace: "normal",
-                              height: "3.6rem",
-                              overflow: "hidden",
-                           }}
-                        >
-                           {combos.combo_name}
-                        </Typography>
-                        <Typography
-                           variant="h7"
-                           color="text.secondary"
-                           style={{
-                              whiteSpace: "normal",
-                              // height: "6rem",
-                              overflow: "hidden",
-                           }}
-                        >
-                           Q{combos.combo_price}
-                        </Typography>
-                     </CardContent>
-                     <CardActions>
-                        <Button size="small">Agrear al carrito</Button>
-                        <Button size="small">Ver</Button>
-                     </CardActions>
-                  </Card>
-               ))}
+               .map((combo, index) => (
+
+                  <CardProduct key={`Ci${index}`}
+                  img={combo.combo_img}
+                  nombre={combo.combo_name}
+                  precio={combo.combo_price}
+                  tipo={2}
+                  elemento = {combo}
+               />
+                 
+               ))} 
          </div>
       </>
    );
