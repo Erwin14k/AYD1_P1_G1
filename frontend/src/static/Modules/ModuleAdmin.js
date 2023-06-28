@@ -3,6 +3,7 @@ import DataCompany from '../data/DataCompany';
 import DataDeliveryMan from '../data/DataDeliveryMan';
 import UsersTable from '../AdminStatic/UsersTable';
 import MaintenaceCompanyDelivery from '../AdminStatic/MaintenanceCompanyDelivery';
+import DeliveryManTable from '../AdminStatic/DeliveryManTable';
 import swal from 'sweetalert';
 import Cookie from "cookie-universal";
 const cookies = Cookie();
@@ -15,8 +16,13 @@ const ModuleAdmin = () => {
     const [companyRequest, setcompanyRequest] = useState([]);
     const [deliveryInfo, setDeliveryInfo] = useState({});
     const [companyInfo, setCompanyInfo] = useState({});
-
     const [refresh, setRefresh] = useState(false);
+
+    const [activeTab, setActiveTab] = useState('table1');
+
+    const handleTabSelect = (tab) => {
+        setActiveTab(tab);
+    };
 
     const peticion = () => {
         const body = {
@@ -29,7 +35,7 @@ const ModuleAdmin = () => {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
-             },
+            },
             body: JSON.stringify(body)
         })
             .then(res => res.json())
@@ -37,7 +43,7 @@ const ModuleAdmin = () => {
                 console.error('Error:', err)
             })
             .then(response => {
-                console.log("REPONSE///",response)
+                console.log("REPONSE///", response)
                 const delivery = response.adminData[1].deliveryMenWating /* JSON.stringify(response.adminData[1].deliveryMenWating) */
                 const company = response.adminData[2].CompaniesWaiting
                 setDeliveryRequest(delivery)
@@ -47,19 +53,19 @@ const ModuleAdmin = () => {
             })
     }
 
-    const handleReqDeliveryMan = (e,id) => {
+    const handleReqDeliveryMan = (e, id) => {
         e.preventDefault();
         const body = {
             deliveryManId: id,
             deliveryManStatus: e.target.value
         }
-        console.log("botton",body)
+        console.log("botton", body)
         fetch(`http://localhost:4200/admin/delivery-man-request`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
-             },
+            },
             body: JSON.stringify(body)
         })
             .then(res => res.json())
@@ -70,29 +76,29 @@ const ModuleAdmin = () => {
                 await swal({
                     title: "Querido Usuario Administrador",
                     text: response.message,
-                    icon: response.status===200 ? "success":"error",
+                    icon: response.status === 200 ? "success" : "error",
                     button: true,
-                 })
+                })
                 peticion();
             })
 
-      
+
     }
 
 
-    const handleReqCompany = (e,id) => {
+    const handleReqCompany = (e, id) => {
         e.preventDefault();
         const body = {
             companyId: id,
             companyStatus: e.target.value
         }
-        console.log("botton",body)
+        console.log("botton", body)
         fetch(`http://localhost:4200/admin/company-request`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
-             },
+            },
             body: JSON.stringify(body)
         })
             .then(res => res.json())
@@ -103,9 +109,9 @@ const ModuleAdmin = () => {
                 await swal({
                     title: "Querido Usuario Administrador",
                     text: response.message,
-                    icon: response.status===200 ? "success":"error",
+                    icon: response.status === 200 ? "success" : "error",
                     button: true,
-                 })
+                })
                 peticion();
             })
     }
@@ -142,27 +148,27 @@ const ModuleAdmin = () => {
             {/* FILA DE BOTONES */}
             <ul className="nav nav-tabs" id="myTab" role="tablist" style={{ marginTop: "2%" }}>
                 <li className="nav-item" role="presentation">
-                    <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
+                    <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true" style={{color: "#DB4F23"}}>
                         Solicitud de Repartidores
                     </button>
                 </li>
                 <li className="nav-item" role="presentation">
-                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" style={{color: "#DB4F23"}}>
                         Solicitud de Empresas
                     </button>
                 </li>
                 <li className="nav-item" role="presentation">
-                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="profile" aria-selected="false" style={{color: "#DB4F23"}}>
                         Deshabilitar usuarios
                     </button>
                 </li>
                 <li className="nav-item" role="presentation">
-                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#mantenimientoR" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#mantenimientoR" type="button" role="tab" aria-controls="profile" aria-selected="false" style={{color: "#DB4F23"}}>
                         Mantenimiento de repartidores
                     </button>
                 </li>
                 <li className="nav-item" role="presentation">
-                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#mantenimientoP" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#mantenimientoP" type="button" role="tab" aria-controls="profile" aria-selected="false" style={{color: "#DB4F23"}}>
                         Mantenimiento de empresas
                     </button>
                 </li>
@@ -170,7 +176,7 @@ const ModuleAdmin = () => {
 
             {/* CONTENEDORES */}
 
-           
+
             <div className="tab-content" id="myTabContent">
                 {/* DELIVERY REQUEST */}
                 <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" style={{ padding: "2%" }}>
@@ -186,7 +192,7 @@ const ModuleAdmin = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {deliveryRequest.map((repartidor,index) => (
+                            {deliveryRequest.map((repartidor, index) => (
                                 <tr className='table-light' key={`P${index}`}>
                                     <td>{repartidor.delivery_man_id}</td>
                                     <td>{repartidor.delivery_man_name}</td>
@@ -218,7 +224,7 @@ const ModuleAdmin = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {companyRequest.map((company,index) => (
+                            {companyRequest.map((company, index) => (
                                 <tr className='table-light' key={index}>
                                     <td>{company.company_id}</td>
                                     <td>{company.company_name}</td>
@@ -244,25 +250,54 @@ const ModuleAdmin = () => {
                 {/* MAINTENANCE */}
                 <div className="tab-pane fade" id="mantenimientoR" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>MANTENIMIENTO DE REPARTIDORES</h3></center>
-                    <MaintenaceCompanyDelivery refresh={refresh} url="get-all-delivery-man" noUrl={2}/>
+                    <div className="container" style={{ width: "95%", margin: "auto", marginTop: "3%" }}>
+                        <div className="row">
+                            <div className="col-3">
+                                <ul className="nav flex-column nav-underline">
+                                    <li className="nav-item">
+                                        <button
+                                            className={`nav-link ${activeTab === 'table1' ? 'active' : ''}`}
+                                            onClick={() => handleTabSelect('table1')}
+                                            style={{color: "#A89D8F"}}
+                                        >
+                                            Deshabilitar usuarios
+                                        </button>
+                                    </li>
+                                    <li className="nav-item">
+                                        <button
+                                            className={`nav-link ${activeTab === 'table2' ? 'active' : ''}`}
+                                            onClick={() => handleTabSelect('table2')}
+                                            style={{color: "#A89D8F"}}
+                                        >
+                                            Solicitudes de cambio
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className="col-9">
+                                {activeTab === 'table1' && <MaintenaceCompanyDelivery refresh={refresh} url="get-all-delivery-man" noUrl={2} />}
+                                {activeTab === 'table2' && <DeliveryManTable refresh={refresh} ></DeliveryManTable>}
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {/* MAINTENANCE */}
                 <div className="tab-pane fade" id="mantenimientoP" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>MANTENIMIENTO DE EMPRESAS</h3></center>
-                    <MaintenaceCompanyDelivery refresh={refresh} url="get-all-companies" noUrl={3}/>
+                    <MaintenaceCompanyDelivery refresh={refresh} url="get-all-companies" noUrl={3} />
                 </div>
             </div>
-            
+
             {/* MODAL EMPRESA */}
-             <div className="modal fade" id="companyModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
+            <div className="modal fade" id="companyModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
                 <div className="modal-dialog modal-dialog-centered modal-xl">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h1 className="modal-title fs-10" id="staticBackdropLabel">Más Información - Empresa</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <DataCompany companyInfo={companyInfo}  />
+                        <DataCompany companyInfo={companyInfo} />
                         <div className="modal-footer">
                             <button type="button" className="btn btn-success" data-bs-dismiss="modal" value='Approved' onClick={(e) => handleReqCompany(e, companyInfo.company_id)}>Aceptar</button>
                             <button type="button" className="btn btn-danger" style={{ marginLeft: "1%" }} value='Declined' data-bs-dismiss="modal" onClick={(e) => handleReqCompany(e, companyInfo.company_id)}>Rechazar</button>
@@ -271,7 +306,7 @@ const ModuleAdmin = () => {
                     </div>
                 </div>
             </div>
-            
+
 
             {/* MODAL DELIVERY */}
             <div className="modal fade" id="deliveryModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
@@ -281,16 +316,16 @@ const ModuleAdmin = () => {
                             <h1 className="modal-title fs-10" id="staticBackdropLabel">Más Información - Repartidor</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <DataDeliveryMan 
-                        delivery_man_name = {deliveryInfo.delivery_man_name}
-                        delivery_man_surname = {deliveryInfo.delivery_man_surname}
-                        delivery_man_department= {deliveryInfo.delivery_man_department}
-                        delivery_man_municipality= {deliveryInfo.delivery_man_municipality}
-                        delivery_man_transport= {deliveryInfo.delivery_man_transport}
-                        delivery_man_email= {deliveryInfo.delivery_man_email}
-                        delivery_man_phone= {deliveryInfo.delivery_man_phone}
-                        delivery_man_license_type= {deliveryInfo.delivery_man_license_type}
-                        delivery_man_resume= {deliveryInfo.delivery_man_resume}
+                        <DataDeliveryMan
+                            delivery_man_name={deliveryInfo.delivery_man_name}
+                            delivery_man_surname={deliveryInfo.delivery_man_surname}
+                            delivery_man_department={deliveryInfo.delivery_man_department}
+                            delivery_man_municipality={deliveryInfo.delivery_man_municipality}
+                            delivery_man_transport={deliveryInfo.delivery_man_transport}
+                            delivery_man_email={deliveryInfo.delivery_man_email}
+                            delivery_man_phone={deliveryInfo.delivery_man_phone}
+                            delivery_man_license_type={deliveryInfo.delivery_man_license_type}
+                            delivery_man_resume={deliveryInfo.delivery_man_resume}
                         />
                         <div className="modal-footer">
                             <button type="button" className="btn btn-success" style={{ marginLeft: "2%" }} value='Approved' onClick={(e) => handleReqDeliveryMan(e, deliveryInfo.delivery_man_id)}>Aceptar</button>
@@ -300,7 +335,7 @@ const ModuleAdmin = () => {
                     </div>
                 </div>
             </div>
-            
+
 
         </div>
     );

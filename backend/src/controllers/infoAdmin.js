@@ -13,7 +13,7 @@ module.exports.adminInfo = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Información del administrador recuperada con éxito!",
+      message: "Información del administrador recuperada con éxito!",
       adminData:result,
   });
 };
@@ -134,7 +134,7 @@ module.exports.getAllClients = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Clientes obtenidos con éxito!!",
+      message: "Clientes obtenidos con éxito!!",
       adminData:result,
   });
 };
@@ -148,7 +148,7 @@ module.exports.getAllDevliveryMen = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Repartidores obtenidos con éxito!!",
+      message: "Repartidores obtenidos con éxito!!",
       adminData:result,
   });
 };
@@ -162,7 +162,7 @@ module.exports.getAllCompanies = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Empresas obtenidas con éxito!!",
+      message: "Empresas obtenidas con éxito!!",
       adminData:result,
   });
 };
@@ -202,7 +202,7 @@ module.exports.getTop5DeliveryManRating = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Top 5 de repartidores en base a su calificación obtenido con éxito!!",
+      message: "Top 5 de repartidores en base a su calificación obtenido con éxito!!",
       adminData:result,
   });
 };
@@ -216,7 +216,7 @@ module.exports.getMostSelledProducts = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Top 5 de los productos más vendidos obtenido con éxito",
+      message: "Top 5 de los productos más vendidos obtenido con éxito",
       adminData:result,
   });
 };
@@ -231,7 +231,7 @@ module.exports.getTop5CompaniesOrdersGenerated = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Top 5 de las empresas con más pedidos generados obtenido con éxito",
+      message: "Top 5 de las empresas con más pedidos generados obtenido con éxito",
       adminData:result,
   });
 };
@@ -245,6 +245,7 @@ module.exports.deliveryManChangeAddressRequest = async (req, res, next) => {
     status:req.body.status,
     newDepartment:req.body.newDepartment,
     newMunicipality:req.body.newMunicipality,
+    changeAddressId:req.body.changeAddressId
   };
   // Operations on db
   const result=await Admin.deliveryManChangeAddressRequest(args);
@@ -266,7 +267,7 @@ module.exports.getAllPendingChangeAddressRequests = async (req, res, next) => {
     .status(200)
     .json({
       status:200,
-      messsage: "Solicitudes de cambio de residencia pendientes de aprobación obtenidas con éxito!!",
+      message: "Solicitudes de cambio de residencia pendientes de aprobación obtenidas con éxito!!",
       adminData:result,
   });
 };
