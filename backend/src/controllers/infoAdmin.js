@@ -243,6 +243,8 @@ module.exports.deliveryManChangeAddressRequest = async (req, res, next) => {
   let args = {
     deliveryManId: req.body.deliveryManId,
     status:req.body.status,
+    newDepartment:req.body.newDepartment,
+    newMunicipality:req.body.newMunicipality,
   };
   // Operations on db
   const result=await Admin.deliveryManChangeAddressRequest(args);

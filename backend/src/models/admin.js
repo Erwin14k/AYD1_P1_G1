@@ -308,6 +308,8 @@ module.exports.getTop5CompaniesOrdersGenerated = async () => {
 module.exports.deliveryManChangeAddressRequest = async ({
   deliveryManId,
   status,
+  newDepartment,
+  newMunicipality
 }) => {
   // verify the status of the request
   const petitionStatus = status === "Approved" ? "Approved" : "Declined";
@@ -319,13 +321,24 @@ module.exports.deliveryManChangeAddressRequest = async ({
   await db.pool(updateChangeAddressStatemnet, binds);
   // If the request is approved, the delivery man address data need an update
   if (petitionStatus === "Approved") {
+    // update the delivery man information
     const updateDeliveryManAddressStatemnet = `UPDATE delivery_man
     SET delivery_man_department = ?,SET delivery_man_municipality = ?
     WHERE delivery_man_id = ?`;
     // update bindings
-    const updateBindings = [status, deliveryManId];
-    return db.pool(updateDeliveryManAddressStatemnet, updateBindings);
+    const updateBindings = [newDepartment, newMunicipality,deliveryManId];
+    await db.pool(updateDeliveryManAddressStatemnet, updateBindings);
+
+    // Delete the delivery man change address request
+    const deleteChangeAddressRequestStatement = `DELETE FROM delivery_man_change_address WHERE delivery_man_id = ?`;
+    const deleteBinds = [deliveryManId];
+    await db.pool(deleteChangeAddressRequestStatement, deleteBinds);
+    return "Data updated"
   }
+  // Delete the delivery man change address request
+  const deleteChangeAddressRequestStatement = `DELETE FROM delivery_man_change_address WHERE delivery_man_id = ?`;
+  const deleteBinds = [deliveryManId];
+  await db.pool(deleteChangeAddressRequestStatement, deleteBinds);
   return "No changes on delivery man";
 };
 
