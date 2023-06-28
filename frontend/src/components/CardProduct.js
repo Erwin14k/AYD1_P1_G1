@@ -8,9 +8,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import ModalProduct from "./ModalProduct";
 
-const CardProduct = ({ img, nombre, precio, tipo, elemento }) => {
+const CardProduct = ({id, description,category, img, nombre, precio, tipo, elemento }) => {
    
-
    return (
       <>
          <Card
@@ -38,7 +37,9 @@ const CardProduct = ({ img, nombre, precio, tipo, elemento }) => {
             <CardActions>
                <Button size="small">Agrear al carrito</Button>
                {/* <Button size="small" onClick={handleOpen}>Ver</Button> */}
-               <ModalProduct/>
+               <ModalProduct
+                  id={id} img={img} name={nombre} category={category} description={description} price={precio}
+               />
             </CardActions>
          </Card>
       </>

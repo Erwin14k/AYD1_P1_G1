@@ -92,6 +92,9 @@ const SearchCustom = ({ productos, combos, value, name }) => {
                        index < amountEnd && (
                           <CardProduct
                              key={`PS${index}`}
+                             id={product.product_id}
+                             description={product.product_description}
+                             category={product.product_type}
                              img={product.product_img}
                              nombre={product.product_name}
                              precio={product.product_price}
@@ -106,6 +109,8 @@ const SearchCustom = ({ productos, combos, value, name }) => {
                        index < amountEnd && (
                           <CardProduct
                              key={`CS${index}`}
+                             id={combo.combo_id}
+                             description={combo.combo_description}
                              img={combo.combo_img}
                              nombre={combo.combo_name}
                              precio={combo.combo_price}

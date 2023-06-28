@@ -4,7 +4,6 @@ import {
 } from "@mui/material";
 
 import CardProduct from "./CardProduct";
-import ExploreByCategories from "./ExploreByCategories";
 
 const ContentProducts = ({ productos, combos }) => {
    function shuffleArray(array) {
@@ -36,6 +35,9 @@ const ContentProducts = ({ productos, combos }) => {
          >
             {productos.slice(-5).map((product, index) => (
                <CardProduct  key={`PP${index}`}
+                  id={product.product_id}
+                  description={product.product_description}
+                  category={product.product_type}
                   img={product.product_img}
                   nombre={product.product_name}
                   precio={product.product_price}
@@ -63,6 +65,8 @@ const ContentProducts = ({ productos, combos }) => {
          >
             {combos.slice(-5).map((combo, index) => (
                <CardProduct key={`CC${index}`}
+               id={combo.combo_id}
+               description={combo.combo_description}
                img={combo.combo_img}
                nombre={combo.combo_name}
                precio={combo.combo_price}
@@ -95,6 +99,9 @@ const ContentProducts = ({ productos, combos }) => {
                .slice(-5)
                .map((product, index) => (
                   <CardProduct  key={`Pi${index}`}
+                  id={product.product_id}
+                  description={product.product_description}
+                  category={product.product_type}
                   img={product.product_img}
                   nombre={product.product_name}
                   precio={product.product_price}
@@ -124,8 +131,9 @@ const ContentProducts = ({ productos, combos }) => {
             {shuffleArray(combos)
                .slice(-5)
                .map((combo, index) => (
-
                   <CardProduct key={`Ci${index}`}
+                  id={combo.combo_id}
+                  description={combo.combo_description}
                   img={combo.combo_img}
                   nombre={combo.combo_name}
                   precio={combo.combo_price}

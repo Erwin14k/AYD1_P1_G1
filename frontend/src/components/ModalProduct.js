@@ -2,8 +2,18 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
+import { Typography } from "@mui/material";
 
-const ModalProduct = () => {
+const ModalProduct = ({ id, img, name, category, description, price }) => {
+   const seeInfo = () => {
+      console.log("=============");
+      console.log("id", id);
+      console.log("img", img);
+      console.log("name", name);
+      console.log("category", category);
+      console.log("description", description);
+      console.log("price", price);
+   };
    const [open, setOpen] = useState(false);
 
    const handleOpen = () => {
@@ -23,9 +33,7 @@ const ModalProduct = () => {
       bgcolor: "background.paper",
       border: "2px solid #000",
       boxShadow: 24,
-      pt: 2,
-      px: 4,
-      pb: 3,
+      p: 4,
    };
 
    return (
@@ -37,13 +45,32 @@ const ModalProduct = () => {
             aria-labelledby="parent-modal-title"
             aria-describedby="parent-modal-description"
          >
-            <Box sx={{ ...style, width: 400 }}>
-               <h2 id="parent-modal-title">Text in a modal</h2>
-               <p id="parent-modal-description">
-                  Duis mollis, est non commodo luctus, nisi erat porttitor
-                  ligula.
-               </p>
-               <Button>hola</Button>
+            <Box sx={style}>
+               <div style={{ margin: "-10%" }}>
+                  <div key={id}>
+                     <div className="card">
+                        <img
+                           src={img}
+                           className="card-img-top"
+                           alt={name}
+                           style={{ height: "30vh" }}
+                        />
+                        <div className="card-body">
+                           {category != undefined && (
+                              <h5 className="card-type">
+                                 Categoría: {category}
+                              </h5>
+                           )}
+                           <h5 className="card-title">{name}</h5>
+                           <p className="card-text">{description}</p>
+                           <div className="details-container">
+                              <p className="price">Precio: Q.{price}</p>
+                           </div>
+                        </div>
+                        <Button onClick={handleClose}>Cerrar</Button>
+                     </div>
+                  </div>
+               </div>
             </Box>
          </Modal>
       </>
