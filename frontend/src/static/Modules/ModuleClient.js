@@ -155,7 +155,7 @@ const ModuleClient = () => {
                </div>
                <div className="main">
                   {value === "5" ? (
-                     <ContentProducts productos={productos} combos={combos} />
+                     <ContentProducts productos={productos} combos={combos} setValue={setValue} />
                   ) : (
                      <SearchCustom
                         productos={productos}
