@@ -328,3 +328,19 @@ module.exports.deliveryManChangeAddressRequest = async ({
   }
   return "No changes on delivery man";
 };
+
+// Get all pending change address requests
+module.exports.getAllPendingChangeAddressRequests = async () => {
+  // db querys
+  // Collecting all pending change address requests
+  const selectAllPendingResquestsStatement = `SELECT delivery_man_change_address_id,new_department,new_municipality,
+  change_description,getDeliveryManName(delivery_man_id) AS delivery_man_name ,delivery_man_id FROM delivery_man_change_address
+  WHERE status = ?`;
+  // bindings
+  const binds = ["Waiting"];
+  // Info collected
+  let dataCollected = [];
+  const results = await db.pool(selectAllPendingResquestsStatement, binds);
+  dataCollected.push({ changeAddressRequests: results });
+  return dataCollected;
+};

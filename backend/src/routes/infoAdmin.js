@@ -4,7 +4,8 @@ const router = express.Router();
 const { adminInfo,deliveryManRequest ,companyRequest,getUserCounters,
 disableClient,disableDeliveryMan,disableCompany,getAllClients,
 getAllCompanies,getAllDevliveryMen,getTop5DeliveryManRating,
-getMostSelledProducts,getTop5CompaniesOrdersGenerated,deliveryManChangeAddressRequest} = require("../controllers/infoAdmin");
+getMostSelledProducts,getTop5CompaniesOrdersGenerated,deliveryManChangeAddressRequest,
+getAllPendingChangeAddressRequests} = require("../controllers/infoAdmin");
 
 router.post("/admin/info", adminInfo);
 router.post("/admin/delivery-man-request",deliveryManRequest);
@@ -20,4 +21,5 @@ router.get("/admin/get-top5-delivery-man",getTop5DeliveryManRating);
 router.get("/admin/get-most-selled-products",getMostSelledProducts);
 router.get("/admin/get-top-5-companies",getTop5CompaniesOrdersGenerated);
 router.get("/admin/users-counters",getUserCounters);
+router.get("/admin/get-all-waiting-change-address-request",getAllPendingChangeAddressRequests);
 module.exports = router;
