@@ -1,5 +1,6 @@
 import './styles/LandingCSS.css'
 import './styles/selledProductCSS.css'
+import './styles/ModuleCliente.css'
 import React from 'react';
 import LandingPage from './pages/LandingPage';
 import Politicas from './pages/Politicas';
@@ -19,6 +20,9 @@ import { ProtectedRouteLogin } from './security/ProtectedRouteLogin';
 import { ProtectedRouteUsers } from './security/ProtectedRouteUsers';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import ShoppingCart from './pages/ShoppingCart';
+import Orders from './pages/Orders';
 
 function App() {
   return (
@@ -49,6 +53,8 @@ function App() {
           {/*client = 1*/}
           <Route element={<ProtectedRouteUsers redirectTo="/Login-Cliente" condition={1} />}>
             <Route path="/Module-Cliente" element={<Module  noUrl={1} />}/>
+            <Route path="/Ordenes-Cliente" element={<Orders  noUrl={1} />}/>
+            <Route path="/Carrito-Cliente" element={<ShoppingCart  noUrl={1} />}/>
           </Route>
 
           {/*deliveryman = 2*/}

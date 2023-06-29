@@ -39,6 +39,10 @@ function SingIn({ url, noUrl }) {
          })
             
          if(data.status===200){
+            
+            if(data.type === 1){
+               data.carrito = []
+            }
             console.log("DAtos:",data);
             const cookies = Cookie()
             cookies.set("crr_user",data,{path:"/"});
