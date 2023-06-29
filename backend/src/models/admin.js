@@ -131,7 +131,7 @@ module.exports.disableDeliveryMan = async ({ deliveryManId }) => {
   // Verify if the delivery_man has a pending order
   const selectDeliveryManPendingOrders = `SELECT order_id
   FROM _order WHERE delivery_man_id = ? AND order_status= ?`;
-  const orderBinds = [deliveryManId, "OnTheWay"];
+  const orderBinds = [deliveryManId, "En camino"];
   const ordersResult = await db.pool(
     selectDeliveryManPendingOrders,
     orderBinds
@@ -157,7 +157,7 @@ module.exports.disableCompany = async ({ companyId }) => {
   // Verify if the company has a pending order
   const selectCompanyPendingOrders = `SELECT order_id
   FROM _order WHERE company_id = ? AND order_status= ?`;
-  const orderBinds = [companyId, "OnTheWay"];
+  const orderBinds = [companyId, "En camino"];
   const ordersResult = await db.pool(selectCompanyPendingOrders, orderBinds);
   // If the company has a pending order, cannot be disabled of the system.
   if (ordersResult[0]) {

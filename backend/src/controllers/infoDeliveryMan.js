@@ -43,7 +43,7 @@ module.exports.getAllDeliveryManOrders = async (req, res, next) => {
     deliveryManId:req.body.deliveryManId,
   };
   // Operations on db
-  const result=await Company.getAllDeliveryManOrders(args);
+  const result=await DeliveryMan.getAllDeliveryManOrders(args);
   // response
   return res
     .status(200)
@@ -51,5 +51,39 @@ module.exports.getAllDeliveryManOrders = async (req, res, next) => {
       status:200,
       message: "Historial de pedidos gestionados por este repartidor recuperados con éxito!!",
       companyData:result,
+  });
+};
+
+// Select an order to deliver
+module.exports.selectAnOrderToDeliver = async (req, res, next) => {
+  let args = {
+    orderId:req.body.orderId,
+    deliveryManId:req.body.deliveryManId
+  };
+  // Operations on db
+  const result=await DeliveryMan.selectAnOrderToDeliver(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      message: `El pedido No.: ${args.orderId}, fue aceptado por un repartidor y está en camino :)`,
+  });
+};
+
+
+// Deliver an order
+module.exports.deliverOrder = async (req, res, next) => {
+  let args = {
+    orderId:req.body.orderId,
+  };
+  // Operations on db
+  const result=await DeliveryMan.deliverOrder(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      message: `El pedido No.: ${args.orderId}, fue entregado a su destino con éxito :)`,
   });
 };
