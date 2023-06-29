@@ -151,20 +151,19 @@ CREATE TABLE IF NOT EXISTS combo(
 -- order Table
 CREATE TABLE IF NOT EXISTS _order(
   order_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  coupon_id BIGINT,
-  delivery_man_id BIGINT NOT NULL,
+  coupon_id BIGINT DEFAULT NULL,
+  delivery_man_id BIGINT DEFAULT NULL,
   user_id BIGINT NOT NULL,
   company_id BIGINT NOT NULL,
-  user_address_id BIGINT NOT NULL,
   order_status VARCHAR(150) NOT NULL,
   order_date TIMESTAMP NOT NULL,
   order_total DECIMAL(10,2),
   order_commission DECIMAL(10,2),
+  order_department VARCHAR(150) NOT NULL,
   FOREIGN KEY (coupon_id) REFERENCES coupon(coupon_id) ON DELETE CASCADE,
   FOREIGN KEY (delivery_man_id) REFERENCES delivery_man(delivery_man_id) ON DELETE CASCADE,
   FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE,
-  FOREIGN KEY (company_id) REFERENCES company(company_id) ON DELETE CASCADE,
-  FOREIGN KEY (user_address_id) REFERENCES user_address(user_address_id) ON DELETE CASCADE
+  FOREIGN KEY (company_id) REFERENCES company(company_id) ON DELETE CASCADE
 );
 
 
@@ -182,9 +181,13 @@ CREATE TABLE IF NOT EXISTS delivery_man_rating(
 CREATE TABLE IF NOT EXISTS order_detail(
   order_detail_id BIGINT PRIMARY KEY AUTO_INCREMENT,
   order_id BIGINT NOT NULL,
-  product_id BIGINT NOT NULL,
+  product_id BIGINT DEFAULT NULL,
+  product_name VARCHAR(150) DEFAULT NULL,
+  combo_id BIGINT DEFAULT NULL,
+  combo_name VARCHAR(150) DEFAULT NULL,
   product_ammount INTEGER NOT NULL,
   FOREIGN KEY (order_id) REFERENCES _order(order_id) ON DELETE CASCADE,
+  FOREIGN KEY (combo_id) REFERENCES combo(combo_id) ON DELETE CASCADE,
   FOREIGN KEY (product_id) REFERENCES product(product_id) ON DELETE CASCADE
 );
 
@@ -247,5 +250,29 @@ BEGIN
     DECLARE code VARCHAR(36);
     SET code = UUID();
     RETURN code;
+END //
+DELIMITER ;
+
+-- Function to obtain the name of a product by the product_id
+DELIMITER //
+CREATE FUNCTION getProductName(productIdParam BIGINT) RETURNS VARCHAR(100)
+BEGIN
+  DECLARE productName VARCHAR(100);
+  SELECT CONCAT(product_name, '') INTO productName
+  FROM product
+  WHERE product_id = productIdParam;
+  RETURN productName;
+END //
+DELIMITER ;
+
+-- Function to obtain the name of a combo by the combo_id
+DELIMITER //
+CREATE FUNCTION getComboName(comboIdParam BIGINT) RETURNS VARCHAR(100)
+BEGIN
+  DECLARE comboName VARCHAR(100);
+  SELECT CONCAT(combo_name, '') INTO comboName
+  FROM combo
+  WHERE combo_id = comboIdParam;
+  RETURN comboName;
 END //
 DELIMITER ;
