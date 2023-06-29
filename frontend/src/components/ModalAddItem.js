@@ -117,7 +117,7 @@ const ModalAddItem = ({
       setAmount(temp)
    }
 
-   const addItem = (e) => {
+   const addItem = async(e) => {
       e.preventDefault();
       // console.log("Agregando al carrito",amount);
       //seeInfo();
@@ -142,6 +142,14 @@ const ModalAddItem = ({
       }
       crr_user.carrito.push(temp)
       cookies.set("crr_user", crr_user, { path: "/" })
+      return await swal({
+         title: "Querido Usuario",
+         text: `Se han agregado los: ${amount} items de: ${name} al carrito`,
+         icon: "success",
+         button: true,
+      }).then(() => {
+         handleClose()
+      });
    }
 
    return (

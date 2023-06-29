@@ -109,7 +109,7 @@ const Bill = () => {
       cookies.set("crr_user", crr_user, { path: "/" });
    };
 
-   const generateBill = (e) => {
+   const generateBill = async(e) => {
       e.preventDefault();
       //console.log("Generando Factura",items);
       if(items.length === 0){
@@ -147,6 +147,17 @@ const Bill = () => {
       }
       // console.log("datos User", crr_user.carrito[0].combo === undefined ? crr_user.carrito[0].producto.company_id : crr_user.carrito[0].combo.company_id);
       console.log("data", data);
+      var crr_user = cookies.get("crr_user");
+      crr_user.carrito = [];
+      setItems([]);
+      cookies.set("crr_user", crr_user, { path: "/" });
+      return await swal({
+         title: "Querido Usuario",
+         text: "Se ha generado la factura",
+         icon: "success",
+         button: true,
+      });
+    
    };
 
    return (
