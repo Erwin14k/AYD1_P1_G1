@@ -65,3 +65,18 @@ module.exports.getAllUserOrders = async (req, res, next) => {
     res.status(500).json({ message: "Falta error", error: error });
   }
 };
+
+module.exports.rateDelivery = async (req, res, next) => {
+  let args = {
+    deliveryManId: req.body.deliveryManId,
+    rating: req.body.rating,
+    orderId: req.body.orderId,
+  };
+  // Operations on db
+  const result = await User.rateDelivery(args);
+  // response
+  return res.status(200).json({
+    status: 200,
+    message: `La orden ${args.orderId} fue calificada con Exito!:)`,
+  });
+};

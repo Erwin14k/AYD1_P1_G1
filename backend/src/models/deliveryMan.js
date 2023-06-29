@@ -151,3 +151,20 @@ module.exports.getAllDeliveryManOrders = async ({deliveryManId}) => {
   return dataCollected;
 };
 
+
+// Select an order to deliver
+module.exports.selectAnOrderToDeliver = async ({orderId,deliveryManId}) => {
+  const updateOrderStatement = `UPDATE _order SET order_status = ?, delivery_man_id = ? WHERE order_id = ?`;
+  // bindings
+  const binds = ["En camino",deliveryManId,orderId];
+  return await db.pool(updateOrderStatement, binds);
+};
+
+// Deliver an order
+module.exports.deliverOrder = async ({orderId}) => {
+  const updateOrderStatement = `UPDATE _order SET order_status = ? WHERE order_id = ?`;
+  // bindings
+  const binds = ["Entregado",orderId];
+  return await db.pool(updateOrderStatement, binds);
+};
+

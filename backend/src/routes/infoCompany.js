@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const { companyInfo,newProduct,newCombo,editProduct,deleteProduct,editCombo,deleteCombo,
-getMostSelledProducts,getAllCompanyOrders,approveOrder,getAllWaitingCompanyOrders} = require("../controllers/infoCompany");
+getMostSelledProducts,getAllCompanyOrders,approveOrder,getAllWaitingCompanyOrders,
+declineOrder} = require("../controllers/infoCompany");
 
 
 router.post("/company/new-product", newProduct);
@@ -16,4 +17,5 @@ router.get("/company/get-most-selled-products",getMostSelledProducts);
 router.get("/company/get-all-orders",getAllCompanyOrders);
 router.get("/company/get-all-waiting-orders",getAllWaitingCompanyOrders);
 router.post("/company/approve-order", approveOrder);
+router.post("/company/cancel-order", declineOrder);
 module.exports = router;
