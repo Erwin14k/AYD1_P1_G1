@@ -18,11 +18,35 @@ const cookies = Cookie();
 
 const Bill = () => {
    const [items, setItems] = useState([]);
+   const [companys, setCompanys] = useState("");
+
+   const getCompany = () => {
+      const crr_user = cookies.get("crr_user");
+      // console.log("====Company====");
+      fetch(`http://localhost:4200/user/get-all-companies`, {
+         method: "GET",
+         headers: {
+            /* "Content-Type": "application/json", */
+            Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+         },
+      })
+         .then((response) => response.json())
+         .then((data) => {
+            //console.log('===Combos===',data);
+            // console.log("Datos Company", data.adminData[0].companies);
+            setCompanys(data.adminData[0].companies);
+         })
+         .catch((error) => {
+            // Handle any errors that occur during the request
+            console.error("Error:", error);
+         });
+   };
 
    useEffect(() => {
       var crr_user = cookies.get("crr_user");
       setItems(crr_user.carrito);
-      console.log("carrito", items);
+      //console.log("carrito", items);
+      getCompany();
    }, []);
 
    const subtotal = items.reduce((acc, item) => {
@@ -37,7 +61,7 @@ const Bill = () => {
 
    const deleteItem = (e) => {
       e.preventDefault();
-      console.log("Eliminando del carrito", e.target.value);
+      //console.log("Eliminando del carrito", e.target.value);
       const temp = items.filter((item, index) => index != e.target.value);
 
       setItems(temp);
@@ -45,7 +69,7 @@ const Bill = () => {
       crr_user.carrito = temp;
       cookies.set("crr_user", crr_user, { path: "/" });
 
-      console.log("Temp", temp);
+      //console.log("Temp", temp);
    };
 
    const chanceValue = async (event, indice) => {
@@ -83,6 +107,46 @@ const Bill = () => {
       var crr_user = cookies.get("crr_user");
       crr_user.carrito = temp;
       cookies.set("crr_user", crr_user, { path: "/" });
+   };
+
+   const generateBill = (e) => {
+      e.preventDefault();
+      //console.log("Generando Factura",items);
+      if(items.length === 0){
+         return swal({
+            title: "Querido Usuario",
+            text: "No hay items en el carrito",
+            icon: "warning",
+            button: true,
+         });
+      }
+      
+      const temp = items.map((item, index) => {
+         var tempData = {};
+         tempData.amount = item.cantidad;
+         if (item.producto !== undefined) {
+            tempData.product_id = item.producto.product_id; 
+            tempData.combo_id = undefined;
+         } else {
+            tempData.product_id = undefined;
+            tempData.combo_id = item.combo.combo_id;
+         }
+         return tempData;
+      })
+
+      var crr_user = cookies.get("crr_user");
+      const company_id = crr_user.carrito[0].combo === undefined ? crr_user.carrito[0].producto.company_id : crr_user.carrito[0].combo.company_id
+      const departamentoCompany = companys.filter((company) => company.company_id === company_id)[0].company_department;
+      const data = {
+         total: total,
+         comision: total*0.05,
+         items: temp,
+         user_id: crr_user.data[0].userId,
+         company_id: company_id,
+         departamentoCompany: departamentoCompany
+      }
+      // console.log("datos User", crr_user.carrito[0].combo === undefined ? crr_user.carrito[0].producto.company_id : crr_user.carrito[0].combo.company_id);
+      console.log("data", data);
    };
 
    return (
@@ -159,7 +223,7 @@ const Bill = () => {
                               </TableCell>
                               <TableCell align="right">
                                  <ModalProduct
-                                    id={item.producto.company_id}
+                                    id={item.producto.product_id}
                                     company={item.producto.company_name}
                                     img={item.producto.product_img}
                                     name={item.producto.product_name}
@@ -216,7 +280,7 @@ const Bill = () => {
 
                   <TableRow>
                      <TableCell colSpan={6} align="right">
-                        <Button variant="outlined"  color="success">
+                        <Button variant="outlined"  color="success" onClick={generateBill}>
                            Confirmar Orden
                         </Button>
                      </TableCell>

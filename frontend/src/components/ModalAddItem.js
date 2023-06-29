@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import swal from 'sweetalert';
 import Cookie from 'cookie-universal'
 const cookies = Cookie()
-const crr_user = cookies.get("crr_user")
+
 
 const ModalAddItem = ({
    id,
@@ -18,6 +18,12 @@ const ModalAddItem = ({
    company,
    elemnt
 }) => {
+   var crr_user = cookies.get("crr_user")
+
+   useEffect(() => {
+      crr_user = cookies.get("crr_user")
+   }, [crr_user])
+
    // eslint-disable-next-line
    const seeInfo = () => {
       console.log("=============");
@@ -113,12 +119,26 @@ const ModalAddItem = ({
 
    const addItem = (e) => {
       e.preventDefault();
-      console.log("Agregando al carrito",amount);
-      // seeInfo();
+      // console.log("Agregando al carrito",amount);
+      //seeInfo();
       const temp = {
          producto: category === undefined ? undefined : elemnt,
          cantidad: amount,
          combo: category === undefined ? elemnt : undefined,
+      }
+      const companyTemp = elemnt.company_id
+
+      if(crr_user.carrito.length !== 0){
+         const company_idTemp = crr_user.carrito[0].combo === undefined ? crr_user.carrito[0].producto.company_id : crr_user.carrito[0].combo.company_id
+         // console.log("company_idTemp", company_idTemp);
+         if(companyTemp !== company_idTemp){
+            return swal({
+               title: "Carrito",
+               text: "Solo puedes agregar productos de una sola empresa",
+               icon: "warning",
+               button: true,
+            });
+         }
       }
       crr_user.carrito.push(temp)
       cookies.set("crr_user", crr_user, { path: "/" })

@@ -23,7 +23,7 @@ const ModuleClient = () => {
    const [company, setCompany] = useState("Todos");
 
    const getProducts = () => {
-      console.log("====Productos=====");
+      // console.log("====Productos=====");
       fetch(`http://localhost:4200/user/get-all-products`, {
          method: "GET",
          headers: {
@@ -34,7 +34,7 @@ const ModuleClient = () => {
          .then((response) => response.json())
          .then((data) => {
             //console.log('===Productos===',data);
-            console.log("Datos Productos", data.userData[0].products);
+            // console.log("Datos Productos", data.userData[0].products);
             setProductos(data.userData[0].products);
          })
          .catch((error) => {
@@ -44,7 +44,7 @@ const ModuleClient = () => {
    };
 
    const getCombos = () => {
-      console.log("====Combos====");
+      // console.log("====Combos====");
       fetch(`http://localhost:4200/user/get-all-combos`, {
          method: "GET",
          headers: {
@@ -55,7 +55,7 @@ const ModuleClient = () => {
          .then((response) => response.json())
          .then((data) => {
             //console.log('===Combos===',data);
-            console.log("Datos Combos", data.userData[0].products);
+            // console.log("Datos Combos", data.userData[0].products);
             setCombos(data.userData[0].products);
          })
          .catch((error) => {
@@ -65,7 +65,7 @@ const ModuleClient = () => {
    };
 
    const getCompany = () => {
-      console.log("====Company====");
+      // console.log("====Company====");
       fetch(`http://localhost:4200/user/get-all-companies`, {
          method: "GET",
          headers: {
@@ -76,7 +76,7 @@ const ModuleClient = () => {
          .then((response) => response.json())
          .then((data) => {
             //console.log('===Combos===',data);
-            console.log("Datos Company", data.adminData[0].companies);
+            // console.log("Datos Company", data.adminData[0].companies);
             setCompanys(data.adminData[0].companies);
          })
          .catch((error) => {
@@ -86,7 +86,7 @@ const ModuleClient = () => {
    };
 
    useEffect(() => {
-      console.log("useEffect");
+      // console.log("useEffect");
       getProducts();
       getCombos();
       getCompany();
