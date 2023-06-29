@@ -238,19 +238,18 @@ module.exports.generateOrder = async ({ userId,companyId,couponId,orderTotal,ord
     // filling products and combos of the order
     // Insertar los items en order_detail
     for (const item of items) {
-      const ammount=item.ammount;
       // if the item is a product
       if(item.product_id!==null){
         const insertOrderDetailStatement = `INSERT INTO order_detail
-        (order_id, product_id, product_ammount) VALUES (?, ?, ?)`;
-        const binds = [lastOrderId, item.product_id,item.ammount];
+        (order_id, product_id, product_name,product_ammount) VALUES (?, ?, ?,?)`;
+        const binds = [lastOrderId, item.product_id,item.product_name,item.ammount];
         await db.pool(insertOrderDetailStatement, binds);
       }
       // if the item is a combo
       if(item.combo_id!==null){
         const insertOrderDetailStatement = `INSERT INTO order_detail
-        (order_id, combo_id, product_ammount) VALUES (?, ?, ?)`;
-        const binds = [lastOrderId, item.combo_id,item.ammount];
+        (order_id, combo_id, combo_name,product_ammount) VALUES (?, ?, ?,?)`;
+        const binds = [lastOrderId, item.combo_id,item.combo_name,item.ammount];
         await db.pool(insertOrderDetailStatement, binds);
       }
     }
@@ -267,19 +266,18 @@ module.exports.generateOrder = async ({ userId,companyId,couponId,orderTotal,ord
     // filling products and combos of the order
     // Insertar los items en order_detail
     for (const item of items) {
-      const ammount=item.ammount;
       // if the item is a product
       if(item.product_id!==null){
         const insertOrderDetailStatement = `INSERT INTO order_detail
-        (order_id, product_id, product_ammount) VALUES (?, ?, ?)`;
-        const binds = [lastOrderId, item.product_id,item.ammount];
+        (order_id, product_id, product_name,product_ammount) VALUES (?, ?, ?,?)`;
+        const binds = [lastOrderId, item.product_id,item.product_name,item.ammount];
         await db.pool(insertOrderDetailStatement, binds);
       }
       // if the item is a combo
       if(item.combo_id!==null){
         const insertOrderDetailStatement = `INSERT INTO order_detail
-        (order_id, combo_id, product_ammount) VALUES (?, ?, ?)`;
-        const binds = [lastOrderId, item.combo_id,item.ammount];
+        (order_id, combo_id, combo_name,product_ammount) VALUES (?, ?, ?,?)`;
+        const binds = [lastOrderId, item.combo_id,item.combo_name,item.ammount];
         await db.pool(insertOrderDetailStatement, binds);
       }
     }

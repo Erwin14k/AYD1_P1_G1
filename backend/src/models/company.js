@@ -329,22 +329,22 @@ module.exports.getAllWaitingCompanyOrders = async ({companyId}) => {
 	let dataCollected=[];
   const results = await db.pool(selectCompanyOrdersStatement, binds);
   for (const item of results) {
-    const ammount=item.ammount;
-    // if the item is a product
-    if(item.product_id!==null){
-      const insertOrderDetailStatement = `INSERT INTO order_detail
-      (order_id, product_id, product_ammount) VALUES (?, ?, ?)`;
-      const binds = [lastOrderId, item.product_id,item.ammount];
-      await db.pool(insertOrderDetailStatement, binds);
-    }
-    // if the item is a combo
-    if(item.combo_id!==null){
-      const insertOrderDetailStatement = `INSERT INTO order_detail
-      (order_id, combo_id, product_ammount) VALUES (?, ?, ?)`;
-      const binds = [lastOrderId, item.combo_id,item.ammount];
-      await db.pool(insertOrderDetailStatement, binds);
-    }
+    const selectOrderDetail=`SELECT order_id,product_id,
+    product_name,combo_id,combo_name,product_ammount
+    FROM order_detail WHERE order_id = ?`
+    //binds
+    const detailBinds=[item.order_id];
+    const detailResult = await db.pool(selectOrderDetail, detailBinds);
+    dataCollected.push({
+      order_id:item.order_id,
+      user_name:item.user_name,
+      company_name:item.company_name,
+      order_status:item.order_status,
+      order_date:item.order_date,
+      order_total:item.order_total,
+      order_commission:item.order_commission,
+      items:detailResult
+    });
   }
-  dataCollected.push({ "orders": results });
   return dataCollected;
 };
