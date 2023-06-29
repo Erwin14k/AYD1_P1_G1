@@ -318,9 +318,9 @@ module.exports.declineOrder = async ({orderId}) => {
 module.exports.getAllWaitingCompanyOrders = async ({companyId}) => {
 	// db querys
   // Collecting the orders
-	const selectCompanyOrdersStatement = `SELECT order_id,delivery_man_id,user_id,
+	const selectCompanyOrdersStatement = `SELECT order_id,user_id,
   company_id,order_status,order_date,order_total,order_commission,
-  getCompanyName(company_id) AS company_name,getDeliveryManName(delivery_man_id) AS delivery_man_name,
+  getCompanyName(company_id) AS company_name,
   getClientName(user_id) AS user_name
   FROM _order WHERE company_id = ? AND order_status = ?`;
   // bindings
@@ -328,6 +328,23 @@ module.exports.getAllWaitingCompanyOrders = async ({companyId}) => {
   // Info collected
 	let dataCollected=[];
   const results = await db.pool(selectCompanyOrdersStatement, binds);
+  for (const item of results) {
+    const ammount=item.ammount;
+    // if the item is a product
+    if(item.product_id!==null){
+      const insertOrderDetailStatement = `INSERT INTO order_detail
+      (order_id, product_id, product_ammount) VALUES (?, ?, ?)`;
+      const binds = [lastOrderId, item.product_id,item.ammount];
+      await db.pool(insertOrderDetailStatement, binds);
+    }
+    // if the item is a combo
+    if(item.combo_id!==null){
+      const insertOrderDetailStatement = `INSERT INTO order_detail
+      (order_id, combo_id, product_ammount) VALUES (?, ?, ?)`;
+      const binds = [lastOrderId, item.combo_id,item.ammount];
+      await db.pool(insertOrderDetailStatement, binds);
+    }
+  }
   dataCollected.push({ "orders": results });
   return dataCollected;
 };
