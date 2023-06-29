@@ -208,7 +208,14 @@ module.exports.getAllCompanies = async () => {
 // Registering a the rating record
 module.exports.rateDelivery = async ({ deliveryManId, rating, orderId }) => {
   const rateStatement = ` INSERT INTO delivery_man_rating (delivery_man_id, rating, order_id) VALUES (?,?,?)`;
+  const updateStatus = ` update _order set order_status ='Calificado' where order_id =?;`;
   //bindings
+  const statusBinds = [orderId];
   const rateBinds = [deliveryManId, rating, orderId];
-  return await db.pool(rateStatement, rateBinds);
+  try {
+    await db.pool(rateStatement, rateBinds);
+    return await db.pool(updateStatus, statusBinds);
+  } catch (error) {
+    return "NO se logro actualizar";
+  }
 };
