@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import swal from 'sweetalert';
 import Cookie from "cookie-universal";
+import CompanyOrders from '../AdminStatic/CompanyOrders';
 const cookies = Cookie();
 const crr_user = cookies.get("crr_user");
 
@@ -463,6 +464,7 @@ const ModuleCompany = () => {
                 </div>
                 <div className="tab-pane fade" id="users" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>PEDIDOS</h3></center>
+                    <CompanyOrders />
                 </div>
                 <div className="tab-pane fade" id="mantenimiento" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>AGREGA UN NUEVO COMBO</h3></center>
