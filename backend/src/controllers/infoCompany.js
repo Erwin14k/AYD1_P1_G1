@@ -243,6 +243,22 @@ module.exports.approveOrder = async (req, res, next) => {
   });
 };
 
+// Decline orders
+module.exports.declineOrder = async (req, res, next) => {
+  let args = {
+    orderId:req.body.orderId,
+  };
+  // Operations on db
+  const result=await Company.declineOrder(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      message: `El pedido No.: ${args.orderId}, fue cancelado satisfactoriamente :)`,
+  });
+};
+
 
 // Get all waiting orders associated to the company
 module.exports.getAllWaitingCompanyOrders = async (req, res, next) => {

@@ -302,7 +302,15 @@ module.exports.getAllCompanyOrders = async ({companyId}) => {
 module.exports.approveOrder = async ({orderId}) => {
   const updateOrderStatement = `UPDATE _order SET order_status = ? WHERE order_id = ?`;
   // bindings
-  const binds = ["Approved",orderId];
+  const binds = ["Aprobado",orderId];
+  return await db.pool(updateOrderStatement, binds);
+};
+
+// Decline an order
+module.exports.declineOrder = async ({orderId}) => {
+  const updateOrderStatement = `UPDATE _order SET order_status = ? WHERE order_id = ?`;
+  // bindings
+  const binds = ["Cancelado",orderId];
   return await db.pool(updateOrderStatement, binds);
 };
 
@@ -316,7 +324,7 @@ module.exports.getAllWaitingCompanyOrders = async ({companyId}) => {
   getClientName(user_id) AS user_name
   FROM _order WHERE company_id = ? AND order_status = ?`;
   // bindings
-  const binds = [companyId,"Waiting"];
+  const binds = [companyId,"Esperando"];
   // Info collected
 	let dataCollected=[];
   const results = await db.pool(selectCompanyOrdersStatement, binds);
