@@ -18,10 +18,10 @@ module.exports.register = async (
   const binds = [userEmail, userPassword, userName, userSurname, "Active", -1];
   await db.pool(statement, binds);
   const userId = await db.pool("SELECT LAST_INSERT_ID() as user_id");
-  userId=userId[0].user_id;
+  userId = userId[0].user_id;
   const couponStatement = `INSERT INTO coupon (coupon_code, coupon_status, user_id) 
 										VALUES (generateCoupon(), ?, ?)`;
-  const couponBinds = [ "Active",userId ];
+  const couponBinds = ["Active", userId];
   await db.pool(couponStatement, couponBinds);
   return "Registered";
 };
@@ -76,12 +76,12 @@ module.exports.info = async ({ userId }) => {
   const selectUserCoupon = `SELECT coupon_id,coupon_code FROM coupon WHERE user_id = ? AND coupon_status = 'Active'`;
   const binds = [userId];
   // Verify if the user has an active coupon
-  const couponData=await db.pool(selectUserCoupon, binds);
-  var couponCode='';
-  var couponId=-1;
-  if (couponData[0]){
-    couponCode=couponData[0].coupon_code;
-    couponId=couponData[0].coupon_id;
+  const couponData = await db.pool(selectUserCoupon, binds);
+  var couponCode = "";
+  var couponId = -1;
+  if (couponData[0]) {
+    couponCode = couponData[0].coupon_code;
+    couponId = couponData[0].coupon_id;
   }
   let dataCollected = [];
   return (
@@ -95,7 +95,7 @@ module.exports.info = async ({ userId }) => {
         const userEmail = results[0].user_email;
         const userId = results[0].user_id;
         const userStatus = results[0].user_status;
-        if (couponCode!=='' && couponId!=-1){
+        if (couponCode !== "" && couponId != -1) {
           dataCollected = [
             {
               userId: userId,
@@ -104,11 +104,11 @@ module.exports.info = async ({ userId }) => {
               userSurname: userSurname,
               authToken: userToken,
               userStatus: userStatus,
-              couponCode:couponCode,
-              couponId:couponId,
+              couponCode: couponCode,
+              couponId: couponId,
             },
           ];
-        }else{
+        } else {
           dataCollected = [
             {
               userId: userId,
@@ -120,7 +120,6 @@ module.exports.info = async ({ userId }) => {
             },
           ];
         }
-        
       })
       .then(() => db.pool(selectUserPaymentMethodsStatement, binds))
       // User payment methods data
@@ -204,4 +203,12 @@ module.exports.getAllCompanies = async () => {
   const results = await db.pool(selectCompaniesStatement, binds);
   dataCollected.push({ companies: results });
   return dataCollected;
+};
+
+// Registering a the rating record
+module.exports.rateDelivery = async ({ deliveryManId, rating, orderId }) => {
+  const rateStatement = ` INSERT INTO delivery_man_rating (delivery_man_id, rating, order_id) VALUES (?,?,?)`;
+  //bindings
+  const rateBinds = [deliveryManId, rating, orderId];
+  return await db.pool(rateStatement, rateBinds);
 };
