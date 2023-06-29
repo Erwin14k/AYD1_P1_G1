@@ -84,10 +84,10 @@ const Filter = ({ value, setValue, setName }) => {
          )}
 
          <br />
-         <center>
+         {/* <center>
             <Button variant="outlined">Aplicar</Button>
             <br /> <br />
-         </center>
+         </center> */}
       </Paper>
    );
 };

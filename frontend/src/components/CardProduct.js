@@ -7,6 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import ModalProduct from "./ModalProduct";
+import ModalAddItem from "./ModalAddItem";
 
 const CardProduct = ({id,company, description,category, img, nombre, precio, tipo, elemento }) => {
    
@@ -27,6 +28,7 @@ const CardProduct = ({id,company, description,category, img, nombre, precio, tip
                   variant="h6"
                   component="div"
                   height={60}
+                  style={{ whiteSpace: "normal", height: "3.6rem", overflow: "hidden" }}
                >
                   {nombre}
                </Typography>
@@ -35,7 +37,10 @@ const CardProduct = ({id,company, description,category, img, nombre, precio, tip
                </Typography>
             </CardContent>
             <CardActions>
-               <Button size="small">Agrear al carrito</Button>
+               <ModalAddItem
+                  id={id} company={company} img={img} name={nombre} category={category} description={description} price={precio}
+               />
+               {/* <Button size="small">Agrear al carrito</Button> */}
                {/* <Button size="small" onClick={handleOpen}>Ver</Button> */}
                <ModalProduct
                   id={id} company={company} img={img} name={nombre} category={category} description={description} price={precio}
