@@ -219,3 +219,68 @@ module.exports.rateDelivery = async ({ deliveryManId, rating, orderId }) => {
     return "NO se logro actualizar";
   }
 };
+
+
+// Generate a new order
+module.exports.generateOrder = async ({ userId,companyId,couponId,orderTotal,orderComission,orderDepartment,items }) => {
+  // db querys
+  // Insert a new order if the coupon is not undefined
+  if(couponId!==undefined){
+    const generateOrderStatement = ` INSERT INTO _order (user_id, company_id, order_status,order_date,order_total,
+      order_commission,order_department,coupon_id) VALUES (?,?,?,CURRENT_TIMESTAMP,?,?,?,?)`;
+    // bindings
+    const binds = [userId,companyId,"Esperando",orderTotal,orderComission,orderDepartment,couponId];
+    await db.pool(generateOrderStatement, binds);
+    // Obtain the last order inserted on the db
+    const getLastOrderIdStatement = `SELECT LAST_INSERT_ID() AS lastOrderId`;
+    const result = await db.pool(getLastOrderIdStatement,[]);
+    const lastOrderId = result[0].lastOrderId;
+    // filling products and combos of the order
+    // Insertar los items en order_detail
+    for (const item of items) {
+      // if the item is a product
+      if(item.product_id!==undefined){
+        const insertOrderDetailStatement = `INSERT INTO order_detail
+        (order_id, product_id, product_name,product_ammount) VALUES (?, ?, ?,?)`;
+        const binds = [lastOrderId, item.product_id,item.product_name,item.ammount];
+        await db.pool(insertOrderDetailStatement, binds);
+      }
+      // if the item is a combo
+      if(item.combo_id!==undefined){
+        const insertOrderDetailStatement = `INSERT INTO order_detail
+        (order_id, combo_id, combo_name,product_ammount) VALUES (?, ?, ?,?)`;
+        const binds = [lastOrderId, item.combo_id,item.combo_name,item.ammount];
+        await db.pool(insertOrderDetailStatement, binds);
+      }
+    }
+  }else{
+    const generateOrderStatement = ` INSERT INTO _order (user_id, company_id, order_status,order_date,order_total,
+      order_commission,order_department) VALUES (?,?,?,CURRENT_TIMESTAMP,?,?,?)`;
+    // bindings
+    const binds = [userId,companyId,"Esperando",orderTotal,orderComission,orderDepartment];
+    await db.pool(generateOrderStatement, binds);
+    // Obtain the last order inserted on the db
+    const getLastOrderIdStatement = `SELECT LAST_INSERT_ID() AS lastOrderId`;
+    const result = await db.pool(getLastOrderIdStatement,[]);
+    const lastOrderId = result[0].lastOrderId;
+    // filling products and combos of the order
+    // Insertar los items en order_detail
+    for (const item of items) {
+      // if the item is a product
+      if(item.product_id!==undefined){
+        const insertOrderDetailStatement = `INSERT INTO order_detail
+        (order_id, product_id, product_name,product_ammount) VALUES (?, ?, ?,?)`;
+        const binds = [lastOrderId, item.product_id,item.product_name,item.ammount];
+        await db.pool(insertOrderDetailStatement, binds);
+      }
+      // if the item is a combo
+      if(item.combo_id!==undefined){
+        const insertOrderDetailStatement = `INSERT INTO order_detail
+        (order_id, combo_id, combo_name,product_ammount) VALUES (?, ?, ?,?)`;
+        const binds = [lastOrderId, item.combo_id,item.combo_name,item.ammount];
+        await db.pool(insertOrderDetailStatement, binds);
+      }
+    }
+  }
+  return "Order created successfully";
+};
