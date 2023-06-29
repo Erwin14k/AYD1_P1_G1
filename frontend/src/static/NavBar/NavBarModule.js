@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import OnOff from '../../assets/OnOff.png'
 import LoginIMG from '../../assets/login.png'
 import Home from '../../assets/home.png'
-import carrt from '../../assets/carrt.png'
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
 
 import Cookie from 'cookie-universal'
 const cookies = Cookie()
@@ -40,8 +40,11 @@ const NavBarModule = ({ noUrl }) =>  {
 
             {noUrl === 1 ? <li className="nav-item" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center" }}>
                 {/* <img src={carrt} alt="Bootstrap" width="32" height="27" /> */}
+                <NewspaperIcon sx={{ fontSize: 30,  color: 'white' }} />
+                <Link to="/Ordenes-Cliente" className="nav-link">Pedidos</Link>
                 <ShoppingCartIcon sx={{ fontSize: 30,  color: 'white' }} />
-                <Link to={noUrl === 0 ? "/Reportes-Admin" : "/Reportes-Empresa"} className="nav-link">Carrito</Link>
+                <Link to="/Carrito-Cliente" className="nav-link">Carrito</Link>
+               
             </li> : <li></li>}
 
             <li className="nav-item" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center" }} onClick={logout}>

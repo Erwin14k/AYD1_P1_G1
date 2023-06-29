@@ -5,7 +5,6 @@ import SearchCustom from "../../components/SearchCustom";
 import restaurant from "../../assets/restaurant.png";
 import all from "../../assets/all.png";
 import Card from "@mui/material/Card";
-import CardProduct from "../../components/CardProduct";
 
 import SearchCompany from "../ClientsNavigation/SearchCompany";
 

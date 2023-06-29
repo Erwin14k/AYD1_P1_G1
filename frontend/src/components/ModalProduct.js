@@ -40,7 +40,7 @@ const ModalProduct = ({ id, img, name, category, description, price,company }) =
 
    return (
       <>
-         <Button onClick={handleOpen}>Ver</Button>
+         <Button variant="outlined" onClick={handleOpen}>Ver</Button>
          <Modal
             open={open}
             onClose={handleClose}
@@ -70,7 +70,7 @@ const ModalProduct = ({ id, img, name, category, description, price,company }) =
                               <p className="price">Precio: Q.{price}</p>
                            </div>
                         </div>
-                        <Button ariant="outlined" color="error" onClick={handleClose}>Cerrar</Button>
+                        <Button variant="outlined" color="error" onClick={handleClose}>Cerrar</Button>
                      </div>
                   </div>
                </div>

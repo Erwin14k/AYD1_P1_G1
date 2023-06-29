@@ -4,6 +4,9 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import swal from 'sweetalert';
+import Cookie from 'cookie-universal'
+const cookies = Cookie()
+const crr_user = cookies.get("crr_user")
 
 const ModalAddItem = ({
    id,
@@ -13,6 +16,7 @@ const ModalAddItem = ({
    description,
    price,
    company,
+   elemnt
 }) => {
    // eslint-disable-next-line
    const seeInfo = () => {
@@ -23,6 +27,8 @@ const ModalAddItem = ({
       console.log("category", category);
       console.log("description", description);
       console.log("price", price);
+      console.log("company", company);
+      console.log("elemnt", elemnt);
    };
 
    const [open, setOpen] = useState(false);
@@ -108,12 +114,19 @@ const ModalAddItem = ({
    const addItem = (e) => {
       e.preventDefault();
       console.log("Agregando al carrito",amount);
+      // seeInfo();
+      const temp = {
+         producto: category === undefined ? undefined : elemnt,
+         cantidad: amount,
+         combo: category === undefined ? elemnt : undefined,
+      }
+      crr_user.carrito.push(temp)
+      cookies.set("crr_user", crr_user, { path: "/" })
    }
-
 
    return (
       <>
-         <Button onClick={handleOpen}>Agrear al carrito</Button>
+         <Button variant="outlined" onClick={handleOpen}>Agrear al carrito</Button>
          <Modal
             open={open}
             onClose={handleClose}

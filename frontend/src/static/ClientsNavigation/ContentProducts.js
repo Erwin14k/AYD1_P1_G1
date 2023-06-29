@@ -41,6 +41,7 @@ const ContentProducts = ({ productos, combos,setValue }) => {
             {productos.slice(-5).map((product, index) => (
                <CardProduct
                   key={`PP${index}`}
+                  company={product.company_name}
                   id={product.product_id}
                   description={product.product_description}
                   category={product.product_type}
@@ -80,6 +81,7 @@ const ContentProducts = ({ productos, combos,setValue }) => {
             {combos.slice(-5).map((combo, index) => (
                <CardProduct
                   key={`CC${index}`}
+                  company={combo.company_name}
                   id={combo.combo_id}
                   description={combo.combo_description}
                   img={combo.combo_img}
@@ -120,6 +122,7 @@ const ContentProducts = ({ productos, combos,setValue }) => {
                .slice(-5)
                .map((product, index) => (
                   <CardProduct
+                     company={product.company_name}
                      key={`Pi${index}`}
                      id={product.product_id}
                      description={product.product_description}
@@ -161,6 +164,7 @@ const ContentProducts = ({ productos, combos,setValue }) => {
                .map((combo, index) => (
                   <CardProduct
                      key={`Ci${index}`}
+                     company={combo.company_name}
                      id={combo.combo_id}
                      description={combo.combo_description}
                      img={combo.combo_img}
