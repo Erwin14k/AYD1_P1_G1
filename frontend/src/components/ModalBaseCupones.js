@@ -14,7 +14,9 @@ import {
    TextField,
 } from "@mui/material";
 import swal from "sweetalert";
-
+import Cookie from "cookie-universal";
+const cookies = Cookie();
+const crr_user = cookies.get("crr_user");
 
 
 const ModalBaseCupones = ({ cuponI, setCupon,setTotal,total }) => {
@@ -55,8 +57,31 @@ const ModalBaseCupones = ({ cuponI, setCupon,setTotal,total }) => {
       setOpen(false);
    };
 
+   const getCupons = () => {
+    console.log("====Cupones====");
+    fetch(`http://localhost:4200/user/get-all-coupons`, {
+       method: "GET",
+       headers: {
+          /* "Content-Type": "application/json", */
+          Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+       },
+    })
+       .then((response) => response.json())
+       .then((data) => {
+          //console.log('===Coupons===',data);
+            console.log("Datos Coupons", data.UserData[0].coupons);
+          //setCompanys(data.adminData[0].companies);
+       })
+       .catch((error) => {
+          // Handle any errors that occur during the request
+          console.error("Error:", error);
+       });
+ };
+
+
     useEffect (() => {
         console.log("here");
+        getCupons();
     }, [open])
 
    const style = {
