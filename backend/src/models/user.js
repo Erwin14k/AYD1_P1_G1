@@ -17,8 +17,8 @@ module.exports.register = async (
 										VALUES (?, ?, ?, ?, ?, ?)`;
   const binds = [userEmail, userPassword, userName, userSurname, "Active", -1];
   await db.pool(statement, binds);
-  const userId = await db.pool("SELECT LAST_INSERT_ID() as user_id");
-  userId = userId[0].user_id;
+  const userIdResult = await db.pool("SELECT LAST_INSERT_ID() as user_id");
+  const userId = userIdResult[0].user_id;
   const couponStatement = `INSERT INTO coupon (coupon_code, coupon_status, user_id) 
 										VALUES (generateCoupon(), ?, ?)`;
   const couponBinds = ["Active", userId];
