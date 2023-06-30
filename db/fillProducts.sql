@@ -1,6 +1,12 @@
 use al_chilazo;
 select * from company;
 select * from product;
+select * from user;
+select * from coupon;
+update coupon SET coupon_status = "Active" where coupon_id = 3;
+select * from _order;
+select * from order_detail;
+delete from user;
 
 INSERT INTO product (company_id, product_type, product_name, product_price,
     product_description,product_img,product_number_of_sales,product_stock,product_img_key) 

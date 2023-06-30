@@ -74,7 +74,7 @@ const SearchCompany = ({ companys, company, products, combos }) => {
    return (
       <>
          {crrCompany === undefined ? (
-            ShowCompanys.map((company) => (
+            ShowCompanys.map((company,index) => (
                <Card
                   sx={{
                      maxWidth: 170,
@@ -82,6 +82,7 @@ const SearchCompany = ({ companys, company, products, combos }) => {
                      margin: "0 8px",
                      marginTop: "15px",
                   }}
+                  key={`CrrCC${index}`}
                >
                   <CardContent>
                      <Typography
