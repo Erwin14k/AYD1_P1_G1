@@ -284,6 +284,16 @@ const Bill = () => {
                   ))}
                   <TableRow>
                      <TableCell colSpan={5} align="right">
+                        Sub Total a pagar:
+                     </TableCell>
+                     <TableCell align="right">Q{subtotal.toFixed(2)}</TableCell>
+                  </TableRow>
+                                    
+                                    
+
+
+                  <TableRow>
+                     <TableCell colSpan={5} align="right">
                         Total a pagar:
                      </TableCell>
                      <TableCell align="right">Q{total}</TableCell>
