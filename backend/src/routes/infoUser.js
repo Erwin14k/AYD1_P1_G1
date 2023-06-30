@@ -8,7 +8,8 @@ const {
   getAllCompanies,
   getAllUserOrders,
   rateDelivery,
-  generateOrder
+  generateOrder,
+  getCoupon
 } = require("../controllers/infoUser");
 
 router.get("/user/info", userInfo);
@@ -18,5 +19,6 @@ router.get("/user/get-all-companies", getAllCompanies);
 router.get("/user/get-all-orders", getAllUserOrders);
 router.post("/user/set-order-rate", rateDelivery);
 router.post("/user/generate-order", generateOrder);
+router.get("/user/get-all-coupons", getCoupon);
 
 module.exports = router;

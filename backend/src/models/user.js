@@ -253,6 +253,11 @@ module.exports.generateOrder = async ({ userId,companyId,couponId,orderTotal,ord
         await db.pool(insertOrderDetailStatement, binds);
       }
     }
+    // Disable the coupon used
+    const updateStatus = ` update coupon set coupon_status = ? where coupon_id =?`;
+    const couponBinds=['Inactive',couponId];
+    await db.pool(updateStatus, couponBinds);
+
   }else{
     const generateOrderStatement = ` INSERT INTO _order (user_id, company_id, order_status,order_date,order_total,
       order_commission,order_department) VALUES (?,?,?,CURRENT_TIMESTAMP,?,?,?)`;
@@ -284,3 +289,20 @@ module.exports.generateOrder = async ({ userId,companyId,couponId,orderTotal,ord
   }
   return "Order created successfully";
 };
+
+
+// Get user coupon if exists
+module.exports.getCoupon = async ({ userId }) => {
+  // db querys
+  // Collecting the coupons
+  const selectUserCouponStatement = `SELECT coupon_id,coupon_code,coupon_status
+  FROM coupon WHERE user_id = ? AND coupon_status = ?`;
+  // bindings
+  const binds = [userId,'Active'];
+  // Info collected
+  let dataCollected = [];
+  const results = await db.pool(selectUserCouponStatement, binds);
+  dataCollected.push({ coupons: results });
+  return dataCollected;
+};
+

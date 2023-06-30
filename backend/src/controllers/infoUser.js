@@ -105,3 +105,24 @@ module.exports.generateOrder = async (req, res, next) => {
     res.status(500).json({ message: "Falta error", error: error });
   }
 };
+
+
+// Get user coupon if exists
+module.exports.getCoupon = async (req, res, next) => {
+  try {
+    let args = {
+      userId: req.body.userId,
+    };
+    // Operations on db
+    const result = await User.getCoupon(args);
+    // response
+    return res.status(200).json({
+      status: 200,
+      messsage: "Cupones disponibles para este usuario recuperados con éxito!",
+      UserData: result,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Falta error", error: error });
+  }
+};
