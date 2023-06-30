@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import swal from 'sweetalert';
 import Cookie from "cookie-universal";
 import CompanyOrders from '../AdminStatic/CompanyOrders';
@@ -13,15 +13,16 @@ const ModuleCompany = () => {
 
     const [productInfo, setProductInfo] = useState([]);
     const [comboInfo, setComboInfo] = useState([]);
+    const [refresh, setRefresh] = useState(false);
 
-    const verInfoProduct = (value) => {
+    const verInfoProduct = useCallback((value) => {
         products.map((fila) => {
             if (fila.product_id === value) {
                 setProductInfo(fila);
             }
             return null; // Agrega esta línea si no hay un valor de retorno requerido
         });
-    };
+    }, [products]);
 
     const verInfoCombo = (value) => {
         combos.map((fila) => {
@@ -48,15 +49,14 @@ const ModuleCompany = () => {
 
                 setProducts(productos);
                 setCombos(cc);
-
-                verInfoProduct(productInfo.product_id);
+                setRefresh(!refresh);
             })
             .catch((error) => {
                 // Handle any errors that occur during the request
                 console.error('Error:', error)
             });
 
-    }
+    };
 
     const handleDelete = async (url, productId) => {
         const body = {
@@ -464,7 +464,7 @@ const ModuleCompany = () => {
                 </div>
                 <div className="tab-pane fade" id="users" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>PEDIDOS</h3></center>
-                    <CompanyOrders />
+                    <CompanyOrders refresh={refresh}/>
                 </div>
                 <div className="tab-pane fade" id="mantenimiento" role="tabpanel" aria-labelledby="profile-tab" style={{ padding: "2%" }}>
                     <center><h3>AGREGA UN NUEVO COMBO</h3></center>

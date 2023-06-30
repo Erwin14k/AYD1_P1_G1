@@ -1,37 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import swal from 'sweetalert';
+import Cookie from "cookie-universal";
+const cookies = Cookie();
+const crr_user = cookies.get("crr_user");
 
-const CompanyOrders = () => {
-    const [orders, setOrders] = useState([
-        {
-            order_id: 1,
-            user_name: 'Juan',
-            order_total: 100.00,
-            status: 'pendiente',
-            products: ['Producto 1', 'Producto 2', 'Producto 3'],
-        },
-        {
-            order_id: 2,
-            user_name: 'Mario',
-            order_total: 200.00,
-            status: 'pendiente',
-            products: ['Producto 4', 'Producto 5'],
-        },
-        {
-            order_id: 3,
-            user_name: 'Cristian',
-            order_total: 300.00,
-            status: 'pendiente',
-            products: ['Producto 6'],
-        },
-        // Agrega más órdenes aquí si es necesario
-    ]);
+const CompanyOrders = ({refresh}) => {
+    const [orders, setOrders] = useState([]);
 
-    const handleStatusChange = (id, newStatus) => {
-        const updatedOrders = orders.map((order) =>
-            order.order_id === id ? { ...order, status: newStatus } : order
-        );
-        setOrders(updatedOrders);
+    const llenarOrdenes = useCallback(() => {
+        console.log("Llenar Ordenes")
+        fetch(`http://localhost:4200/company/get-all-waiting-orders`, {
+            method: "GET",
+            headers: {
+                /* "Content-Type": "application/json", */
+                Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data.companyData)
+                setOrders(Object.values(data.companyData))
+            })
+            .catch((error) => {
+                // Handle any errors that occur during the request
+                console.error('Error:', error)
+            });
+
+    }, []);
+
+    const handleStatusChange = (id, url) => {
+        const body = {
+            orderId: id
+        }
+        fetch(`http://localhost:4200/company/${url}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+            },
+            body: JSON.stringify(body)
+        })
+            .then((response) => response.json())
+            .then(async (data) => {
+                await swal({
+                    title: `Querido Usuario: ${crr_user.data[0].companyName}`,
+                    text: data.message,
+                    icon: data.status === 200 ? "success" : "error",
+                    button: true,
+                })
+                llenarOrdenes();
+            })
+            .catch((error) => {
+                // Handle any errors that occur during the request
+                console.error('Error:', error)
+            });
     };
+
+    useEffect(() => {
+        llenarOrdenes();
+    }, [refresh, llenarOrdenes]);
 
     return (
         <div className="container">
@@ -47,37 +74,33 @@ const CompanyOrders = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {orders.map((order) => (
+                    {orders.map((order, index) => (
                         <tr key={order.order_id}>
                             <td>{order.order_id}</td>
                             <td>{order.user_name}</td>
                             <td>
                                 <ul>
-                                    {order.products.map((product, index) => (
-                                        <li key={index}>{product}</li>
+                                    {order.items.map((product, index) => (
+                                        <li key={index}>{product.product_name === null ? product.combo_name : product.product_name}</li>
                                     ))}
                                 </ul>
                             </td>
                             <td>Q. {order.order_total}</td>
-                            <td>{order.status}</td>
+                            <td>{order.order_status}</td>
                             <td>
-                                {order.status === 'pendiente' && (
-                                    <button
-                                        className="btn btn-success"
-                                        onClick={() => handleStatusChange(order.order_id, 'listo')}
-                                    >
-                                        Listo
-                                    </button>
-                                )}
-                                {order.status !== 'cancelado' && (
-                                    <button
-                                        className="btn btn-danger"
-                                        onClick={() => handleStatusChange(order.order_id, 'cancelado')}
-                                        style={{ marginLeft: "2%" }}
-                                    >
-                                        Cancelar
-                                    </button>
-                                )}
+                                <button
+                                    className="btn btn-success"
+                                    onClick={() => handleStatusChange(order.order_id, 'approve-order')}
+                                >
+                                    Listo
+                                </button>
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={() => handleStatusChange(order.order_id, 'cancel-order')}
+                                    style={{ marginLeft: "2%" }}
+                                >
+                                    Cancelar
+                                </button>
                             </td>
                         </tr>
                     ))}
