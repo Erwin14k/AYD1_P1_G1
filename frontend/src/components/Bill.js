@@ -23,6 +23,7 @@ const Bill = () => {
    const [cupon, setCupon] = useState(undefined);
    const [total, setTotal] = useState(0);
    const [subtotal, setSubtotal] = useState(0);
+
    const getCompany = () => {
       const crr_user = cookies.get("crr_user");
       // console.log("====Company====");
@@ -44,7 +45,6 @@ const Bill = () => {
             console.error("Error:", error);
          });
    };
-   
 
    const getSubtotal = (array) => {
       const subtotal = array.reduce((acc, item) => {
@@ -56,22 +56,17 @@ const Bill = () => {
          return acc + itemPrice * item.cantidad;
       }, 0);
       return subtotal;
-   }
-
-
-
+   };
 
    useEffect(() => {
       var crr_user = cookies.get("crr_user");
       setItems(crr_user.carrito);
-      //console.log("carrito", items);
+      console.log("carrito", crr_user.carrito);
       getCompany();
       const tempSubtotal = getSubtotal(crr_user.carrito);
-      setSubtotal(tempSubtotal)
+      setSubtotal(tempSubtotal);
       setTotal(tempSubtotal);
    }, []);
- 
-   
 
    const deleteItem = (e) => {
       e.preventDefault();
@@ -137,14 +132,19 @@ const Bill = () => {
 
       const temp = items.map((item, index) => {
          var tempData = {};
-         tempData.amount = item.cantidad;
+         tempData.ammount = item.cantidad;
          if (item.producto !== undefined) {
             tempData.product_id = item.producto.product_id;
+            tempData.product_name = item.producto.product_name;
             tempData.combo_id = undefined;
+            tempData.combo_name = undefined;
          } else {
             tempData.product_id = undefined;
+            tempData.product_name = undefined;
             tempData.combo_id = item.combo.combo_id;
+            tempData.combo_name = item.combo.combo_name;
          }
+         
          return tempData;
       });
 
@@ -156,26 +156,52 @@ const Bill = () => {
       const departamentoCompany = companys.filter(
          (company) => company.company_id === company_id
       )[0].company_department;
+
       const data = {
-         total: total,
-         comision: total * 0.05,
-         items: temp,
          user_id: crr_user.data[0].userId,
          company_id: company_id,
-         departamentoCompany: departamentoCompany,
+         coupon_id: cupon,
+         total: total,
+         comision: total * 0.05,
+         departamentCompany: departamentoCompany,
+         items: temp,
       };
-      // console.log("datos User", crr_user.carrito[0].combo === undefined ? crr_user.carrito[0].producto.company_id : crr_user.carrito[0].combo.company_id);
-      console.log("data", data);
-      var crr_user = cookies.get("crr_user");
-      crr_user.carrito = [];
-      setItems([]);
-      cookies.set("crr_user", crr_user, { path: "/" });
-      return await swal({
-         title: "Querido Usuario",
-         text: "Se ha generado la factura",
-         icon: "success",
-         button: true,
-      });
+
+      console.log("=====GENRRAR=======");
+      console.log( data);
+      console.log( JSON.stringify(data));
+      fetch(`http://localhost:4200/user/generate-order`, {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json", 
+            Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+         },
+         body: JSON.stringify(data),
+      })
+         .then((response) => {
+            return response.json();
+         })
+         .then(async (data) => {
+            await swal({
+               title: "Querido Usuario",
+               text: data.message,
+               icon: data.status === 200 ? "success" : "error",
+               button: true,
+            });
+
+            if (data.status === 200) {
+               var crr_user = cookies.get("crr_user");
+               crr_user.carrito = [];
+               setItems([]);
+               setTotal(0);
+               setSubtotal(0);
+               setCupon(undefined)
+               cookies.set("crr_user", crr_user, { path: "/" });
+            }
+         })
+         .catch((error) => {
+            console.log("Error en la solicitud:", error);
+         });
    };
 
    return (

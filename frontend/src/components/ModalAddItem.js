@@ -123,9 +123,14 @@ const ModalAddItem = ({
       //seeInfo();
       const temp = {
          producto: category === undefined ? undefined : elemnt,
+         product_name: category === undefined ? undefined : name,
+
          cantidad: amount,
+
          combo: category === undefined ? elemnt : undefined,
+         combo_name: category === undefined ? name : undefined,
       }
+      // console.log("===Agregar Carrito", temp);
       const companyTemp = elemnt.company_id
 
       if(crr_user.carrito.length !== 0){
