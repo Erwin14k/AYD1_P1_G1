@@ -18,18 +18,15 @@ import Cookie from "cookie-universal";
 const cookies = Cookie();
 const crr_user = cookies.get("crr_user");
 
-
-const ModalBaseCupones = ({ cuponI, setCupon,setTotal,total }) => {
+const ModalBaseCupones = ({ cuponI, setCupon, setTotal, total }) => {
    const [open, setOpen] = useState(false);
-   const [cupones, setCupones] = useState([{ id: "1", codigo: "XXJS" }]);
-
-   
+   const [cupones, setCupones] = useState([]);
 
    const setCuponHandler = async (cupon) => {
       console.log("cupon", cupon);
       setCupon(cupon);
-      setTotal(total - total * 0.1)
-    total = total - total * 0.1
+      setTotal(total - total * 0.1);
+      total = total - total * 0.1;
       return await swal({
          title: "Querido Usuario",
          text: "Cupon aplicado con exito",
@@ -40,7 +37,7 @@ const ModalBaseCupones = ({ cuponI, setCupon,setTotal,total }) => {
 
    const removeCupon = async () => {
       setCupon(undefined);
-      setTotal(total / (1 - 1* 0.1))
+      setTotal(total / (1 - 1 * 0.1));
       return await swal({
          title: "Querido Usuario",
          text: "Cupon removido con exito",
@@ -58,31 +55,31 @@ const ModalBaseCupones = ({ cuponI, setCupon,setTotal,total }) => {
    };
 
    const getCupons = () => {
-    console.log("====Cupones====");
-    fetch(`http://localhost:4200/user/get-all-coupons`, {
-       method: "GET",
-       headers: {
-          /* "Content-Type": "application/json", */
-          Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
-       },
-    })
-       .then((response) => response.json())
-       .then((data) => {
-          //console.log('===Coupons===',data);
-            console.log("Datos Coupons", data.UserData[0].coupons);
-          //setCompanys(data.adminData[0].companies);
-       })
-       .catch((error) => {
-          // Handle any errors that occur during the request
-          console.error("Error:", error);
-       });
- };
+      console.log("====Cupones====");
+      
+      fetch(`http://localhost:4200/user/get-all-coupons`, {
+         method: "GET",
+         headers: {
+            /* "Content-Type": "application/json", */
+            Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+         },
+      })
+         .then((response) => response.json())
+         .then((data) => {
+            //console.log('===Coupons===',data);
+            //console.log("Datos Coupons", data.UserData[0].coupons);
+            setCupones(data.UserData[0].coupons);
+         })
+         .catch((error) => {
+            // Handle any errors that occur during the request
+            console.error("Error:", error);
+         });
+   };
 
-
-    useEffect (() => {
-        console.log("here");
-        getCupons();
-    }, [open])
+   useEffect(() => {
+      console.log("here");
+      getCupons();
+   }, [open]);
 
    const style = {
       position: "absolute",
@@ -133,13 +130,13 @@ const ModalBaseCupones = ({ cuponI, setCupon,setTotal,total }) => {
                                     {cupones.map((cupon, index) => (
                                        <TableRow key={`KC${index}`}>
                                           <TableCell align="right">
-                                             {cupon.codigo}
+                                             {cupon.coupon_code}
                                           </TableCell>
                                           <TableCell align="right">
                                              Codigo para 10% de descuento
                                           </TableCell>
                                           <TableCell align="right">
-                                             {cupon.id === cuponI ? (
+                                             {cupon.coupon_id === cuponI ? (
                                                 <Button
                                                    variant="outlined"
                                                    color="error"
@@ -151,7 +148,9 @@ const ModalBaseCupones = ({ cuponI, setCupon,setTotal,total }) => {
                                                 <Button
                                                    variant="outlined"
                                                    onClick={() =>
-                                                      setCuponHandler(cupon.id)
+                                                      setCuponHandler(
+                                                         cupon.coupon_id
+                                                      )
                                                    }
                                                 >
                                                    Aplicar
