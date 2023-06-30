@@ -77,7 +77,6 @@ const ModalBaseCupones = ({ cuponI, setCupon, setTotal, total }) => {
    };
 
    useEffect(() => {
-      console.log("here");
       getCupons();
    }, [open]);
 
