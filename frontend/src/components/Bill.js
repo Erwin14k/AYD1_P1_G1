@@ -11,6 +11,7 @@ import {
    Button,
    TextField,
 } from "@mui/material";
+import ModalBaseCupones from "./ModalBaseCupones";
 import swal from "sweetalert";
 import ModalProduct from "./ModalProduct";
 import Cookie from "cookie-universal";
@@ -19,7 +20,9 @@ const cookies = Cookie();
 const Bill = () => {
    const [items, setItems] = useState([]);
    const [companys, setCompanys] = useState("");
-
+   const [cupon, setCupon] = useState(undefined);
+   const [total, setTotal] = useState(0);
+   const [subtotal, setSubtotal] = useState(0);
    const getCompany = () => {
       const crr_user = cookies.get("crr_user");
       // console.log("====Company====");
@@ -41,23 +44,34 @@ const Bill = () => {
             console.error("Error:", error);
          });
    };
+   
+
+   const getSubtotal = (array) => {
+      const subtotal = array.reduce((acc, item) => {
+         const itemPrice =
+            item.producto !== undefined
+               ? item.producto.product_price
+               : item.combo.combo_price;
+
+         return acc + itemPrice * item.cantidad;
+      }, 0);
+      return subtotal;
+   }
+
+
+
 
    useEffect(() => {
       var crr_user = cookies.get("crr_user");
       setItems(crr_user.carrito);
       //console.log("carrito", items);
       getCompany();
+      const tempSubtotal = getSubtotal(crr_user.carrito);
+      setSubtotal(tempSubtotal)
+      setTotal(tempSubtotal);
    }, []);
-
-   const subtotal = items.reduce((acc, item) => {
-      const itemPrice =
-         item.producto !== undefined
-            ? item.producto.product_price
-            : item.combo.combo_price;
-
-      return acc + itemPrice * item.cantidad;
-   }, 0);
-   const total = subtotal.toFixed(2);
+ 
+   
 
    const deleteItem = (e) => {
       e.preventDefault();
@@ -109,10 +123,10 @@ const Bill = () => {
       cookies.set("crr_user", crr_user, { path: "/" });
    };
 
-   const generateBill = async(e) => {
+   const generateBill = async (e) => {
       e.preventDefault();
       //console.log("Generando Factura",items);
-      if(items.length === 0){
+      if (items.length === 0) {
          return swal({
             title: "Querido Usuario",
             text: "No hay items en el carrito",
@@ -120,31 +134,36 @@ const Bill = () => {
             button: true,
          });
       }
-      
+
       const temp = items.map((item, index) => {
          var tempData = {};
          tempData.amount = item.cantidad;
          if (item.producto !== undefined) {
-            tempData.product_id = item.producto.product_id; 
+            tempData.product_id = item.producto.product_id;
             tempData.combo_id = undefined;
          } else {
             tempData.product_id = undefined;
             tempData.combo_id = item.combo.combo_id;
          }
          return tempData;
-      })
+      });
 
       var crr_user = cookies.get("crr_user");
-      const company_id = crr_user.carrito[0].combo === undefined ? crr_user.carrito[0].producto.company_id : crr_user.carrito[0].combo.company_id
-      const departamentoCompany = companys.filter((company) => company.company_id === company_id)[0].company_department;
+      const company_id =
+         crr_user.carrito[0].combo === undefined
+            ? crr_user.carrito[0].producto.company_id
+            : crr_user.carrito[0].combo.company_id;
+      const departamentoCompany = companys.filter(
+         (company) => company.company_id === company_id
+      )[0].company_department;
       const data = {
          total: total,
-         comision: total*0.05,
+         comision: total * 0.05,
          items: temp,
          user_id: crr_user.data[0].userId,
          company_id: company_id,
-         departamentoCompany: departamentoCompany
-      }
+         departamentoCompany: departamentoCompany,
+      };
       // console.log("datos User", crr_user.carrito[0].combo === undefined ? crr_user.carrito[0].producto.company_id : crr_user.carrito[0].combo.company_id);
       console.log("data", data);
       var crr_user = cookies.get("crr_user");
@@ -157,7 +176,6 @@ const Bill = () => {
          icon: "success",
          button: true,
       });
-    
    };
 
    return (
@@ -288,9 +306,24 @@ const Bill = () => {
                      </TableCell>
                      <TableCell align="right">Q{subtotal.toFixed(2)}</TableCell>
                   </TableRow>
-                                    
-                                    
 
+                  <TableRow>
+                     {subtotal > 0 && (
+                        <TableCell colSpan={5} align="right">
+                           <ModalBaseCupones
+                              cuponI={cupon}
+                              setCupon={setCupon}
+                              setTotal={setTotal}
+                              total={total}
+                           />
+                        </TableCell>
+                     )}
+                     {cupon !== undefined && (
+                        <TableCell colSpan={6} align="right">
+                           -10%
+                        </TableCell>
+                     )}
+                  </TableRow>
 
                   <TableRow>
                      <TableCell colSpan={5} align="right">
@@ -301,7 +334,11 @@ const Bill = () => {
 
                   <TableRow>
                      <TableCell colSpan={6} align="right">
-                        <Button variant="outlined"  color="success" onClick={generateBill}>
+                        <Button
+                           variant="outlined"
+                           color="success"
+                           onClick={generateBill}
+                        >
                            Confirmar Orden
                         </Button>
                      </TableCell>
