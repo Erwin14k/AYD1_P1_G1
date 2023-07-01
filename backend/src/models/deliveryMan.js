@@ -141,7 +141,7 @@ module.exports.getAllDeliveryManOrders = async ({deliveryManId}) => {
   company_id,order_status,order_date,order_total,order_commission,
   getCompanyName(company_id) AS company_name,getDeliveryManName(delivery_man_id) AS delivery_man_name,
   getClientName(user_id) AS user_name
-  FROM _order WHERE company_id = ?`;
+  FROM _order WHERE delivery_man_id = ?`;
   // bindings
   const binds = [deliveryManId];
   // Info collected
@@ -168,3 +168,35 @@ module.exports.deliverOrder = async ({orderId}) => {
   return await db.pool(updateOrderStatement, binds);
 };
 
+
+// Get all avaliable orders
+module.exports.getAllAvaliableOrders = async ({deliveryManId}) => {
+	// db querys
+  // Obtain the devliery man department
+  const departmentStatement=`SELECT getDeliveryManDepartment(?) AS deliveryManDepartment`
+  const departmentBinds=[deliveryManId];
+  const department = await db.pool(departmentStatement, departmentBinds);
+  // Collecting the orders
+	const selectDeliveryManOrdersStatement = `SELECT order_id,user_id,
+  company_id,order_status,order_date,order_total,order_commission,
+  getCompanyName(company_id) AS company_name,getClientName(user_id) AS user_name,order_department
+  FROM _order WHERE order_department = ?`;
+  // bindings
+  const binds = [department];
+  // Info collected
+	let dataCollected=[];
+  const results = await db.pool(selectDeliveryManOrdersStatement, binds);
+  dataCollected.push({ "orders": results });
+  return dataCollected;
+};
+
+
+// Get delivery man comissions
+module.exports.getComissions = async ({deliveryManId}) => {
+	// db querys
+  // Obtain the devliery man comission total
+  const comissionStatement=`SELECT calculate_total_commission(?) AS totalComissions`
+  const comissionBinds=[deliveryManId];
+  const comission = await db.pool(comissionStatement, comissionBinds);
+  return { "totalComissions": comission };
+};

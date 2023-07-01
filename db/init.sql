@@ -228,6 +228,18 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Function to obtain the department of a delivery man by the delivery_man_id
+DELIMITER //
+CREATE FUNCTION getDeliveryManDepartment(deliveryManIdParam BIGINT) RETURNS VARCHAR(100)
+BEGIN
+  DECLARE deliveryManDepartment VARCHAR(100);
+  SELECT CONCAT(delivery_man_department,'') INTO deliveryManDepartment
+  FROM delivery_man
+  WHERE delivery_man_id = deliveryManIdParam;
+  RETURN deliveryManDepartment;
+END //
+DELIMITER ;
+
 
 -- Function to obtain the full name of a client by the user_id
 DELIMITER //
@@ -275,4 +287,16 @@ BEGIN
   WHERE combo_id = comboIdParam;
   RETURN comboName;
 END //
+DELIMITER ;
+
+-- Function to obtain the total comission accumulated by a delivery man
+DELIMITER //
+CREATE FUNCTION calculate_total_commission(deliveryManId BIGINT) RETURNS DECIMAL(10,2)
+BEGIN
+  DECLARE totalCommission DECIMAL(10,2) DEFAULT 0;
+  SELECT IFNULL(SUM(order_commission), 0) INTO totalCommission
+  FROM _order
+  WHERE delivery_man_id = deliveryManId;
+  RETURN totalCommission;
+END//
 DELIMITER ;
