@@ -300,3 +300,21 @@ BEGIN
   RETURN totalCommission;
 END//
 DELIMITER ;
+
+
+-- Function to obtain the rate of an order by the order id
+DELIMITER //
+CREATE FUNCTION get_rating_by_order_id(order_id_param BIGINT)
+RETURNS VARCHAR(20)
+BEGIN
+  DECLARE rating_value INTEGER;
+  SELECT rating INTO rating_value
+  FROM delivery_man_rating
+  WHERE order_id = order_id_param;
+  IF rating_value IS NULL THEN
+    RETURN 'No calificado';
+  ELSE
+    RETURN CAST(rating_value AS CHAR);
+  END IF;
+END //
+DELIMITER ;
