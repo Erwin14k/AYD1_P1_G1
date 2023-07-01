@@ -5,6 +5,9 @@ import departmentsGuatemala from "../static/data/departmentsGuatemala";
 import DataDeliveryMan from "../static/data/DataDeliveryMan";
 import Cookie from 'cookie-universal'
 import swal from 'sweetalert';
+import Rating from "@mui/material/Rating";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import StarIcon from "@mui/icons-material/Star";
 
 const cookies = Cookie()
 const crr_user = cookies.get("crr_user")
@@ -32,7 +35,7 @@ function Perfil({ noUrl }) {
                 setDeliveryInfo(response.deliveryManData[0])
                 // setDeliveryInfo(response.)
             })
-    },[]);
+    }, []);
 
 
 
@@ -124,7 +127,20 @@ function Perfil({ noUrl }) {
                         </button>
                     </h2>
                     <div id="flush-collapseTwo" className="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                        <center><h2 style={{ marginTop: "2%" }}>Su calificación es: {deliveryInfo.deliveryManRating}</h2></center>
+                        <center><h2 style={{ marginTop: "2%" }}>Su calificación es: </h2>
+                        <br></br>
+                        <Rating
+                            name="simple-controlled"
+                            value={+deliveryInfo.deliveryManRating}
+                            icon={
+                                <StarIcon sx={{ fontSize: 50 }} /> // Ajusta el tamaño del ícono de estrella vacía
+                            }
+                            emptyIcon={
+                                <StarBorderIcon sx={{ fontSize: 50 }} /> // Ajusta el tamaño del ícono de estrella vacía
+                            }
+                            readOnly
+                        /></center>
+                        <br></br>
                     </div>
                 </div>
                 <div className="accordion-item">

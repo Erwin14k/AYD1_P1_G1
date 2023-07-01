@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
-import {
+/* import {
    Typography,
    Table,
    TableBody,
@@ -12,7 +12,7 @@ import {
    TableRow,
    Paper,
    TextField,
-} from "@mui/material";
+} from "@mui/material"; */
 import swal from "sweetalert";
 import Rating from "@mui/material/Rating";
 
@@ -20,7 +20,7 @@ import Cookie from "cookie-universal";
 const cookies = Cookie();
 const crr_user = cookies.get("crr_user");
 
-const ModalBaseRating = ({ order_id,getPedidos }) => {
+const ModalBaseRating = ({ order_id, delivery_id, getPedidos }) => {
    const [open, setOpen] = useState(false);
    const [value, setValue] = useState(2);
 
@@ -43,14 +43,34 @@ const ModalBaseRating = ({ order_id,getPedidos }) => {
       }
       console.log("====Raiting====", value);
 
-      await swal({
-         title: "Querido Usuario",
-         text: "Pedido calificado con exito",
-         icon: "success",
-         button: true,
-      });
-      setOpen(false);
-      getPedidos();
+      const body = {
+         deliveryManId: delivery_id,
+         rating: value,
+         orderId: order_id
+      }
+      fetch(`http://localhost:4200/user/set-order-rate`, {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+         },
+         body: JSON.stringify(body)
+      })
+         .then((response) => response.json())
+         .then(async (data) => {
+            await swal({
+               title: `Querido Usuario`,
+               text: data.message,
+               icon: data.status === 200 ? "success" : "error",
+               button: true,
+            })
+            setOpen(false);
+            getPedidos();
+         })
+         .catch((error) => {
+            // Handle any errors that occur during the request
+            console.error('Error:', error)
+         });
    };
 
    const style = {

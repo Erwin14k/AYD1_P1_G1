@@ -10,7 +10,7 @@ import {
    TableHead,
    TableRow,
    Paper,
-   TextField,
+/*    TextField, */
    Radio,
    RadioGroup,
    FormControlLabel,
@@ -113,7 +113,7 @@ function Orders({ noUrl }) {
                </RadioGroup>
             </FormControl>
             <br /> <br />
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} style={{marginBottom:"2%"}}>
                <Table>
                   <TableHead>
                      <TableRow>
@@ -156,9 +156,10 @@ function Orders({ noUrl }) {
                                  Ver
                               </Button>
 
-                              {orden.order_status === "Esperando" && (
+                              {orden.order_status === "Entregado" && (
                                  <ModalBaseRating
                                     order_id={orden.order_id}
+                                    delivery_id={orden.delivery_man_id}
                                     getPedidos={getPedidos}
                                  />
                               )}
