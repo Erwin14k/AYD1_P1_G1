@@ -10,6 +10,7 @@ const crr_user = cookies.get("crr_user");
 const ModuleDelivery = () => {
 
     const [historial, setHistorial] = useState([]);
+    const [comision, setComision] = useState(0);
 
     const getComisiones = useCallback(() => {
         fetch(`http://localhost:4200/delivery-man/get-comission`, {
@@ -22,6 +23,7 @@ const ModuleDelivery = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data)
+                setComision(data.deliveryManData.totalComissions)
             })
             .catch((error) => {
                 // Handle any errors that occur during the request
@@ -106,10 +108,20 @@ const ModuleDelivery = () => {
                 </div>
                 <div className="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="profile-tab">
                     <center><h3 style={{ marginTop: "2%" }}>HISTORIAL DE ENTREGA</h3></center>
-                    <Historial historial={historial}/>
+                    <Historial historial={historial} />
                 </div>
                 <div className="tab-pane fade" id="comisiones" role="tabpanel" aria-labelledby="profile-tab">
-                    <center><h3 style={{ marginTop: "2%" }}>COMISIONES GENERADAS</h3></center>
+
+                    <div className="card bg-dark text-white" style={{width:"40%", margin:"auto",  marginTop: "5%"}}>
+                        <div className="card-header">
+                            <h4 className="mb-0">Total de Comisiones Generadas</h4>
+                        </div>
+                        <div className="card-body">
+                            <h5 className="card-title text-center" style={{color:"Black"}}>Monto Total:</h5>
+                            <p className="card-text text-center">Q. {comision}</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
