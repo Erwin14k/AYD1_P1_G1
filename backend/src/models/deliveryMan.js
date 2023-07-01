@@ -140,7 +140,7 @@ module.exports.getAllDeliveryManOrders = async ({deliveryManId}) => {
 	const selectDeliveryManOrdersStatement = `SELECT order_id,delivery_man_id,user_id,
   company_id,order_status,order_date,order_total,order_commission,
   getCompanyName(company_id) AS company_name,getDeliveryManName(delivery_man_id) AS delivery_man_name,
-  getClientName(user_id) AS user_name
+  getClientName(user_id) AS user_name, get_rating_by_order_id(order_id) as rating
   FROM _order WHERE delivery_man_id = ?`;
   // bindings
   const binds = [deliveryManId];
@@ -154,6 +154,13 @@ module.exports.getAllDeliveryManOrders = async ({deliveryManId}) => {
 
 // Select an order to deliver
 module.exports.selectAnOrderToDeliver = async ({orderId,deliveryManId}) => {
+  const verifyNumberOfOrdersStatement=`SELECT COUNT(*) AS onTheWayOrders FROM _order
+  WHERE delivery_man_id = ? AND order_status = 'En camino'`;
+  const verifyBinds=[deliveryManId];
+  const verifyCounter=await db.pool(verifyNumberOfOrdersStatement,verifyBinds);
+  if(verifyCounter[0].onTheWayOrders>0){
+    return "Invalid Operation";
+  }
   const updateOrderStatement = `UPDATE _order SET order_status = ?, delivery_man_id = ? WHERE order_id = ?`;
   // bindings
   const binds = ["En camino",deliveryManId,orderId];
@@ -165,6 +172,14 @@ module.exports.deliverOrder = async ({orderId}) => {
   const updateOrderStatement = `UPDATE _order SET order_status = ? WHERE order_id = ?`;
   // bindings
   const binds = ["Entregado",orderId];
+  return await db.pool(updateOrderStatement, binds);
+};
+
+// Cancel an order
+module.exports.cancelOrder = async ({orderId}) => {
+  const updateOrderStatement = `UPDATE _order SET order_status = ? WHERE order_id = ?`;
+  // bindings
+  const binds = ["Cancleado",orderId];
   return await db.pool(updateOrderStatement, binds);
 };
 
