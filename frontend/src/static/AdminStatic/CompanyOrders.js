@@ -74,14 +74,14 @@ const CompanyOrders = ({refresh}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {orders.map((order, index) => (
+                    {orders.map((order) => (
                         <tr key={order.order_id}>
                             <td>{order.order_id}</td>
                             <td>{order.user_name}</td>
                             <td>
                                 <ul>
                                     {order.items.map((product, index) => (
-                                        <li key={index}>{product.product_name === null ? product.combo_name : product.product_name}</li>
+                                        <li key={index}>{product.product_ammount} {" -> "} {product.product_name === null ? product.combo_name : product.product_name}</li>
                                     ))}
                                 </ul>
                             </td>
