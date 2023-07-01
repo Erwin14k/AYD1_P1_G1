@@ -158,7 +158,6 @@ module.exports.selectAnOrderToDeliver = async ({orderId,deliveryManId}) => {
   WHERE delivery_man_id = ? AND order_status = 'En camino'`;
   const verifyBinds=[deliveryManId];
   const verifyCounter=await db.pool(verifyNumberOfOrdersStatement,verifyBinds);
-  console.log(verifyCounter[0].onTheWayOrders);
   if(verifyCounter[0].onTheWayOrders>0){
     return "Invalid Operation";
   }
