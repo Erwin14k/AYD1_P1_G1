@@ -131,7 +131,7 @@ function Perfil({ noUrl }) {
                         <br></br>
                         <Rating
                             name="simple-controlled"
-                            value={deliveryInfo.deliveryManRating}
+                            value={+deliveryInfo.deliveryManRating}
                             icon={
                                 <StarIcon sx={{ fontSize: 50 }} /> // Ajusta el tamaño del ícono de estrella vacía
                             }
