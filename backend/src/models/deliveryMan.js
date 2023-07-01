@@ -69,7 +69,7 @@ module.exports.info = ({ deliveryManId }) => {
   delivery_man_email,delivery_man_phone,delivery_man_department,delivery_man_municipality,delivery_man_license_type,
   delivery_man_transport,delivery_man_status,delivery_man_rating,delivery_man_resume,delivery_man_id
   FROM delivery_man WHERE delivery_man_id = ?`;
-	const selectDeliveryManOrdersStatement = `SELECT order_id,coupon_id,delivery_man_id,user_id,user_address_id,order_status
+	const selectDeliveryManOrdersStatement = `SELECT order_id,coupon_id,delivery_man_id,user_id,order_department,order_status
   order_date,order_total FROM _order WHERE delivery_man_id = ?`;
 	const selectDeliveryManRatingsStatement = `SELECT delivery_man_rating_id,delivery_man_id,rating,
   order_id FROM delivery_man_rating WHERE delivery_man_id = ?`;
