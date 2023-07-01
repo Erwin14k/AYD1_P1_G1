@@ -62,6 +62,15 @@ module.exports.selectAnOrderToDeliver = async (req, res, next) => {
   };
   // Operations on db
   const result=await DeliveryMan.selectAnOrderToDeliver(args);
+  if(result==="Invalid Operation"){
+    // response
+    return res
+    .status(500)
+    .json({
+      status:500,
+      message: `Estimado repartidor, solo puede entregar un pedido a la vez, intente luego de entregar su pedido pendiente!`,
+    });
+  }
   // response
   return res
     .status(200)
@@ -85,6 +94,22 @@ module.exports.deliverOrder = async (req, res, next) => {
     .json({
       status:200,
       message: `El pedido No.: ${args.orderId}, fue entregado a su destino con éxito :)`,
+  });
+};
+
+// Cancel an order
+module.exports.cancelOrder = async (req, res, next) => {
+  let args = {
+    orderId:req.body.orderId,
+  };
+  // Operations on db
+  const result=await DeliveryMan.cancelOrder(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      message: `El pedido No.: ${args.orderId}, fue cancelado con éxito :(`,
   });
 };
 
