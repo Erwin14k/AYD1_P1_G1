@@ -10,7 +10,7 @@ import {
    TableHead,
    TableRow,
    Paper,
-   TextField,
+/*    TextField, */
    Radio,
    RadioGroup,
    FormControlLabel,
@@ -159,6 +159,7 @@ function Orders({ noUrl }) {
                               {orden.order_status === "Entregado" && (
                                  <ModalBaseRating
                                     order_id={orden.order_id}
+                                    delivery_id={orden.delivery_man_id}
                                     getPedidos={getPedidos}
                                  />
                               )}
