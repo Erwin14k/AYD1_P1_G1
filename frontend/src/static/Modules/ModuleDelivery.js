@@ -57,7 +57,8 @@ const ModuleDelivery = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                setHistorial(data.companyData[0].orders)
+                console.log(data)
+                setHistorial(data.deliveryManData[0].orders)
             })
             .catch((error) => {
                 // Handle any errors that occur during the request
