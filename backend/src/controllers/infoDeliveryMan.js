@@ -37,7 +37,7 @@ module.exports.changeAddress = async (req, res, next) => {
 };
 
 
-// Get all orders associated to the company
+// Get all orders associated to the delivery man
 module.exports.getAllDeliveryManOrders = async (req, res, next) => {
   let args = {
     deliveryManId:req.body.deliveryManId,
@@ -50,7 +50,7 @@ module.exports.getAllDeliveryManOrders = async (req, res, next) => {
     .json({
       status:200,
       message: "Historial de pedidos gestionados por este repartidor recuperados con éxito!!",
-      companyData:result,
+      deliveryManData:result,
   });
 };
 
@@ -85,5 +85,23 @@ module.exports.deliverOrder = async (req, res, next) => {
     .json({
       status:200,
       message: `El pedido No.: ${args.orderId}, fue entregado a su destino con éxito :)`,
+  });
+};
+
+
+// Get all avaliable orders
+module.exports.getAllAvaliableOrders = async (req, res, next) => {
+  let args = {
+    deliveryManId:req.body.deliveryManId,
+  };
+  // Operations on db
+  const result=await DeliveryMan.getAllAvaliableOrders(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      message: "Todos los pedidos disponibles en tu zona para entregar recuperados con éxito!",
+      deliveryManData:result,
   });
 };

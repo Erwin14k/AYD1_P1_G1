@@ -228,6 +228,18 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Function to obtain the department of a delivery man by the delivery_man_id
+DELIMITER //
+CREATE FUNCTION getDeliveryManDepartment(deliveryManIdParam BIGINT) RETURNS VARCHAR(100)
+BEGIN
+  DECLARE deliveryManDepartment VARCHAR(100);
+  SELECT CONCAT(delivery_man_department,'') INTO deliveryManDepartment
+  FROM delivery_man
+  WHERE delivery_man_id = deliveryManIdParam;
+  RETURN deliveryManDepartment;
+END //
+DELIMITER ;
+
 
 -- Function to obtain the full name of a client by the user_id
 DELIMITER //
