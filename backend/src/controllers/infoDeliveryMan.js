@@ -105,3 +105,21 @@ module.exports.getAllAvaliableOrders = async (req, res, next) => {
       deliveryManData:result,
   });
 };
+
+
+// Get delivery man comissions
+module.exports.getComissions = async (req, res, next) => {
+  let args = {
+    deliveryManId:req.body.deliveryManId,
+  };
+  // Operations on db
+  const result=await DeliveryMan.getComissions(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      message: "El dato de comisiones generadas por este repartidor obtenido con éxito!",
+      deliveryManData:result.totalComissions[0],
+  });
+};

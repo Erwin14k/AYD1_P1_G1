@@ -189,3 +189,14 @@ module.exports.getAllAvaliableOrders = async ({deliveryManId}) => {
   dataCollected.push({ "orders": results });
   return dataCollected;
 };
+
+
+// Get delivery man comissions
+module.exports.getComissions = async ({deliveryManId}) => {
+	// db querys
+  // Obtain the devliery man comission total
+  const comissionStatement=`SELECT calculate_total_commission(?) AS totalComissions`
+  const comissionBinds=[deliveryManId];
+  const comission = await db.pool(comissionStatement, comissionBinds);
+  return { "totalComissions": comission };
+};

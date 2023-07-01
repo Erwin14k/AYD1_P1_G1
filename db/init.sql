@@ -288,3 +288,15 @@ BEGIN
   RETURN comboName;
 END //
 DELIMITER ;
+
+-- Function to obtain the total comission accumulated by a delivery man
+DELIMITER //
+CREATE FUNCTION calculate_total_commission(deliveryManId BIGINT) RETURNS DECIMAL(10,2)
+BEGIN
+  DECLARE totalCommission DECIMAL(10,2) DEFAULT 0;
+  SELECT IFNULL(SUM(order_commission), 0) INTO totalCommission
+  FROM _order
+  WHERE delivery_man_id = deliveryManId;
+  RETURN totalCommission;
+END//
+DELIMITER ;
