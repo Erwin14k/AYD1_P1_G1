@@ -179,7 +179,7 @@ module.exports.deliverOrder = async ({orderId}) => {
 module.exports.cancelOrder = async ({orderId}) => {
   const updateOrderStatement = `UPDATE _order SET order_status = ? WHERE order_id = ?`;
   // bindings
-  const binds = ["Cancleado",orderId];
+  const binds = ["Cancelado",orderId];
   return await db.pool(updateOrderStatement, binds);
 };
 
@@ -195,9 +195,9 @@ module.exports.getAllAvaliableOrders = async ({deliveryManId}) => {
 	const selectDeliveryManOrdersStatement = `SELECT order_id,user_id,
   company_id,order_status,order_date,order_total,order_commission,
   getCompanyName(company_id) AS company_name,getClientName(user_id) AS user_name,order_department
-  FROM _order WHERE order_department = ?`;
+  FROM _order WHERE order_department = ? AND order_status = ?`;
   // bindings
-  const binds = [department];
+  const binds = [department[0].deliveryManDepartment,"Aprobado"];
   // Info collected
 	let dataCollected=[];
   const results = await db.pool(selectDeliveryManOrdersStatement, binds);
