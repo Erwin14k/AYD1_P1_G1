@@ -65,11 +65,11 @@ const Historial = ({ historial }) => {
                onChange={handleChange}
                row
             >
-               {/* <FormControlLabel
-                  value="Esperando"
+               {<FormControlLabel
+                  value="En camino"
                   control={<Radio />}
-                  label="Esperando"
-               /> */}
+                  label="En camino"
+               />}
                <FormControlLabel
                   value="Cancelado"
                   control={<Radio />}
