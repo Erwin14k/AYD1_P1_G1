@@ -62,7 +62,6 @@ const ModuleDelivery = () => {
             .then((data) => {
                 setHistorial(data.deliveryManData[0].orders)
                 const actual = data.deliveryManData[0].orders.find(pedido => pedido.order_status === 'En camino');
-                console.log(actual);
                 setPedidoAsignado(actual)
             })
             .catch((error) => {
@@ -95,6 +94,7 @@ const ModuleDelivery = () => {
                     icon: response.status === 200 ? "success" : "error",
                     button: true,
                 })
+                actualizar();
             })
     };
 
@@ -122,8 +122,43 @@ const ModuleDelivery = () => {
                     icon: response.status === 200 ? "success" : "error",
                     button: true,
                 })
+                actualizar();
             })
     };
+
+    const aceptarPedido = (e, id) => {
+        e.preventDefault();
+        const body = {
+            orderId: id
+        }
+        fetch(`http://localhost:4200/delivery-man/select-an-order-to-deliver`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+            },
+            body: JSON.stringify(body)
+        })
+            .then(res => res.json())
+            .catch(err => {
+                console.error('Error:', err)
+            })
+            .then(async response => {
+                await swal({
+                    title: "Querido Usuario Repartidor",
+                    text: response.message,
+                    icon: response.status === 200 ? "success" : "error",
+                    button: true,
+                })
+                actualizar();
+            })
+    }
+
+    const actualizar = () =>{
+        getHistorial();
+        getComisiones();
+        getOrdenesDisponible();
+    }
 
     useEffect(() => {
         getHistorial();
@@ -188,11 +223,39 @@ const ModuleDelivery = () => {
                     </div> : <div className="col">
                         <div className="no-orders-message">No tiene pedido asignado.</div>
                     </div>}
-
-
                 </div>
                 <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <center><h3 style={{ marginTop: "2%" }}>SOLICITUDES DE ENTREGA</h3></center>
+
+                    <table className="table" style={{ width: "100%", margin: "auto", marginTop: "2%" }}>
+                        <thead className="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Empresa</th>
+                                <th>Cliente</th>
+                                <th>Estado</th>
+                                <th>Departamento</th>
+                                <th>Total</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {solicitudes.map((pedido, index) => {
+                                return (
+                                    <tr className='table-light' key={`P${index}`}>
+                                        <td>{pedido.order_id}</td>
+                                        <td>{pedido.company_name}</td>
+                                        <td>{pedido.user_name}</td>
+                                        <td>{pedido.order_status}</td>
+                                        <td>{pedido.order_department}</td>
+                                        <td>{pedido.order_total}</td>
+                                        <td><button className='btn btn-success' onClick={(e) => aceptarPedido(e, pedido.order_id)}>Aceptar</button></td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+
                 </div>
                 <div className="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="profile-tab">
                     <center><h3 style={{ marginTop: "2%" }}>HISTORIAL DE ENTREGA</h3></center>
