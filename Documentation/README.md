@@ -140,7 +140,7 @@ Por el momento el frontend y el backen solo se han utilizado de forma local debi
 
 
 # Diagrama de despliegue
-![Untitled](Images/Despliegue.png)
+![Untitled](https://raw.githubusercontent.com/Erwin14k/AYD1_P1_G1/feature/documentacion/Documentation/Images/Despliegue.png?token=GHSAT0AAAAAACD25IYO2WNGD5S4CBZKHMAEZFCY5VA)
 
 # Casos de uso
 
@@ -149,7 +149,7 @@ Los casos de uso son una técnica para especificar el comportamiento de un siste
 
 
 # User Story Map
-![Untitled](Images/Storymap.png)
+![Untitled](https://raw.githubusercontent.com/Erwin14k/AYD1_P1_G1/feature/documentacion/Documentation/Images/Storymap.png?token=GHSAT0AAAAAACD25IYPWO5K2452DRAWBSROZFCY6IQ)
 
 ## Casos de uso de alto nivel en AlChilazo
 
