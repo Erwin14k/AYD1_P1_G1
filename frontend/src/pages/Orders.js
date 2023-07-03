@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import ModalBaseRating from "../components/ModalBaseRating";
-
+import ModalOrden from "../components/ModalOrden";
 import Cookie from "cookie-universal";
 const cookies = Cookie();
 
@@ -56,8 +56,10 @@ function Orders({ noUrl }) {
             //console.log("===pedidos===", data);
             //console.log("Datos pedidos", data.UserData[0].orders);
             // console.log("Datos pedidos", data.UserData[0].orders[0]);
-            setOrders(data.UserData[0].orders);
-            setShowOrders(data.UserData[0].orders);
+            
+           
+            setOrders(data.UserData);
+            setShowOrders(data.UserData);
          })
          .catch((error) => {
             // Handle any errors that occur during the request
@@ -89,6 +91,7 @@ function Orders({ noUrl }) {
                   name="radio-buttons-group"
                   value={value}
                   onChange={handleChange}
+                  row
                >
                   <FormControlLabel
                      value="Esperando"
@@ -149,20 +152,20 @@ function Orders({ noUrl }) {
                            </TableCell>
 
                            <TableCell align="right">
-                              <Button
-                                 variant="outlined"
-                                 style={{ marginRight: "10px" }}
-                              >
-                                 Ver
-                              </Button>
 
-                              {orden.order_status === "Entregado" && (
+                           {orden.order_status === "Entregado" && (
                                  <ModalBaseRating
                                     order_id={orden.order_id}
                                     delivery_id={orden.delivery_man_id}
                                     getPedidos={getPedidos}
+
+                                  
                                  />
                               )}
+
+                                 <ModalOrden items={orden.items}   total={orden.order_total} tipo={0} comision={orden.order_commission}/>
+
+                             
                            </TableCell>
 
                           
