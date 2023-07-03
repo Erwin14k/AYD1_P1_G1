@@ -18,7 +18,7 @@ function Perfil({ noUrl }) {
     const [deliveryInfo, setDeliveryInfo] = useState({})
 
     const peticion = useCallback(() => {
-        fetch(`http://localhost:4200/delivery-man/info`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/delivery-man/info`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
@@ -67,7 +67,7 @@ function Perfil({ noUrl }) {
             newMunicipality: e.target[2].value
         }
 
-        fetch(`http://localhost:4200/delivery-man/change-address`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/delivery-man/change-address`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

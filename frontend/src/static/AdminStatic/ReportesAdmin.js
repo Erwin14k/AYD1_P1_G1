@@ -18,7 +18,7 @@ const ReportesAdmin = () => {
    const [topProductos, setTopProductos] = useState([])
 
    const topProduct = () => {
-      fetch(`http://localhost:4200/admin/get-most-selled-products`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/admin/get-most-selled-products`, {
          method: "GET",
          headers: {
             "Content-Type": "application/json",
@@ -40,7 +40,7 @@ const ReportesAdmin = () => {
    }
 
    const topDelivery = () => {
-      fetch(`http://localhost:4200/admin/get-top5-delivery-man`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/admin/get-top5-delivery-man`, {
          method: "GET",
          headers: {
             "Content-Type": "application/json",
@@ -73,7 +73,7 @@ const ReportesAdmin = () => {
 
    const topCompanie = () => {
       topProduct();
-      fetch(`http://localhost:4200/admin/get-top-5-companies`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/admin/get-top-5-companies`, {
          method: "GET",
          headers: {
             "Content-Type": "application/json",
@@ -107,7 +107,7 @@ const ReportesAdmin = () => {
    const actualizar = () => {
       topCompanie();
       topDelivery();
-      fetch(`http://localhost:4200/admin/users-counters`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/admin/users-counters`, {
          method: "GET",
          headers: {
             "Content-Type": "application/json",

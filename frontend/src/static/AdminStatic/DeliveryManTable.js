@@ -9,7 +9,7 @@ const DeliveryManTable = ({ refresh }) => {
     const [deliveryInfo, setDeliveryInfo] = useState([])
 
     const actualizar = () => {
-        fetch(`http://localhost:4200/admin/get-all-waiting-change-address-request`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/admin/get-all-waiting-change-address-request`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
@@ -37,7 +37,7 @@ const DeliveryManTable = ({ refresh }) => {
             changeAddressId: idSolicitud
         }
         console.log("botton", body)
-        fetch(`http://localhost:4200/admin/delivery-man-change-address-request`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/admin/delivery-man-change-address-request`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

@@ -15,7 +15,7 @@ const ModuleDelivery = () => {
     const [pedidoAsignado, setPedidoAsignado] = useState({})
 
     const getComisiones = useCallback(() => {
-        fetch(`http://localhost:4200/delivery-man/get-comission`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/delivery-man/get-comission`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -33,7 +33,7 @@ const ModuleDelivery = () => {
     }, []);
 
     const getOrdenesDisponible = useCallback(() => {
-        fetch(`http://localhost:4200/delivery-man/get-avaliable-orders`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/delivery-man/get-avaliable-orders`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -51,7 +51,7 @@ const ModuleDelivery = () => {
     }, []);
 
     const getHistorial = useCallback(() => {
-        fetch(`http://localhost:4200/delivery-man/get-all-orders`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/delivery-man/get-all-orders`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -76,7 +76,7 @@ const ModuleDelivery = () => {
             orderId: pedidoAsignado.order_id
         }
 
-        fetch(`http://localhost:4200/delivery-man/deliver-order`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/delivery-man/deliver-order`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -104,7 +104,7 @@ const ModuleDelivery = () => {
             orderId: pedidoAsignado.order_id
         }
 
-        fetch(`http://localhost:4200/delivery-man/cancel-order`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/delivery-man/cancel-order`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -132,7 +132,7 @@ const ModuleDelivery = () => {
         const body = {
             orderId: id
         }
-        fetch(`http://localhost:4200/delivery-man/select-an-order-to-deliver`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/delivery-man/select-an-order-to-deliver`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

@@ -45,7 +45,7 @@ function Orders({ noUrl }) {
       const crr_user = cookies.get("crr_user");
 
       //console.log("====pedidos====");
-      fetch(`http://localhost:4200/user/get-all-orders`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/user/get-all-orders`, {
          method: "GET",
          headers: {
             Authorization: `Bearer ${crr_user.data[0].authToken}`,

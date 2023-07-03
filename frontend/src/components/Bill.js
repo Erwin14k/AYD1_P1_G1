@@ -27,7 +27,7 @@ const Bill = () => {
    const getCompany = () => {
       const crr_user = cookies.get("crr_user");
       // console.log("====Company====");
-      fetch(`http://localhost:4200/user/get-all-companies`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/user/get-all-companies`, {
          method: "GET",
          headers: {
             /* "Content-Type": "application/json", */
@@ -170,7 +170,7 @@ const Bill = () => {
       console.log("=====GENRRAR=======");
       console.log( data);
       console.log( JSON.stringify(data));
-      fetch(`http://localhost:4200/user/generate-order`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/user/generate-order`, {
          method: "POST",
          headers: {
             "Content-Type": "application/json", 

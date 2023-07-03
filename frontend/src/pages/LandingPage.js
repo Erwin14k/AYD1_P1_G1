@@ -9,9 +9,16 @@ import r3 from '../assets/r3.jpg'
 import v1 from '../assets/v1.jpg'
 
 import Footer from "../components/Footer";
+import { useEffect } from 'react';
 
 
 function LandingPage() {
+
+    useEffect(() => {
+       console.log(`endpoints: `,`${process.env.REACT_APP_PUERTO}`);
+    }, [])
+
+
     return (
         <div>
             <NavBar className="nav" customContend={<NavBarLanding />} />

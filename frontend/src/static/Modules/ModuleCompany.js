@@ -35,7 +35,7 @@ const ModuleCompany = () => {
 
     const actualizar = () => {
         console.log("actualizar")
-        fetch(`http://localhost:4200/company/info`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/company/info`, {
             method: "GET",
             headers: {
                 /* "Content-Type": "application/json", */
@@ -71,7 +71,7 @@ const ModuleCompany = () => {
 
         //console.log("RESULRS", willDelete)
         if (willDelete) {
-            fetch(`http://localhost:4200/company/${url}`, {
+            fetch(`http://${process.env.REACT_APP_PUERTO}:4200/company/${url}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -110,7 +110,7 @@ const ModuleCompany = () => {
 
         console.log("RESULRS", willDelete)
         if (willDelete) {
-            fetch(`http://localhost:4200/company/${url}`, {
+            fetch(`http://${process.env.REACT_APP_PUERTO}:4200/company/${url}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -265,7 +265,7 @@ const ModuleCompany = () => {
 
             }
 
-            fetch(`http://localhost:4200/${url}`, {
+            fetch(`http://${process.env.REACT_APP_PUERTO}:4200/${url}`, {
                 method: "POST",
                 headers: {
                     /* "Content-Type": "application/json", */

@@ -16,7 +16,7 @@ function FormProducts({ type, operation, id, actualizar }) {
 
    const update = () => {
       console.log("update")
-      fetch(`http://localhost:4200/company/info`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/company/info`, {
           method: "GET",
           headers: {
               Authorization: `Bearer ${crr_user.data[0].authToken}`, 
@@ -79,7 +79,7 @@ function FormProducts({ type, operation, id, actualizar }) {
       formData.append("productType", e.target[5].value)
       formData.append("productNumberOfSales", 0)
       
-      fetch(`http://localhost:4200/company/new-product`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/company/new-product`, {
             method: "POST",
             headers: {
                Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
@@ -119,7 +119,7 @@ function FormProducts({ type, operation, id, actualizar }) {
       formData.append("comboStock", e.target[4].value)
       formData.append("comboNumberOfSales", 0)
 
-      fetch(`http://localhost:4200/company/new-combo`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/company/new-combo`, {
             method: "POST",
             headers: {
                Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
