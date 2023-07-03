@@ -198,20 +198,23 @@ no este registrado con anterioridad para poder registrarse y ofrecer sus product
 **Descripción:** El repartidor puede acceder a un apartado para visualizar sus datos de perfil,
 incluidas sus calificaciones.
 
-
+```
+```
 **Caso de uso:** Deshabilitar usuario
 **Actores:** Administrador
 **Tipo:** Primario
 **Descripción:** El administrador deshabilita la cuenta de un usuario.
 
-
+```
+```
 **Caso de uso:** Reportes de administración
 
 **Actores:** Administrador
 **Tipo:** Primario
 **Descripción:** El administrador accede a la vista de reportes para obtener información detallada.
 
-
+```
+```
 
 **Caso de uso:** Historial de pedidos
 
@@ -225,7 +228,8 @@ incluidas sus calificaciones.
 **Tipo: Primario
 **Descripción: El repartidor llena el formulario de solicitud de cambio de zona y lo envía a la administración.
 
-
+```
+```
 **Caso de uso:** Información del pedido asignado
 
 **Actores:** Repartidor
@@ -400,6 +404,28 @@ Cuando el usuario regresa al sitio, el sistema muestra un mensaje recordatorio c
 
 
 
+```
+
+```
+Caso de uso: Historial de órdenes del usuario
+
+Actores: Usuario
+Tipo: Primario
+Descripción: El usuario accede al historial de órdenes para ver las órdenes previas realizadas.
+
+Flujo normal:
+
+El usuario inicia sesión en su cuenta.
+El usuario navega hasta la sección de historial de órdenes.
+El sistema muestra una lista de las órdenes realizadas por el usuario, ordenadas por fecha de compra.
+El usuario puede seleccionar una orden específica para ver los detalles.
+El sistema muestra los detalles de la orden, como los productos comprados, la fecha de compra, el número de seguimiento (si está disponible), etc.
+El usuario puede revisar la información de la orden y, si lo desea, imprimir una copia o guardar los detalles para referencia futura.
+Flujo alternativo - Sin órdenes:
+
+El usuario accede a la sección de historial de órdenes.
+El sistema no encuentra ninguna orden asociada a la cuenta del usuario.
+El sistema muestra un mensaje indicando que no hay órdenes registradas.
 ```
 
 # Herramienta de gestión de proyectos
