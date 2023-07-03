@@ -8,7 +8,7 @@ const UsersTable = ({ refresh }) => {
     const [usersInfo, setUsersInfo] = useState([])
 
     const llenarTabla = () => {
-        fetch(`http://localhost:4200/admin/get-all-clients`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/admin/get-all-clients`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
@@ -41,7 +41,7 @@ const UsersTable = ({ refresh }) => {
         })
 
         if (willDelete) {
-            fetch(`http://localhost:4200/admin/disable-client`, {
+            fetch(`http://${process.env.REACT_APP_PUERTO}:4200/admin/disable-client`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",

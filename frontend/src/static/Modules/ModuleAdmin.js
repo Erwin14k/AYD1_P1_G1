@@ -30,7 +30,7 @@ const ModuleAdmin = () => {
         }
         // console.log(`Bearer ${crr_user.data[0].authToken}`);
 
-        fetch(`http://localhost:4200/admin/info`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/admin/info`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -60,7 +60,7 @@ const ModuleAdmin = () => {
             deliveryManStatus: e.target.value
         }
         console.log("botton", body)
-        fetch(`http://localhost:4200/admin/delivery-man-request`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/admin/delivery-man-request`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -93,7 +93,7 @@ const ModuleAdmin = () => {
             companyStatus: e.target.value
         }
         console.log("botton", body)
-        fetch(`http://localhost:4200/admin/company-request`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/admin/company-request`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

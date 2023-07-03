@@ -34,14 +34,14 @@ function App() {
           <Route path="/politicas" element={<Politicas/>} />
 
           <Route element={<ProtectedRouteLogin redirectTo="/" condition={undefined} />}>
-            <Route path="/Login-Admin" element={<SingIn url={"http://localhost:4200/admin/login"} noUrl={0}/>}/>
-            <Route path="/Login-Cliente" element={<SingIn url={"http://localhost:4200/user/login"} noUrl={1}/>}/>
-            <Route path="/Login-Repartidor" element={<SingIn url={"http://localhost:4200/delivery-man/login"} noUrl={2}/>}/>
-            <Route path="/Login-Empresa" element={<SingIn url={"http://localhost:4200/company/login"} noUrl={3}/>} />
+            <Route path="/Login-Admin" element={<SingIn url={`http://${process.env.REACT_APP_PUERTO}:4200/admin/login`} noUrl={0}/>}/>
+            <Route path="/Login-Cliente" element={<SingIn url={`http://${process.env.REACT_APP_PUERTO}:4200/user/login`} noUrl={1}/>}/>
+            <Route path="/Login-Repartidor" element={<SingIn url={`http://${process.env.REACT_APP_PUERTO}:4200/delivery-man/login`} noUrl={2}/>}/>
+            <Route path="/Login-Empresa" element={<SingIn url={`http://${process.env.REACT_APP_PUERTO}:4200/company/login`} noUrl={3}/>} />
             
-            <Route path="/SingUp-Cliente" element={<SingUp  noUrl={1} customContent={<SingUpClient url={"http://localhost:4200/user/register"}/>} />}/>
-            <Route path="/SingUp-Repartidor" element={<SingUp  noUrl={2} customContent={<SingUpDeliveryMan url={"http://localhost:4200/delivery-man/register"}/>} />}/>
-            <Route path="/SingUp-Empresa" element={<SingUp  noUrl={3} customContent={<SingUpCompany url={"http://localhost:4200/company/register"}/>} />}/>
+            <Route path="/SingUp-Cliente" element={<SingUp  noUrl={1} customContent={<SingUpClient url={`http://${process.env.REACT_APP_PUERTO}:4200/user/register`}/>} />}/>
+            <Route path="/SingUp-Repartidor" element={<SingUp  noUrl={2} customContent={<SingUpDeliveryMan url={`http://${process.env.REACT_APP_PUERTO}:4200/delivery-man/register`}/>} />}/>
+            <Route path="/SingUp-Empresa" element={<SingUp  noUrl={3} customContent={<SingUpCompany url={`http://${process.env.REACT_APP_PUERTO}:4200/company/register`}/>} />}/>
           </Route>
 
           {/*admin = 0*/}

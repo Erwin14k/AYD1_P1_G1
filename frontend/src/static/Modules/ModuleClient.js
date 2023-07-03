@@ -24,7 +24,7 @@ const ModuleClient = () => {
 
    const getProducts = () => {
       // console.log("====Productos=====");
-      fetch(`http://localhost:4200/user/get-all-products`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/user/get-all-products`, {
          method: "GET",
          headers: {
             /* "Content-Type": "application/json", */
@@ -45,7 +45,7 @@ const ModuleClient = () => {
 
    const getCombos = () => {
       // console.log("====Combos====");
-      fetch(`http://localhost:4200/user/get-all-combos`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/user/get-all-combos`, {
          method: "GET",
          headers: {
             /* "Content-Type": "application/json", */
@@ -66,7 +66,7 @@ const ModuleClient = () => {
 
    const getCompany = () => {
       // console.log("====Company====");
-      fetch(`http://localhost:4200/user/get-all-companies`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/user/get-all-companies`, {
          method: "GET",
          headers: {
             /* "Content-Type": "application/json", */

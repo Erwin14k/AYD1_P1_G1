@@ -12,7 +12,7 @@ const CompanyOrders = ({refresh}) => {
 
     const llenarOrdenes = useCallback(() => {
         console.log("Llenar Ordenes")
-        fetch(`http://localhost:4200/company/get-all-waiting-orders`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/company/get-all-waiting-orders`, {
             method: "GET",
             headers: {
                 /* "Content-Type": "application/json", */
@@ -36,7 +36,7 @@ const CompanyOrders = ({refresh}) => {
         const body = {
             orderId: id
         }
-        fetch(`http://localhost:4200/company/${url}`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/company/${url}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

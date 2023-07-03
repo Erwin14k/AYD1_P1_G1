@@ -48,7 +48,7 @@ const ModalBaseRating = ({ order_id, delivery_id, getPedidos }) => {
          rating: value,
          orderId: order_id
       }
-      fetch(`http://localhost:4200/user/set-order-rate`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/user/set-order-rate`, {
          method: "POST",
          headers: {
             "Content-Type": "application/json",

@@ -57,7 +57,7 @@ const ModalBaseCupones = ({ cuponI, setCupon, setTotal, total }) => {
    const getCupons = () => {
       console.log("====Cupones====");
       
-      fetch(`http://localhost:4200/user/get-all-coupons`, {
+      fetch(`http://${process.env.REACT_APP_PUERTO}:4200/user/get-all-coupons`, {
          method: "GET",
          headers: {
             /* "Content-Type": "application/json", */

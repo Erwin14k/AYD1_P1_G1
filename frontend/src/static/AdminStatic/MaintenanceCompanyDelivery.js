@@ -9,7 +9,7 @@ const MaintenaceCompanyDelivery = ({ refresh, url, noUrl }) => {
 
     const llenarTabla = () => {
 
-        fetch(`http://localhost:4200/admin/${url}`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/admin/${url}`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
@@ -48,7 +48,7 @@ const MaintenaceCompanyDelivery = ({ refresh, url, noUrl }) => {
 
         if (willDelete) {
 
-            fetch(`http://localhost:4200/admin/disable-${furl}`, {
+            fetch(`http://${process.env.REACT_APP_PUERTO}:4200/admin/disable-${furl}`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",

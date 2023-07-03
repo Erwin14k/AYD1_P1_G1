@@ -12,7 +12,7 @@ const ReportesEmpresa = () => {
     const [orders, setOrders] = useState([]);
 
     const getMostSelledProduct = useCallback(() => {
-        fetch(`http://localhost:4200/company/get-most-selled-products`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/company/get-most-selled-products`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
@@ -33,7 +33,7 @@ const ReportesEmpresa = () => {
     }, []);
 
     const getAllOrders = useCallback(() => {
-        fetch(`http://localhost:4200/company/get-all-orders`, {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/company/get-all-orders`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
