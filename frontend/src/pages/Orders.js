@@ -44,7 +44,7 @@ function Orders({ noUrl }) {
    const getPedidos = () => {
       const crr_user = cookies.get("crr_user");
 
-      console.log("====pedidos====");
+      //console.log("====pedidos====");
       fetch(`http://localhost:4200/user/get-all-orders`, {
          method: "GET",
          headers: {
@@ -53,7 +53,7 @@ function Orders({ noUrl }) {
       })
          .then((response) => response.json())
          .then((data) => {
-            //console.log("===pedidos===", data);
+            console.log("===pedidos===", data);
             //console.log("Datos pedidos", data.UserData[0].orders);
             // console.log("Datos pedidos", data.UserData[0].orders[0]);
             

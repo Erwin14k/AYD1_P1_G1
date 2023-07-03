@@ -58,14 +58,16 @@ const ModalBaseRating = ({ order_id, delivery_id, getPedidos }) => {
       })
          .then((response) => response.json())
          .then(async (data) => {
+            getPedidos();
             await swal({
                title: `Querido Usuario`,
                text: data.message,
                icon: data.status === 200 ? "success" : "error",
                button: true,
             })
+          
             setOpen(false);
-            getPedidos();
+            
          })
          .catch((error) => {
             // Handle any errors that occur during the request
