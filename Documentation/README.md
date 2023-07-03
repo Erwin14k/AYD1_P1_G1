@@ -140,7 +140,7 @@ Por el momento el frontend y el backen solo se han utilizado de forma local debi
 
 
 # Diagrama de despliegue
-![Untitled](Images/despliegue.png)
+![Untitled](Images/Despliegue.png)
 
 # Casos de uso
 
@@ -149,7 +149,7 @@ Los casos de uso son una técnica para especificar el comportamiento de un siste
 
 
 # User Story Map
-![Untitled](Images/Story map.png)
+![Untitled](Images/Storymap.png)
 
 ## Casos de uso de alto nivel en AlChilazo
 
