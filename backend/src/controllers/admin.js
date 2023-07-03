@@ -16,7 +16,7 @@ module.exports.adminLogin = async (req, res, next) => {
       // If the admin is not active
       return res.status(403).json({
         status: 403,
-        message: "Esta cuenta de administrador se encuentra inhablitada!",
+        message: "Esta cuenta de administrador se encuentra inhabilitada!",
       });
     }
     // Find the password
