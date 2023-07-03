@@ -303,7 +303,33 @@ module.exports.approveOrder = async ({orderId}) => {
   const updateOrderStatement = `UPDATE _order SET order_status = ? WHERE order_id = ?`;
   // bindings
   const binds = ["Aprobado",orderId];
-  return await db.pool(updateOrderStatement, binds);
+  await db.pool(updateOrderStatement, binds);
+
+
+  const selectOrderDetail=`SELECT order_id,product_id,
+    product_name,combo_id,combo_name,product_ammount
+    FROM order_detail WHERE order_id = ?`
+    //binds
+  const detailBinds=[orderId];
+  const detailResult = await db.pool(selectOrderDetail, detailBinds);
+  for (const item of detailResult) {
+    //verify if is a product
+    if(item.product_id){
+      const updateProductStatement=`UPDATE product
+      SET product_number_of_sales = product_number_of_sales + ?
+      WHERE product_id = ?`
+      const productBinds=[item.product_ammount,item.product_id];
+      await db.pool(updateProductStatement,productBinds);
+    }
+    //verify if is a combo
+    if(item.combo_id){
+      const updateComboStatement=`UPDATE combo
+      SET combo_number_of_sales = combo_number_of_sales + ?
+      WHERE combo_id = ?`
+      const comboBinds=[item.product_ammount,item.combo_id];
+      await db.pool(updateComboStatement,comboBinds);
+    }
+  }
 };
 
 // Decline an order
