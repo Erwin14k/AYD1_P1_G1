@@ -13,12 +13,12 @@ jobs:
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
           registry: docker.pkg.github.com
-          repository: ${{github.repository}}/alchilazoBackend
+          repository: ${{github.repository}}/alchilazo_backend
           tags: latest, ${{github.run_number}}
       - name: Publish to Docker hub
         uses: docker/build-push-action@v1
         with:
           username: ${{secrets.DOCKER_USERNAME}}
           password: ${{secrets.DOCKER_PASSWORD}}
-          repository: erwin14k/alchilazoBackend
+          repository: erwin14k/alchilazo_backend
           tags: latest, ${{github.run_number}}
