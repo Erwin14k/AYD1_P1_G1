@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --verbose --runInBand --coverage --detectOpenHandles",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js"
   },
@@ -27,6 +27,8 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "jest": "^29.5.0",
+    "supertest": "^6.3.3",
     "nodemon": "^2.0.22"
   }
 }
