@@ -84,13 +84,17 @@ Reportes Administrador
 ![Untitled](Images/AdminOptions.png)
 
 Top 5
-![Untitled](Images/Top5Productos.png)
+![Untitled](Images/top5Productos.png)
 
 
 ![Untitled](Images/topdelivery.png)
 
 
 ![Untitled](Images/topVentas.png)
+
+Reportes Usuarios
+![Untitled](Images/InformeUsuarios.png)
+
 
 
 Listar ordenes recibidas - Empresa
