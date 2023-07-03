@@ -1,4 +1,4 @@
-import React, {updateState} from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import OnOff from '../../assets/OnOff.png'
@@ -13,7 +13,7 @@ const cookies = Cookie()
 
 
 const NavBarModule = ({ noUrl }) =>  {
-    const forceUpdate = React.useCallback(() => updateState({}), []);
+
 
     const logout = (e) => {
         cookies.remove("crr_user")
