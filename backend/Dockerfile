@@ -7,7 +7,7 @@ ENV PORT="4200"
 ENV DB_HOST="alchilazo.cxrmksgpe29a.us-east-2.rds.amazonaws.com"
 ENV DB_USER="root"
 ENV DB_PASSWORD="rootroot"
-ENV DB_NAME="al_chilazo"
+ENV DB_NAME="al_chilazo" 
 
 ENV BUCKET_NAME="ayd1storagedata"
 
