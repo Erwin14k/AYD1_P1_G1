@@ -16,9 +16,10 @@ import {
    FormLabel,
    Button,
 } from "@mui/material";
+import ModalOrden from "../../components/ModalOrden";
 
 const Historial = ({ historial }) => {
-   //console.log("Historial", historial);
+    console.log("historial", historial);
    const [name, setName] = useState("");
    const [value, setValue] = useState("Todos");
    const [ShowHistorial, setShowHistorial] = useState([]);
@@ -130,6 +131,7 @@ const Historial = ({ historial }) => {
                   <th>Cliente</th>
                   <th>Estado</th>
                   <th>Fecha</th>
+                  <th>Detalle</th>
                   <th>Calificación</th>
                </tr>
             </thead>
@@ -153,6 +155,10 @@ const Historial = ({ historial }) => {
                               }
                            )}
                         </td>
+                        <td> 
+                            <ModalOrden items={pedido.items} total={pedido.order_total} comision={pedido.order_commission}  />
+                           
+                              </td>
                         <td>
                            {pedido.order_status === "Calificado" ? (
                               <>{pedido.rating}</>

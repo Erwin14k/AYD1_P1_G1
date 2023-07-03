@@ -60,8 +60,9 @@ const ModuleDelivery = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                setHistorial(data.deliveryManData[0].orders)
-                const actual = data.deliveryManData[0].orders.find(pedido => pedido.order_status === 'En camino');
+                console.log(data.deliveryManData)
+                setHistorial(data.deliveryManData)
+                const actual = data.deliveryManData.find(pedido => pedido.order_status === 'En camino');
                 setPedidoAsignado(actual)
             })
             .catch((error) => {

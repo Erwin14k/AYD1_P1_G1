@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import swal from 'sweetalert';
 import Cookie from "cookie-universal";
+import ModalOrden from '../../components/ModalOrden';
 const cookies = Cookie();
 const crr_user = cookies.get("crr_user");
+
+
 
 const CompanyOrders = ({refresh}) => {
     const [orders, setOrders] = useState([]);
@@ -18,6 +21,7 @@ const CompanyOrders = ({refresh}) => {
         })
             .then((response) => response.json())
             .then((data) => {
+                console.log("data", data)
                 console.log(data.companyData)
                 setOrders(Object.values(data.companyData))
             })
@@ -67,7 +71,7 @@ const CompanyOrders = ({refresh}) => {
                     <tr >
                         <th>ID</th>
                         <th>Cliente</th>
-                        <th>Productos</th>
+                        <th>Detalle</th>
                         <th>Total</th>
                         <th>Estado</th>
                         <th>Opciones</th>
@@ -79,11 +83,12 @@ const CompanyOrders = ({refresh}) => {
                             <td>{order.order_id}</td>
                             <td>{order.user_name}</td>
                             <td>
-                                <ul>
+                            <ModalOrden items={order.items}   total={order.order_total} tipo={1} comision={order.order_commission}/>
+                                {/* <ul>
                                     {order.items.map((product, index) => (
                                         <li key={index}>{product.product_ammount} {" -> "} {product.product_name === null ? product.combo_name : product.product_name}</li>
                                     ))}
-                                </ul>
+                                </ul> */}
                             </td>
                             <td>Q. {order.order_total}</td>
                             <td>{order.order_status}</td>
