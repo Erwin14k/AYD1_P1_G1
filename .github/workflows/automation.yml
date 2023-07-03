@@ -1,24 +1,14 @@
 name: Dockerize Alchilazo App
 on: push
 jobs:
-  build-container:
+  build:
     name: Build Docker container image
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Publish to Github Packages
-        uses: docker/build-push-action@v1
+      - uses: actions/checkout@master
+      - name: Publish to Docker Repository
+        uses: erwin14k/Publish-Docker-Github-Action@master
         with:
-          username: ${{github.actor}}
-          password: ${{secrets.GITHUB_TOKEN}}
-          registry: docker.pkg.github.com
-          repository: ${{github.repository}}/alchilazo_backend
-          tags: latest, ${{github.run_number}}
-      - name: Publish to Docker hub
-        uses: docker/build-push-action@v1
-        with:
+          name: erwin14k/alchilazo_backend
           username: ${{secrets.DOCKER_USERNAME}}
           password: ${{secrets.DOCKER_PASSWORD}}
-          repository: erwin14k/alchilazo_backend
-          tags: latest, ${{github.run_number}}
