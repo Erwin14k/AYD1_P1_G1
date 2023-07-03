@@ -1,8 +1,24 @@
 const express = require("express");
 const router = express.Router();
 
-const { userInfo } = require("../controllers/infoUser");
+const {
+  userInfo,
+  getAllProducts,
+  getAllCombos,
+  getAllCompanies,
+  getAllUserOrders,
+  rateDelivery,
+  generateOrder,
+  getCoupon
+} = require("../controllers/infoUser");
 
 router.get("/user/info", userInfo);
+router.get("/user/get-all-products", getAllProducts);
+router.get("/user/get-all-combos", getAllCombos);
+router.get("/user/get-all-companies", getAllCompanies);
+router.get("/user/get-all-orders", getAllUserOrders);
+router.post("/user/set-order-rate", rateDelivery);
+router.post("/user/generate-order", generateOrder);
+router.get("/user/get-all-coupons", getCoupon);
 
 module.exports = router;

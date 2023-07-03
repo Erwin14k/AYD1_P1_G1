@@ -8,6 +8,9 @@
 | 202004816 | Kevin Steve Martinez Lemus |
 | 202001534 | Erwin Fernando Vásquez Peñate |
 | 202000119 | Sergie Daniel Arizandieta Yol |
+| 201213498 | Oscar Augusto Perez Tzunun |
+| 201608315 | Jesus Fernando Galicia Lima |
+
 
 # Logo
 ![Untitled](Images/logo.png)
@@ -76,6 +79,43 @@ Además de estas ramas principales, Gitflow utiliza ramas auxiliares para gestio
 
 ![Untitled](Images/profile.png)
 
+
+Reportes Administrador
+![Untitled](Images/AdminOptions.png)
+
+Top 5
+![Untitled](Images/top5Productos.png)
+
+
+![Untitled](Images/topdelivery.png)
+
+
+![Untitled](Images/topVentas.png)
+
+Reportes Usuarios
+![Untitled](Images/InformeUsuarios.png)
+
+
+
+Listar ordenes recibidas - Empresa
+![Untitled](Images/listorders.png)
+
+top producto - Empresa
+![Untitled](Images/topproduct.png)
+
+historial de pedidos - Empresa
+![Untitled](Images/orderhistory.png)
+
+calificacion - Repartidor
+![Untitled](Images/rate.png)
+
+Cambiar direccion - Repartidor
+![Untitled](Images/changeadress.png)
+
+Historial de ordenes - Repartidor
+![Untitled](Images/deliveryhistory.png)
+
+
 # Tecnologías usadas
 ## Frontend:
 Para el desarrollo del frontend de la aplicación web, hemos utilizado React. React es una biblioteca de JavaScript ampliamente utilizada y respaldada por Facebook. Su enfoque en componentes reutilizables y su capacidad para actualizar de manera eficiente la interfaz de usuario hacen de React una elección ideal para aplicaciones web interactivas y receptivas.
@@ -102,9 +142,18 @@ Por el momento el frontend y el backen solo se han utilizado de forma local debi
 
 ![Untitled](Images/ER.png)
 
+
+# Diagrama de despliegue
+![Untitled](Images/Despliegue.png)
+
 # Casos de uso
 
 Los casos de uso son una técnica para especificar el comportamiento de un sistema: “Un caso de uso es una secuencia de interacciones entre un sistema y actores que usan alguno de sus servicios".
+
+
+
+# User Story Map
+![Untitled](Images/Storymap.png)
 
 ## Casos de uso de alto nivel en AlChilazo
 
@@ -148,7 +197,48 @@ no este registrado con anterioridad para poder registrarse y ofrecer sus product
 **Tipo:** Primario
 **Descripción:** El repartidor puede acceder a un apartado para visualizar sus datos de perfil,
 incluidas sus calificaciones.
+
 ```
+```
+**Caso de uso:** Deshabilitar usuario
+**Actores:** Administrador
+**Tipo:** Primario
+**Descripción:** El administrador deshabilita la cuenta de un usuario.
+
+```
+```
+**Caso de uso:** Reportes de administración
+
+**Actores:** Administrador
+**Tipo:** Primario
+**Descripción:** El administrador accede a la vista de reportes para obtener información detallada.
+
+```
+```
+
+**Caso de uso:** Historial de pedidos
+
+**Actores:** Repartidor
+**Tipo:** Primario
+**Descripción:** El repartidor accede al historial de pedidos para ver los pedidos entregados en el mes.
+
+**Caso de uso: Cambio de zona
+
+**Actores: Repartidor
+**Tipo: Primario
+**Descripción: El repartidor llena el formulario de solicitud de cambio de zona y lo envía a la administración.
+
+```
+```
+**Caso de uso:** Información del pedido asignado
+
+**Actores:** Repartidor
+**Tipo:** Primario
+**Descripción:** El repartidor accede a la vista de información del pedido asignado y visualiza todos los detalles del pedido
+
+```
+
+
 
 ```
 **Caso de uso:** Registrar productos y combos
@@ -257,6 +347,85 @@ además podrá agregar información que detalle el proudcto.
 **Cursos alternos:**
 	 1. El sistema notifica que la empresa ingresó credenciales incorrectas.
     2. El sistema notifica que la empresa aún no ha sido aprobada por un administrador.
+    
+    
+**Caso de uso extendido:** Búsqueda de productos
+
+**Actores:** Usuario
+**Tipo:** Secundario
+**escripción:** El usuario utiliza la función de búsqueda para encontrar un producto específico dentro de la categoría.
+**Flujo normal:**
+
+El usuario ingresa un término de búsqueda en el campo de búsqueda.
+El sistema realiza una búsqueda en la base de datos de productos.
+El sistema muestra una lista de productos que coinciden con el término de búsqueda.
+El usuario puede ver los detalles de los productos encontrados.
+**Flujo alternativo - Sin resultados:**
+
+El usuario ingresa un término de búsqueda en el campo de búsqueda.
+El sistema realiza una búsqueda en la base de datos de productos.
+El sistema no encuentra ningún producto que coincida con el término de búsqueda.
+El sistema muestra un mensaje indicando que no se encontraron resultados.
+
+
+
+**Caso de uso extendido:** Carrito de compra
+
+**Actores:** Usuario
+**Tipo:** Secundario
+**Descripción:** El usuario realiza acciones relacionadas con el carrito de compras, como agregar, eliminar o modificar productos, y finalizar la compra.
+
+**Flujo normal:**
+
+El usuario navega por la tienda y encuentra un producto que desea agregar al carrito.
+El usuario selecciona la opción "Agregar al carrito" junto al producto.
+El sistema agrega el producto al carrito y actualiza la cantidad total de productos y el monto total.
+El usuario continúa navegando y repite los pasos 1 a 3 para agregar más productos al carrito.
+El usuario decide revisar el contenido del carrito antes de proceder a la compra.
+El usuario accede a la vista del carrito de compras, donde se muestra una lista de los productos agregados, su cantidad y el subtotal de cada producto.
+El usuario puede realizar acciones como eliminar productos del carrito o actualizar la cantidad de productos.
+El sistema recalcula automáticamente el monto total del carrito según las modificaciones realizadas por el usuario.
+El usuario decide finalizar la compra y selecciona la opción "Realizar compra".
+El sistema solicita al usuario que ingrese los detalles de envío y facturación.
+El usuario completa los campos requeridos y confirma la compra.
+El sistema procesa la transacción y muestra una confirmación de la compra realizada.
+El sistema envía un correo electrónico al usuario con la confirmación de la compra y los detalles de la transacción.
+
+**Flujo alternativo - Carrito vacío:**
+
+El usuario accede a la vista del carrito de compras.
+El sistema muestra un mensaje indicando que el carrito está vacío y no se pueden realizar acciones.
+El usuario tiene la opción de regresar a la tienda para agregar productos al carrito.
+Flujo alternativo - Carrito abandonado:
+
+El usuario agrega productos al carrito, pero no realiza la compra.
+El sistema guarda el estado del carrito para que el usuario pueda retomar la compra más tarde.
+Cuando el usuario regresa al sitio, el sistema muestra un mensaje recordatorio con el contenido del carrito anteriormente abandonado.
+
+
+
+```
+
+```
+Caso de uso: Historial de órdenes del usuario
+
+Actores: Usuario
+Tipo: Primario
+Descripción: El usuario accede al historial de órdenes para ver las órdenes previas realizadas.
+
+Flujo normal:
+
+El usuario inicia sesión en su cuenta.
+El usuario navega hasta la sección de historial de órdenes.
+El sistema muestra una lista de las órdenes realizadas por el usuario, ordenadas por fecha de compra.
+El usuario puede seleccionar una orden específica para ver los detalles.
+El sistema muestra los detalles de la orden, como los productos comprados, la fecha de compra, el número de seguimiento (si está disponible), etc.
+El usuario puede revisar la información de la orden y, si lo desea, imprimir una copia o guardar los detalles para referencia futura.
+Flujo alternativo - Sin órdenes:
+
+El usuario accede a la sección de historial de órdenes.
+El sistema no encuentra ninguna orden asociada a la cuenta del usuario.
+El sistema muestra un mensaje indicando que no hay órdenes registradas.
 ```
 
 # Herramienta de gestión de proyectos

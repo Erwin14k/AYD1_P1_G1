@@ -1,0 +1,84 @@
+.report-container {
+    margin-top: 3%;
+}
+
+.card {
+    border: none;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 20px;
+    background-color: #F9F4EF;
+}
+
+.card-title {
+    font-size: 24px;
+    color: #DB4F23;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    color: #A89D8F;
+}
+
+.details-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.price {
+    color: #1C1716;
+}
+
+.sales {
+    color: #1C1716;
+}
+
+.company {
+    color: #DB4F23;
+    font-weight: bold;
+}
+
+.card-type {
+    font-size: 18px;
+    color: #F2890D;
+    margin-bottom: 5px;
+}
+
+.no-orders-message {
+    text-align: center;
+    color: #DB4F23;
+    font-size: 18px;
+    margin-top: 50px;
+}
+
+.pedido-container {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    width: 60%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.pedido-header {
+    background-color: #f2f2f2;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.pedido-body {
+    margin-top: 16px;
+}
+
+.pedido-footer {
+    margin-top: 16px;
+    text-align: right;
+}

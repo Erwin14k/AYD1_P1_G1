@@ -261,3 +261,136 @@ module.exports.deleteCombo = async ({comboId}) => {
   return await db.pool(statement, binds);
 };
 
+// Get top 5 most selled products
+module.exports.getMostSelledProducts = async ({companyId}) => {
+	// db querys
+  // Collecting top 5
+	const selectCompanyMostSelledProductsMenStatement = `SELECT product_id,product_type,product_name,
+  product_price,product_description,product_img,product_number_of_sales,product_stock,
+  getCompanyName(company_id) AS company_name
+  FROM product WHERE company_id = ? ORDER BY product_number_of_sales DESC LIMIT 5`;
+  // bindings
+  const binds = [companyId];
+  // Info collected
+	let dataCollected=[];
+  const results = await db.pool(selectCompanyMostSelledProductsMenStatement, binds);
+  dataCollected.push({ "products": results });
+  return dataCollected;
+};
+
+
+// Get all orders associated to the company
+module.exports.getAllCompanyOrders = async ({companyId}) => {
+	// db querys
+  // Collecting the orders
+	const selectCompanyOrdersStatement = `SELECT order_id,delivery_man_id,user_id,
+  company_id,order_status,order_date,order_total,order_commission,
+  getCompanyName(company_id) AS company_name,getDeliveryManName(delivery_man_id) AS delivery_man_name,
+  getClientName(user_id) AS user_name
+  FROM _order WHERE company_id = ?`;
+  // bindings
+  const binds = [companyId];
+  // Info collected
+	let dataCollected=[];
+  const results = await db.pool(selectCompanyOrdersStatement, binds);
+  for (const item of results) {
+    const selectOrderDetail=`SELECT order_id,product_id,
+    product_name,combo_id,combo_name,product_ammount
+    FROM order_detail WHERE order_id = ?`
+    //binds
+    const detailBinds=[item.order_id];
+    const detailResult = await db.pool(selectOrderDetail, detailBinds);
+    dataCollected.push({
+      order_id:item.order_id,
+      delivery_man_id:item.delivery_man_id,
+      delivery_man_name:item.delivery_man_name,
+      user_name:item.user_name,
+      company_name:item.company_name,
+      order_status:item.order_status,
+      order_date:item.order_date,
+      order_total:item.order_total,
+      order_commission:item.order_commission,
+      rating:item.rating,
+      items:detailResult
+    });
+  }
+  return dataCollected;
+};
+
+
+// Approving an order
+module.exports.approveOrder = async ({orderId}) => {
+  const updateOrderStatement = `UPDATE _order SET order_status = ? WHERE order_id = ?`;
+  // bindings
+  const binds = ["Aprobado",orderId];
+  await db.pool(updateOrderStatement, binds);
+
+
+  const selectOrderDetail=`SELECT order_id,product_id,
+    product_name,combo_id,combo_name,product_ammount
+    FROM order_detail WHERE order_id = ?`
+    //binds
+  const detailBinds=[orderId];
+  const detailResult = await db.pool(selectOrderDetail, detailBinds);
+  for (const item of detailResult) {
+    //verify if is a product
+    if(item.product_id){
+      const updateProductStatement=`UPDATE product
+      SET product_number_of_sales = product_number_of_sales + ?
+      WHERE product_id = ?`
+      const productBinds=[item.product_ammount,item.product_id];
+      await db.pool(updateProductStatement,productBinds);
+    }
+    //verify if is a combo
+    if(item.combo_id){
+      const updateComboStatement=`UPDATE combo
+      SET combo_number_of_sales = combo_number_of_sales + ?
+      WHERE combo_id = ?`
+      const comboBinds=[item.product_ammount,item.combo_id];
+      await db.pool(updateComboStatement,comboBinds);
+    }
+  }
+};
+
+// Decline an order
+module.exports.declineOrder = async ({orderId}) => {
+  const updateOrderStatement = `UPDATE _order SET order_status = ? WHERE order_id = ?`;
+  // bindings
+  const binds = ["Cancelado",orderId];
+  return await db.pool(updateOrderStatement, binds);
+};
+
+// Get waiting orders associated to the company
+module.exports.getAllWaitingCompanyOrders = async ({companyId}) => {
+	// db querys
+  // Collecting the orders
+	const selectCompanyOrdersStatement = `SELECT order_id,user_id,
+  company_id,order_status,order_date,order_total,order_commission,
+  getCompanyName(company_id) AS company_name,
+  getClientName(user_id) AS user_name
+  FROM _order WHERE company_id = ? AND order_status = ?`;
+  // bindings
+  const binds = [companyId,"Esperando"];
+  // Info collected
+	let dataCollected=[];
+  const results = await db.pool(selectCompanyOrdersStatement, binds);
+  for (const item of results) {
+    const selectOrderDetail=`SELECT order_id,product_id,
+    product_name,combo_id,combo_name,product_ammount
+    FROM order_detail WHERE order_id = ?`
+    //binds
+    const detailBinds=[item.order_id];
+    const detailResult = await db.pool(selectOrderDetail, detailBinds);
+    dataCollected.push({
+      order_id:item.order_id,
+      user_name:item.user_name,
+      company_name:item.company_name,
+      order_status:item.order_status,
+      order_date:item.order_date,
+      order_total:item.order_total,
+      order_commission:item.order_commission,
+      items:detailResult
+    });
+  }
+  return dataCollected;
+};

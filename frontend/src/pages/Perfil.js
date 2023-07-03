@@ -1,9 +1,14 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import NavBar from "../components/NavBar";
-import NavBarModule from "../static/NavBarModule";
-import departmentsGuatemala from "../static/departmentsGuatemala";
-import DataDeliveryMan from "../static/DataDeliveryMan";
+import NavBarModule from "../static/NavBar/NavBarModule";
+import departmentsGuatemala from "../static/data/departmentsGuatemala";
+import DataDeliveryMan from "../static/data/DataDeliveryMan";
 import Cookie from 'cookie-universal'
+import swal from 'sweetalert';
+import Rating from "@mui/material/Rating";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import StarIcon from "@mui/icons-material/Star";
+
 const cookies = Cookie()
 const crr_user = cookies.get("crr_user")
 
@@ -12,42 +17,82 @@ function Perfil({ noUrl }) {
     const [selectedMunicipio, setSelectedMunicipio] = useState("");
     const [deliveryInfo, setDeliveryInfo] = useState({})
 
-    const peticion = () => {
-        fetch(`http://localhost:4200/delivery-man/info`, {
+    const peticion = useCallback(() => {
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/delivery-man/info`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
-             }
-          
+            }
+
         })
             .then(res => res.json())
             .catch(err => {
                 console.error('Error:', err)
             })
             .then(response => {
-                console.log("REPONSE///",response)
+                console.log("REPONSE///", response)
                 setDeliveryInfo(response.deliveryManData[0])
                 // setDeliveryInfo(response.)
             })
-    }
+    }, []);
 
 
 
     const handelSubmit = (e) => {
         e.preventDefault();
         console.log("Formulario enviado");
-        
-        if(e.target[1].value === deliveryInfo.deliveryManDepartment && e.target[2].value === deliveryInfo.deliveryManMunicipality )
-        { return alert("No se ha podido hacer la solicitud ya que es el mismo departamento y municipio que ya se posee")  }
-        console.log("0. - ",e.target[0].value)
-        console.log("1. - ",e.target[1].value)
-        console.log("2. - ",e.target[2].value)
+
+        if (e.target[0].value === "") {
+            return swal({
+                title: "Querido Usuario Repartidor",
+                text: "Para solicitar un cambio de zona departamental debe de enviar una razón.",
+                icon: "error",
+                button: true,
+            })
+        }
+
+        if (e.target[1].value === deliveryInfo.deliveryManDepartment && e.target[2].value === deliveryInfo.deliveryManMunicipality) {
+            return swal({
+                title: "Querido Usuario Repartidor",
+                text: "No se ha podido hacer la solicitud ya que es el mismo departamento y municipio que ya se posee.",
+                icon: "error",
+                button: true,
+            })
+        }
+
+        const body = {
+            changeDescription: e.target[0].value,
+            newDepartment: e.target[1].value,
+            newMunicipality: e.target[2].value
+        }
+
+        fetch(`http://${process.env.REACT_APP_PUERTO}:4200/delivery-man/change-address`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${crr_user.data[0].authToken}`, // Agrega aquí tu encabezado personalizado
+            },
+            body: JSON.stringify(body)
+        })
+            .then(res => res.json())
+            .catch(err => {
+                console.error('Error:', err)
+            })
+            .then(async response => {
+                console.log(response)
+                await swal({
+                    title: "Querido Usuario Repartidor",
+                    text: response.message,
+                    icon: response.status === 200 ? "success" : "error",
+                    button: true,
+                })
+            });
     };
 
     useEffect(() => {
         peticion();
-    }, []);
+    }, [peticion]);
 
     return (
         <div>
@@ -60,18 +105,18 @@ function Perfil({ noUrl }) {
                         </button>
                     </h2>
                     <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                        <center><h2 style={{marginTop:"2%"}}>Datos</h2></center>
-                       
-                        <DataDeliveryMan 
-                            delivery_man_name = {deliveryInfo.deliveryManName}
-                            delivery_man_surname = {deliveryInfo.deliveryManSurname}
-                            delivery_man_department= {deliveryInfo.deliveryManDepartment}
-                            delivery_man_municipality= {deliveryInfo.deliveryManMunicipality}
-                            delivery_man_transport= {deliveryInfo.deliveryManTransport}
-                            delivery_man_email= {deliveryInfo.deliveryManEmail}
-                            delivery_man_phone= {deliveryInfo.deliveryManPhone}
-                            delivery_man_license_type= {deliveryInfo.deliveryManLicenseType}
-                            delivery_man_resume= {deliveryInfo.deliveryManResume}
+                        <center><h2 style={{ marginTop: "2%" }}>Datos</h2></center>
+
+                        <DataDeliveryMan
+                            delivery_man_name={deliveryInfo.deliveryManName}
+                            delivery_man_surname={deliveryInfo.deliveryManSurname}
+                            delivery_man_department={deliveryInfo.deliveryManDepartment}
+                            delivery_man_municipality={deliveryInfo.deliveryManMunicipality}
+                            delivery_man_transport={deliveryInfo.deliveryManTransport}
+                            delivery_man_email={deliveryInfo.deliveryManEmail}
+                            delivery_man_phone={deliveryInfo.deliveryManPhone}
+                            delivery_man_license_type={deliveryInfo.deliveryManLicenseType}
+                            delivery_man_resume={deliveryInfo.deliveryManResume}
                         />
                     </div>
                 </div>
@@ -82,7 +127,20 @@ function Perfil({ noUrl }) {
                         </button>
                     </h2>
                     <div id="flush-collapseTwo" className="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                        <center><h2 style={{marginTop:"2%"}}>Su calificación es: {deliveryInfo.deliveryManRating}</h2></center>
+                        <center><h2 style={{ marginTop: "2%" }}>Su calificación es: </h2>
+                        <br></br>
+                        <Rating
+                            name="simple-controlled"
+                            value={+deliveryInfo.deliveryManRating}
+                            icon={
+                                <StarIcon sx={{ fontSize: 50 }} /> // Ajusta el tamaño del ícono de estrella vacía
+                            }
+                            emptyIcon={
+                                <StarBorderIcon sx={{ fontSize: 50 }} /> // Ajusta el tamaño del ícono de estrella vacía
+                            }
+                            readOnly
+                        /></center>
+                        <br></br>
                     </div>
                 </div>
                 <div className="accordion-item">
@@ -92,7 +150,7 @@ function Perfil({ noUrl }) {
                         </button>
                     </h2>
                     <div id="flush-collapseThree" className="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                        <center><h2 style={{marginTop:"2%"}}>Solicitud de cambio de zona departamental</h2></center>
+                        <center><h2 style={{ marginTop: "2%" }}>Solicitud de cambio de zona departamental</h2></center>
                         <br></br>
                         <form onSubmit={handelSubmit}>
                             <div className="form-outline mb-4">

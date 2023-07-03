@@ -91,7 +91,9 @@ CREATE TABLE IF NOT EXISTS delivery_man_change_address(
 CREATE TABLE IF NOT EXISTS coupon(
   coupon_id BIGINT PRIMARY KEY AUTO_INCREMENT,
   coupon_code VARCHAR(150) NOT NULL,
-  coupon_status VARCHAR(150) NOT NULL
+  coupon_status VARCHAR(150) NOT NULL,
+  user_id BIGINT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE
 );
 
 -- company Table
@@ -149,17 +151,19 @@ CREATE TABLE IF NOT EXISTS combo(
 -- order Table
 CREATE TABLE IF NOT EXISTS _order(
   order_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  coupon_id BIGINT,
-  delivery_man_id BIGINT NOT NULL,
+  coupon_id BIGINT DEFAULT NULL,
+  delivery_man_id BIGINT DEFAULT NULL,
   user_id BIGINT NOT NULL,
-  user_address_id BIGINT NOT NULL,
+  company_id BIGINT NOT NULL,
   order_status VARCHAR(150) NOT NULL,
   order_date TIMESTAMP NOT NULL,
   order_total DECIMAL(10,2),
+  order_commission DECIMAL(10,2),
+  order_department VARCHAR(150) NOT NULL,
   FOREIGN KEY (coupon_id) REFERENCES coupon(coupon_id) ON DELETE CASCADE,
   FOREIGN KEY (delivery_man_id) REFERENCES delivery_man(delivery_man_id) ON DELETE CASCADE,
   FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE,
-  FOREIGN KEY (user_address_id) REFERENCES user_address(user_address_id) ON DELETE CASCADE
+  FOREIGN KEY (company_id) REFERENCES company(company_id) ON DELETE CASCADE
 );
 
 
@@ -177,9 +181,13 @@ CREATE TABLE IF NOT EXISTS delivery_man_rating(
 CREATE TABLE IF NOT EXISTS order_detail(
   order_detail_id BIGINT PRIMARY KEY AUTO_INCREMENT,
   order_id BIGINT NOT NULL,
-  product_id BIGINT NOT NULL,
+  product_id BIGINT DEFAULT NULL,
+  product_name VARCHAR(150) DEFAULT NULL,
+  combo_id BIGINT DEFAULT NULL,
+  combo_name VARCHAR(150) DEFAULT NULL,
   product_ammount INTEGER NOT NULL,
   FOREIGN KEY (order_id) REFERENCES _order(order_id) ON DELETE CASCADE,
+  FOREIGN KEY (combo_id) REFERENCES combo(combo_id) ON DELETE CASCADE,
   FOREIGN KEY (product_id) REFERENCES product(product_id) ON DELETE CASCADE
 );
 
@@ -196,3 +204,118 @@ DELIMITER ;
 -- Admin user
 INSERT INTO admin (admin_id,admin_email, admin_password, admin_name,admin_status)
 VALUES (-1,'admin@root.com', 'root', 'root','Active');
+
+-- Function to get the company_name by the company_id
+DELIMITER //
+CREATE FUNCTION getCompanyName(companyIdParam BIGINT) RETURNS VARCHAR(100)
+BEGIN
+  DECLARE companyName VARCHAR(100);
+  SELECT company_name INTO companyName
+  FROM company
+  WHERE company_id = companyIdParam;
+  RETURN companyName;
+END //
+
+-- Function to obtain the full name of a delivery man by the delivery_man_id
+DELIMITER //
+CREATE FUNCTION getDeliveryManName(deliveryManIdParam BIGINT) RETURNS VARCHAR(100)
+BEGIN
+  DECLARE deliveryManName VARCHAR(100);
+  SELECT CONCAT(delivery_man_name, ' ', delivery_man_surname) INTO deliveryManName
+  FROM delivery_man
+  WHERE delivery_man_id = deliveryManIdParam;
+  RETURN deliveryManName;
+END //
+DELIMITER ;
+
+-- Function to obtain the department of a delivery man by the delivery_man_id
+DELIMITER //
+CREATE FUNCTION getDeliveryManDepartment(deliveryManIdParam BIGINT) RETURNS VARCHAR(100)
+BEGIN
+  DECLARE deliveryManDepartment VARCHAR(100);
+  SELECT CONCAT(delivery_man_department,'') INTO deliveryManDepartment
+  FROM delivery_man
+  WHERE delivery_man_id = deliveryManIdParam;
+  RETURN deliveryManDepartment;
+END //
+DELIMITER ;
+
+
+-- Function to obtain the full name of a client by the user_id
+DELIMITER //
+CREATE FUNCTION getClientName(UserIdParam BIGINT) RETURNS VARCHAR(100)
+BEGIN
+  DECLARE clientName VARCHAR(100);
+  SELECT CONCAT(user_name, ' ', user_surname) INTO clientName
+  FROM user
+  WHERE user_id = UserIdParam;
+  RETURN clientName;
+END //
+DELIMITER ;
+
+-- Function to generate a new coupon
+DELIMITER //
+CREATE FUNCTION generateCoupon()
+RETURNS VARCHAR(36)
+DETERMINISTIC
+BEGIN
+    DECLARE code VARCHAR(36);
+    SET code = UUID();
+    RETURN code;
+END //
+DELIMITER ;
+
+-- Function to obtain the name of a product by the product_id
+DELIMITER //
+CREATE FUNCTION getProductName(productIdParam BIGINT) RETURNS VARCHAR(100)
+BEGIN
+  DECLARE productName VARCHAR(100);
+  SELECT CONCAT(product_name, '') INTO productName
+  FROM product
+  WHERE product_id = productIdParam;
+  RETURN productName;
+END //
+DELIMITER ;
+
+-- Function to obtain the name of a combo by the combo_id
+DELIMITER //
+CREATE FUNCTION getComboName(comboIdParam BIGINT) RETURNS VARCHAR(100)
+BEGIN
+  DECLARE comboName VARCHAR(100);
+  SELECT CONCAT(combo_name, '') INTO comboName
+  FROM combo
+  WHERE combo_id = comboIdParam;
+  RETURN comboName;
+END //
+DELIMITER ;
+
+-- Function to obtain the total comission accumulated by a delivery man
+DELIMITER //
+CREATE FUNCTION calculate_total_commission(deliveryManId BIGINT) RETURNS DECIMAL(10,2)
+BEGIN
+  DECLARE totalCommission DECIMAL(10,2) DEFAULT 0;
+  SELECT IFNULL(SUM(order_commission), 0) INTO totalCommission
+  FROM _order
+  WHERE delivery_man_id = deliveryManId
+  AND (order_status = 'Entregado' OR order_status = 'Calificado');
+  RETURN totalCommission;
+END//
+DELIMITER ;
+
+
+-- Function to obtain the rate of an order by the order id
+DELIMITER //
+CREATE FUNCTION get_rating_by_order_id(order_id_param BIGINT)
+RETURNS VARCHAR(20)
+BEGIN
+  DECLARE rating_value INTEGER;
+  SELECT rating INTO rating_value
+  FROM delivery_man_rating
+  WHERE order_id = order_id_param;
+  IF rating_value IS NULL THEN
+    RETURN 'No calificado';
+  ELSE
+    RETURN CAST(rating_value AS CHAR);
+  END IF;
+END //
+DELIMITER ;

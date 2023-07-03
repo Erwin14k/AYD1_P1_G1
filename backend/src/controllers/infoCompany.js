@@ -192,3 +192,87 @@ module.exports.deleteCombo = async (req, res, next) => {
       message: `El combo: ${args.comboId}, fue eliminado satisfactoriamente :)`,
   });
 };
+
+// Get top 5 most selled products
+module.exports.getMostSelledProducts = async (req, res, next) => {
+  let args = {
+    companyId:req.body.companyId,
+  };
+  // Operations on db
+  const result=await Company.getMostSelledProducts(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      message: "Top 5 de los productos más vendidos obtenido con éxito",
+      companyData:result,
+  });
+};
+
+// Get all orders associated to the company
+module.exports.getAllCompanyOrders = async (req, res, next) => {
+  let args = {
+    companyId:req.body.companyId,
+  };
+  // Operations on db
+  const result=await Company.getAllCompanyOrders(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      message: "Pedidos gestionados por esta empresa recuperados con éxito!!",
+      companyData:result,
+  });
+};
+
+// Approve orders
+module.exports.approveOrder = async (req, res, next) => {
+  let args = {
+    orderId:req.body.orderId,
+  };
+  // Operations on db
+  const result=await Company.approveOrder(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      message: `El pedido No.: ${args.orderId}, fue aprobado satisfactoriamente :)`,
+  });
+};
+
+// Decline orders
+module.exports.declineOrder = async (req, res, next) => {
+  let args = {
+    orderId:req.body.orderId,
+  };
+  // Operations on db
+  const result=await Company.declineOrder(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      message: `El pedido No.: ${args.orderId}, fue cancelado satisfactoriamente :)`,
+  });
+};
+
+
+// Get all waiting orders associated to the company
+module.exports.getAllWaitingCompanyOrders = async (req, res, next) => {
+  let args = {
+    companyId:req.body.companyId,
+  };
+  // Operations on db
+  const result=await Company.getAllWaitingCompanyOrders(args);
+  // response
+  return res
+    .status(200)
+    .json({
+      status:200,
+      message: "Pedidos en espera de aprobación por esta empresa recuperados con éxito!!",
+      companyData:result,
+  });
+};

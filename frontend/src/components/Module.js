@@ -1,9 +1,9 @@
 import NavBar from "./NavBar";
-import NavBarModule from "../static/NavBarModule";
-import ModuleDelivery from "../static/ModuleDelivery";
-import ModuleClient from "../static/ModuleClient";
-import ModuleCompany from "../static/ModuleCompany";
-import ModuleAdmin from "../static/ModuleAdmin";
+import NavBarModule from "../static/NavBar/NavBarModule";
+import ModuleDelivery from "../static/Modules/ModuleDelivery";
+import ModuleClient from "../static/Modules/ModuleClient";
+import ModuleCompany from "../static/Modules/ModuleCompany";
+import ModuleAdmin from "../static/Modules/ModuleAdmin";
 
 function Module({  noUrl, customContent }) {
     return(

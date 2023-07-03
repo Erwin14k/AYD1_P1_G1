@@ -1,4 +1,6 @@
 import './styles/LandingCSS.css'
+import './styles/selledProductCSS.css'
+import './styles/ModuleCliente.css'
 import React from 'react';
 import LandingPage from './pages/LandingPage';
 import Politicas from './pages/Politicas';
@@ -10,14 +12,17 @@ import Module from './components/Module';
 import Perfil from './pages/Perfil';
 import Reportes from './pages/Reportes';
 
-import SingUpClient from './static/SingUpClient';
-import SingUpDeliveryMan from './static/SingUpDeliveryMan';
-import SingUpCompany from './static/SingUpCompany';
+import SingUpClient from './static/SingUp/SingUpClient';
+import SingUpDeliveryMan from './static/SingUp/SingUpDeliveryMan';
+import SingUpCompany from './static/SingUp/SingUpCompany';
 
 import { ProtectedRouteLogin } from './security/ProtectedRouteLogin';
 import { ProtectedRouteUsers } from './security/ProtectedRouteUsers';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import ShoppingCart from './pages/ShoppingCart';
+import Orders from './pages/Orders';
 
 function App() {
   return (
@@ -29,14 +34,14 @@ function App() {
           <Route path="/politicas" element={<Politicas/>} />
 
           <Route element={<ProtectedRouteLogin redirectTo="/" condition={undefined} />}>
-            <Route path="/Login-Admin" element={<SingIn url={"http://localhost:4200/admin/login"} noUrl={0}/>}/>
-            <Route path="/Login-Cliente" element={<SingIn url={"http://localhost:4200/user/login"} noUrl={1}/>}/>
-            <Route path="/Login-Repartidor" element={<SingIn url={"http://localhost:4200/delivery-man/login"} noUrl={2}/>}/>
-            <Route path="/Login-Empresa" element={<SingIn url={"http://localhost:4200/company/login"} noUrl={3}/>} />
+            <Route path="/Login-Admin" element={<SingIn url={`http://${process.env.REACT_APP_PUERTO}:4200/admin/login`} noUrl={0}/>}/>
+            <Route path="/Login-Cliente" element={<SingIn url={`http://${process.env.REACT_APP_PUERTO}:4200/user/login`} noUrl={1}/>}/>
+            <Route path="/Login-Repartidor" element={<SingIn url={`http://${process.env.REACT_APP_PUERTO}:4200/delivery-man/login`} noUrl={2}/>}/>
+            <Route path="/Login-Empresa" element={<SingIn url={`http://${process.env.REACT_APP_PUERTO}:4200/company/login`} noUrl={3}/>} />
             
-            <Route path="/SingUp-Cliente" element={<SingUp  noUrl={1} customContent={<SingUpClient url={"http://localhost:4200/user/register"}/>} />}/>
-            <Route path="/SingUp-Repartidor" element={<SingUp  noUrl={2} customContent={<SingUpDeliveryMan url={"http://localhost:4200/delivery-man/register"}/>} />}/>
-            <Route path="/SingUp-Empresa" element={<SingUp  noUrl={3} customContent={<SingUpCompany url={"http://localhost:4200/company/register"}/>} />}/>
+            <Route path="/SingUp-Cliente" element={<SingUp  noUrl={1} customContent={<SingUpClient url={`http://${process.env.REACT_APP_PUERTO}:4200/user/register`}/>} />}/>
+            <Route path="/SingUp-Repartidor" element={<SingUp  noUrl={2} customContent={<SingUpDeliveryMan url={`http://${process.env.REACT_APP_PUERTO}:4200/delivery-man/register`}/>} />}/>
+            <Route path="/SingUp-Empresa" element={<SingUp  noUrl={3} customContent={<SingUpCompany url={`http://${process.env.REACT_APP_PUERTO}:4200/company/register`}/>} />}/>
           </Route>
 
           {/*admin = 0*/}
@@ -48,6 +53,8 @@ function App() {
           {/*client = 1*/}
           <Route element={<ProtectedRouteUsers redirectTo="/Login-Cliente" condition={1} />}>
             <Route path="/Module-Cliente" element={<Module  noUrl={1} />}/>
+            <Route path="/Ordenes-Cliente" element={<Orders  noUrl={1} />}/>
+            <Route path="/Carrito-Cliente" element={<ShoppingCart  noUrl={1} />}/>
           </Route>
 
           {/*deliveryman = 2*/}

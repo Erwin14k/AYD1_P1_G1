@@ -2,8 +2,8 @@ import {  Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import MiLogo from '../assets/AlChilazoLogo.png'
-import NavBarLanding from '../static/NavBarLanding';
-import NavBarModule from '../static/NavBarModule';
+import NavBarLanding from '../static/NavBar/NavBarLanding';
+import NavBarModule from '../static/NavBar/NavBarModule';
 import Cookie from 'cookie-universal'
 const cookies = Cookie()
 
