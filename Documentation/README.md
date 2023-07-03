@@ -8,6 +8,9 @@
 | 202004816 | Kevin Steve Martinez Lemus |
 | 202001534 | Erwin Fernando Vásquez Peñate |
 | 202000119 | Sergie Daniel Arizandieta Yol |
+| 201213498 | Oscar Augusto Perez Tzunun |
+| 201608315 | Jesus Fernando Galicia Lima |
+
 
 # Logo
 ![Untitled](Images/logo.png)
@@ -76,6 +79,39 @@ Además de estas ramas principales, Gitflow utiliza ramas auxiliares para gestio
 
 ![Untitled](Images/profile.png)
 
+
+Reportes Administrador
+![Untitled](Images/AdminOptions.png)
+
+Top 5
+![Untitled](Images/Top5Productos.png)
+
+
+![Untitled](Images/topdelivery.png)
+
+
+![Untitled](Images/topVentas.png)
+
+
+Listar ordenes recibidas - Empresa
+![Untitled](Images/listorders.png)
+
+top producto - Empresa
+![Untitled](Images/topproduct.png)
+
+historial de pedidos - Empresa
+![Untitled](Images/orderhistory.png)
+
+calificacion - Repartidor
+![Untitled](Images/rate.png)
+
+Cambiar direccion - Repartidor
+![Untitled](Images/changeadress.png)
+
+Historial de ordenes - Repartidor
+![Untitled](Images/deliveryhistory.png)
+
+
 # Tecnologías usadas
 ## Frontend:
 Para el desarrollo del frontend de la aplicación web, hemos utilizado React. React es una biblioteca de JavaScript ampliamente utilizada y respaldada por Facebook. Su enfoque en componentes reutilizables y su capacidad para actualizar de manera eficiente la interfaz de usuario hacen de React una elección ideal para aplicaciones web interactivas y receptivas.
@@ -102,9 +138,18 @@ Por el momento el frontend y el backen solo se han utilizado de forma local debi
 
 ![Untitled](Images/ER.png)
 
+
+# Diagrama de despliegue
+![Untitled](https://raw.githubusercontent.com/Erwin14k/AYD1_P1_G1/feature/documentacion/Documentation/Images/Despliegue.png?token=GHSAT0AAAAAACD25IYO2WNGD5S4CBZKHMAEZFCY5VA)
+
 # Casos de uso
 
 Los casos de uso son una técnica para especificar el comportamiento de un sistema: “Un caso de uso es una secuencia de interacciones entre un sistema y actores que usan alguno de sus servicios".
+
+
+
+# User Story Map
+![Untitled](https://raw.githubusercontent.com/Erwin14k/AYD1_P1_G1/feature/documentacion/Documentation/Images/Storymap.png?token=GHSAT0AAAAAACD25IYPWO5K2452DRAWBSROZFCY6IQ)
 
 ## Casos de uso de alto nivel en AlChilazo
 
