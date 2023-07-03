@@ -185,7 +185,26 @@ module.exports.getAllUserOrders = async ({ userId }) => {
   // Info collected
   let dataCollected = [];
   const results = await db.pool(selectUserOrdersStatement, binds);
-  dataCollected.push({ orders: results });
+  for (const item of results) {
+    const selectOrderDetail=`SELECT order_id,product_id,
+    product_name,combo_id,combo_name,product_ammount
+    FROM order_detail WHERE order_id = ?`
+    //binds
+    const detailBinds=[item.order_id];
+    const detailResult = await db.pool(selectOrderDetail, detailBinds);
+    dataCollected.push({
+      order_id:item.order_id,
+      delivery_man_id:item.delivery_man_id,
+      delivery_man_name:item.delivery_man_name,
+      user_name:item.user_name,
+      company_name:item.company_name,
+      order_status:item.order_status,
+      order_date:item.order_date,
+      order_total:item.order_total,
+      order_commission:item.order_commission,
+      items:detailResult
+    });
+  }
   return dataCollected;
 };
 

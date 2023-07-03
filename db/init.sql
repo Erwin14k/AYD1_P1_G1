@@ -296,7 +296,8 @@ BEGIN
   DECLARE totalCommission DECIMAL(10,2) DEFAULT 0;
   SELECT IFNULL(SUM(order_commission), 0) INTO totalCommission
   FROM _order
-  WHERE delivery_man_id = deliveryManId;
+  WHERE delivery_man_id = deliveryManId
+  AND (order_status = 'Entregado' OR order_status = 'Calificado');
   RETURN totalCommission;
 END//
 DELIMITER ;

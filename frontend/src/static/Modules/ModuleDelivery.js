@@ -60,8 +60,9 @@ const ModuleDelivery = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                setHistorial(data.deliveryManData[0].orders)
-                const actual = data.deliveryManData[0].orders.find(pedido => pedido.order_status === 'En camino');
+                console.log(data.deliveryManData)
+                setHistorial(data.deliveryManData)
+                const actual = data.deliveryManData.find(pedido => pedido.order_status === 'En camino');
                 setPedidoAsignado(actual)
             })
             .catch((error) => {
@@ -160,15 +161,16 @@ const ModuleDelivery = () => {
         getOrdenesDisponible();
     }
 
+
+
     useEffect(() => {
-        getHistorial();
-        getComisiones();
-        getOrdenesDisponible();
+        actualizar();
     }, [getHistorial, getComisiones, getOrdenesDisponible]);
 
     return (
         <div style={{ width: "80%", margin: "auto", marginTop: "10%" }}>
             <h1>Bienvenido Repartidor, </h1>
+            <button type="button" onClick={() => actualizar()} className="btn" style={{ marginTop: "2%", backgroundColor: "#DB4F23", color: "white" }}>Actualizar</button>
             <ul className="nav nav-tabs" id="myTab" role="tablist" style={{ marginTop: "5%" }}>
                 <li className="nav-item" role="presentation">
                     <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
@@ -191,6 +193,8 @@ const ModuleDelivery = () => {
                     </button>
                 </li>
             </ul>
+
+            
             <div className="tab-content" id="myTabContent">
                 <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <center><h3 style={{ marginTop: "2%" }}>PEDIDO ASIGNADO</h3></center>

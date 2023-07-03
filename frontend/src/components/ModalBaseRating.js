@@ -87,7 +87,7 @@ const ModalBaseRating = ({ order_id, delivery_id, getPedidos }) => {
 
    return (
       <>
-         <Button variant="outlined" onClick={handleOpen}>
+         <Button variant="outlined" onClick={handleOpen} color="success">
             Calificar
          </Button>
          <Modal
