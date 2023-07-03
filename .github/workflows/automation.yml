@@ -7,7 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Publish to Docker Repository
-        uses: erwin14k/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@master
         with:
           name: erwin14k/alchilazo_backend
           username: ${{secrets.DOCKER_USERNAME}}
