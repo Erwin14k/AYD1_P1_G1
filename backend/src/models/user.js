@@ -194,6 +194,8 @@ module.exports.getAllUserOrders = async ({ userId }) => {
     const detailResult = await db.pool(selectOrderDetail, detailBinds);
     dataCollected.push({
       order_id:item.order_id,
+      delivery_man_id:item.delivery_man_id,
+      delivery_man_name:item.delivery_man_name,
       user_name:item.user_name,
       company_name:item.company_name,
       order_status:item.order_status,
