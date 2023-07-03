@@ -19,7 +19,7 @@ const cookies = Cookie();
 const crr_user = cookies.get("crr_user");
 
 const ModalOrden = ({ items, total, tipo, comision }) => {
-   console.log("items", items);
+   //console.log("items", items);
    const [open, setOpen] = useState(false);
 
    const handleOpen = () => {
