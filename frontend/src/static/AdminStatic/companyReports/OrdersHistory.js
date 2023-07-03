@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import ModalOrden from '../../../components/ModalOrden';
+import moment from 'moment';
 
 const OrdersHistory = ({orders}) => {
     const [searchName, setSearchName] = useState('');
@@ -58,9 +60,12 @@ const OrdersHistory = ({orders}) => {
                                 <div className="card-body">
                                     <h5 className="card-title">Orden #{order.order_id}</h5>
                                     <p className="card-text">Cliente: {order.user_name}</p>
-                                    <p className="card-text">Fecha: {order.order_date}</p>
+                                    <p className="card-text">Fecha: {moment(order.order_date).format("DD/MM/YYYY HH:mm") }</p>
                                     <p className="card-text">Monto total: Q.{order.order_total}</p>
                                     <p className="card-text">Estado: {order.order_status}</p>
+                                    <div style={{marginLeft:"-10px"}}>
+                                    <ModalOrden items={order.items} total={order.order_total} comision={order.order_commission}  />
+                                    </div>
                                 </div>
                             </div>
                         </div>

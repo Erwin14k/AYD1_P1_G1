@@ -45,7 +45,7 @@ const ReportesEmpresa = () => {
                 console.error('Error:', err)
             })
             .then(response => {
-                setOrders(response.companyData[0].orders);
+                setOrders(response.companyData);
             })
     }, []);
 
