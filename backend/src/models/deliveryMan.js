@@ -124,6 +124,21 @@ module.exports.info = ({ deliveryManId }) => {
 
 // Registering a change address request associated to a delivery man
 module.exports.changeAddress = async ({deliveryManId,newDepartment,newMunicipality, changeDescription}) => {
+
+  // Verify if the delivery_man has a pending order
+  const selectDeliveryManPendingOrders = `SELECT order_id
+  FROM _order WHERE delivery_man_id = ? AND order_status= ?`;
+  const orderBinds = [deliveryManId, "En camino"];
+  const ordersResult = await db.pool(
+    selectDeliveryManPendingOrders,
+    orderBinds
+  );
+  // If the delivery_man has a pending order, cannot be disabled of the system.
+  if (ordersResult[0]) {
+    if (ordersResult[0].order_id) {
+      return "Pending";
+    }
+  }
   const changeAddressStatement = `INSERT INTO delivery_man_change_address (delivery_man_id, new_department, 
   new_municipality, change_description,status,admin_id) 
   VALUES (?,?,?,?,?,?)`;
@@ -156,12 +171,15 @@ module.exports.getAllDeliveryManOrders = async ({deliveryManId}) => {
     const detailResult = await db.pool(selectOrderDetail, detailBinds);
     dataCollected.push({
       order_id:item.order_id,
+      delivery_man_id:item.delivery_man_id,
+      delivery_man_name:item.delivery_man_name,
       user_name:item.user_name,
       company_name:item.company_name,
       order_status:item.order_status,
       order_date:item.order_date,
       order_total:item.order_total,
       order_commission:item.order_commission,
+      rating:item.rating,
       items:detailResult
     });
   }

@@ -27,6 +27,15 @@ module.exports.changeAddress = async (req, res, next) => {
   };
   // Operations on db
   const result=await DeliveryMan.changeAddress(args);
+  if (result==="Pending"){
+    // response
+  return res
+  .status(500)
+  .json({
+    status:500,
+    message: "Estimado repartidor, no puedes cambiar de zona en este momento, tienes pedidos pendientes por entregar :)",
+});
+  }
   // response
   return res
     .status(200)
